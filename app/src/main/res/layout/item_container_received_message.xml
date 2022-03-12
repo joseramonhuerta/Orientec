@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"   xmlns:app="http://schemas.android.com/apk/res-auto">
+<data>
+    <variable
+        name="ItemContainerReceivedMessageBinding"
+        type="com.servfix.manualesapp.MensajeChat" />
+</data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="4dp">
+    
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/ivProfileMessage"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="@drawable/background_image"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/txtMensaje"
+        app:riv_oval="true"
+        />
+
+    <TextView
+        android:id="@+id/txtMensaje"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_received_message"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:padding="12dp"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        app:layout_constraintStart_toEndOf="@id/ivProfileMessage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.75"
+        />
+
+    <TextView
+        android:id="@+id/txtFechaHoraMensaje"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/secondary_text"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@id/txtMensaje"
+        app:layout_constraintTop_toBottomOf="@id/txtMensaje" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

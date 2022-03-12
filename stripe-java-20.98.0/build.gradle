@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('stripe-java-20.98.0.jar'))

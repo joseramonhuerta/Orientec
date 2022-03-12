@@ -1,0 +1,4 @@
+include ':openpay-android-release'
+include ':stripe-java-20.98.0'
+include ':app'
+rootProject.name = "Orientec"

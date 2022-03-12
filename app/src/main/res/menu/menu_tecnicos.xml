@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_chats"
+        android:title="Chats"
+        android:icon="@drawable/miscursos_selector"/>
+
+
+
+    <item android:id="@+id/menu_perfil"
+        android:title="Mi Perfil"
+        android:icon="@drawable/perfil_selector"/>
+
+
+</menu>

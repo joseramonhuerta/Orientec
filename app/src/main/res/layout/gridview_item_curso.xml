@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fff"
+    app:cardBackgroundColor="#fff"
+
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="0dp">
+
+        <TextView
+            android:id="@+id/txtTituloCurso"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Titulo del Curso"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="0dp"
+        >
+
+        <ImageView
+            android:id="@+id/ivImagenCurso"
+            android:layout_width="150dp"
+            android:layout_height="85dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerInside"
+            android:textAlignment="center"
+            app:srcCompat="@drawable/ic_baseline_broken_image_24" />
+    </LinearLayout>
+        <TextView
+            android:id="@+id/txtDescripcionCurso"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:textAlignment="center"
+            android:text="Descripcion del Curso"
+            android:textColor="#000000"
+            android:textSize="10sp" />
+
+
+        <TextView
+            android:id="@+id/txtPaginasCurso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="Paginas/minutos"
+            android:textColor="#4f4f4f"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/txtPrecioCurso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="$ 100.00"
+            android:textColor="#0071b6"
+            android:textStyle="bold"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+           >
+
+            <Button
+                android:id="@+id/btnComprarCurso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comprar Ahora"
+                android:backgroundTint="#109DFA"
+
+
+                android:background="@drawable/boton_rounded"
+                />
+    </LinearLayout>
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>
