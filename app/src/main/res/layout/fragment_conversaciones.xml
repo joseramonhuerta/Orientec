@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ConversacionesFragment">
 
     <LinearLayout
@@ -20,18 +21,15 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/srlContainerConversacion"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listviewConversacion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <ListView
-                android:id="@+id/listviewConversacion"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@null"
-                />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            />
     </LinearLayout>
 
 </RelativeLayout>

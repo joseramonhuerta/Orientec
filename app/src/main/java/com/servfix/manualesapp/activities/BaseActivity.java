@@ -19,8 +19,8 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         PreferenceManager preferenceManager = new PreferenceManager(getApplicationContext());
         FirebaseFirestore database =  FirebaseFirestore.getInstance();
-        documentReference = database.collection("users")
-                .document(preferenceManager.getString("id_usuario_firebase"));
+        documentReference = database.collection(Constants.KEY_USERS)
+                .document(preferenceManager.getString(Constants.KEY_ID_USUARIO_FIREBASE));
     }
 
     @Override

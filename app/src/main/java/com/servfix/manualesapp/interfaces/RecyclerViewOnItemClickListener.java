@@ -1,4 +1,4 @@
-package com.servfix.manualesapp;
+package com.servfix.manualesapp.interfaces;
 
 import android.view.View;
 

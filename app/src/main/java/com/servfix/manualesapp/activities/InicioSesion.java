@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
 import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.Registrarse;
+import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.PreferenceManager;
 import com.servfix.manualesapp.classes.User;
 import com.servfix.manualesapp.utilities.GlobalVariables;
@@ -74,23 +75,23 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
 
         preferenceManager = new PreferenceManager(getApplicationContext());
 
-        Boolean logeado = preferenceManager.getBoolean("logeado");
-        String user = preferenceManager.getString("usuario");
-        String pass = preferenceManager.getString("password");
+        Boolean logeado = preferenceManager.getBoolean(Constants.KEY_LOGEADO);
+        String user = preferenceManager.getString(Constants.KEY_USUARIO);
+        String pass = preferenceManager.getString(Constants.KEY_PASSWORD);
 
         if(logeado){
 
             User usuario = new User();
 
-            usuario.setUsuario(preferenceManager.getString("email_usuario"));
-            usuario.setNombre(preferenceManager.getString("nombre_usuario"));
-            usuario.setId_usuario(preferenceManager.getInt("id_usuario"));
-            usuario.setPaterno(preferenceManager.getString("paterno_usuario"));
-            usuario.setMaterno(preferenceManager.getString("materno_usuario"));
-            usuario.setCelular(preferenceManager.getString("celular"));
-            usuario.setTipo_usuario(preferenceManager.getInt("tipo_usuario"));
-            usuario.setId_usuario_firebase(preferenceManager.getString("id_usuario_firebase"));
-            usuario.setImagen(preferenceManager.getString("imagen"));
+            usuario.setUsuario(preferenceManager.getString(Constants.KEY_EMAIL_USUARIO));
+            usuario.setNombre(preferenceManager.getString(Constants.KEY_NOMBRE_USUARIO));
+            usuario.setId_usuario(preferenceManager.getInt(Constants.KEY_ID_USUARIO));
+            usuario.setId_usuario_firebase(preferenceManager.getString(Constants.KEY_ID_USUARIO_FIREBASE));
+            usuario.setPaterno(preferenceManager.getString(Constants.KEY_PATERNO_USUARIO));
+            usuario.setMaterno(preferenceManager.getString(Constants.KEY_MATERNO_USUARIO));
+            usuario.setCelular(preferenceManager.getString(Constants.KEY_CELULAR));
+            usuario.setTipo_usuario(preferenceManager.getInt(Constants.KEY_TIPO_USUARIO));
+            usuario.setImagen(preferenceManager.getString(Constants.KEY_IMAGEN));
 
             GlobalVariables variablesGlobales = new GlobalVariables();
             variablesGlobales.id_usuario = usuario.getId_usuario();
@@ -212,17 +213,19 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
             usuario.setId_usuario_firebase(jsonObject.optString("id_usuario_firebase"));
             usuario.setImagen(jsonObject.optString("imagen"));
 
-            preferenceManager.putBoolean("logeado", true);
-            preferenceManager.putString("usuario", txtUsuario.getEditText().getText().toString());
-            preferenceManager.putString("password", txtPassword.getEditText().getText().toString());
-            preferenceManager.putInt("id_usuario", usuario.getId_usuario());
-            preferenceManager.putString("nombre_usuario", usuario.getNombre());
-            preferenceManager.putString("paterno",  usuario.getPaterno());
-            preferenceManager.putString("materno", usuario.getMaterno());
-            preferenceManager.putString("celular", usuario.getCelular());
-            preferenceManager.putInt("tipo_usuario", usuario.getTipo_usuario());
-            preferenceManager.putString("id_usuario_firebase", usuario.getId_usuario_firebase());
-            preferenceManager.putString("imagen", usuario.getImagen());
+            preferenceManager.putBoolean(Constants.KEY_LOGEADO, true);
+            preferenceManager.putString(Constants.KEY_USUARIO, txtUsuario.getEditText().getText().toString());
+            preferenceManager.putString(Constants.KEY_PASSWORD, txtPassword.getEditText().getText().toString());
+            preferenceManager.putInt(Constants.KEY_ID_USUARIO, usuario.getId_usuario());
+            preferenceManager.putString(Constants.KEY_NOMBRE_USUARIO, usuario.getNombre());
+            preferenceManager.putString(Constants.KEY_PATERNO_USUARIO,  usuario.getPaterno());
+            preferenceManager.putString(Constants.KEY_MATERNO_USUARIO, usuario.getMaterno());
+            preferenceManager.putString(Constants.KEY_NOMBRE_USUARIO_ENVIA, usuario.getNombre() + " " + usuario.getPaterno() + " " + usuario.getMaterno());
+            preferenceManager.putString(Constants.KEY_EMAIL_USUARIO, usuario.getUsuario());
+            preferenceManager.putString(Constants.KEY_CELULAR, usuario.getCelular());
+            preferenceManager.putInt(Constants.KEY_TIPO_USUARIO, usuario.getTipo_usuario());
+            preferenceManager.putString(Constants.KEY_ID_USUARIO_FIREBASE, usuario.getId_usuario_firebase());
+            preferenceManager.putString(Constants.KEY_IMAGEN, usuario.getImagen());
 
             GlobalVariables variablesGlobales = new GlobalVariables();
             variablesGlobales.id_usuario = usuario.getId_usuario();

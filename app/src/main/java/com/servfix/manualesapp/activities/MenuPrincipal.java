@@ -60,7 +60,7 @@ public class MenuPrincipal extends BaseActivity {
             }
         });
 
-        getToken();
+        //getToken();
 
     }
 

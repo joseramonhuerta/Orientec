@@ -11,8 +11,10 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,6 +25,7 @@ import com.servfix.manualesapp.interfaces.ApiService;
 import com.servfix.manualesapp.network.ApiClient;
 import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
+import com.servfix.manualesapp.utilities.PreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +54,8 @@ public class ChatSoporte extends BaseActivity {
     private FirebaseFirestore database;
     private String receiverToken ="";
     private Boolean isReceiverAvailable = false;
+    private String conversationId = null;
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class ChatSoporte extends BaseActivity {
         binding = ActivityChatSoporteBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         gv = new GlobalVariables();
+        preferenceManager = new PreferenceManager(getApplicationContext());
         id_usuario = gv.id_usuario;
         setListeners();
         loadReceiverDetails();
@@ -79,12 +85,30 @@ public class ChatSoporte extends BaseActivity {
     private void sendMessage(){
         GlobalVariables gv= new GlobalVariables();
         HashMap<String, Object> message = new HashMap<>();
-        message.put("id_usuario_manual", String.valueOf(manual.id_usuario_manual));
-        message.put("id_usuario_envia", String.valueOf(id_usuario));
-        message.put("id_usuario_recibe", String.valueOf(manual.id_usuario_receiver));
-        message.put("mensaje", binding.txtSendMessage.getText().toString());
-        message.put("fecha_mensaje", new Date());
-        database.collection("chats").add(message);
+        message.put(Constants.KEY_ID_USUARIO_MANUAL, String.valueOf(manual.id_usuario_manual));
+        message.put(Constants.KEY_ID_USUARIO_ENVIA, String.valueOf(id_usuario));
+        message.put(Constants.KEY_ID_USUARIO_RECIBE, String.valueOf(manual.id_usuario_receiver));
+        message.put(Constants.KEY_MENSAJE, binding.txtSendMessage.getText().toString());
+        message.put(Constants.KEY_FECHA_MENSAJE, new Date());
+        database.collection(Constants.KEY_CHATS).add(message);
+        if(conversationId != null){
+            updateConversion(binding.txtSendMessage.getText().toString());
+        }else{
+            HashMap<String, Object> conversion = new HashMap<>();
+            conversion.put(Constants.KEY_ID_USUARIO_MANUAL, String.valueOf(manual.id_usuario_manual));
+            conversion.put(Constants.KEY_NOMBRE_MANUAL, manual.nombre_manual);
+            conversion.put(Constants.KEY_ID_USUARIO_ENVIA, String.valueOf(preferenceManager.getInt(Constants.KEY_ID_USUARIO)));
+            conversion.put(Constants.KEY_NOMBRE_USUARIO_ENVIA, preferenceManager.getString(Constants.KEY_NOMBRE_USUARIO_ENVIA));
+            conversion.put(Constants.KEY_IMAGEN, preferenceManager.getString(Constants.KEY_IMAGEN));
+            conversion.put(Constants.KEY_ID_USUARIO_FIREBASE, preferenceManager.getString(Constants.KEY_ID_USUARIO_FIREBASE));
+            conversion.put(Constants.KEY_ID_USUARIO_RECIBE, String.valueOf(manual.id_usuario_receiver));
+            conversion.put(Constants.KEY_NOMBRE_USUARIO_RECIBE, String.valueOf(manual.nombre_usuario_receiver));
+            conversion.put(Constants.KEY_IMAGEN_RECIBE, String.valueOf(manual.imagen));
+            conversion.put(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE, manual.id_usuario_firebase);
+            conversion.put(Constants.KEY_ULTIMO_MENSAJE, binding.txtSendMessage.getText().toString());
+            conversion.put(Constants.KEY_FECHA_MENSAJE, new Date());
+            addConversion(conversion);
+        }
         if(!isReceiverAvailable){
             try{
                 JSONArray tokens = new JSONArray();
@@ -143,7 +167,7 @@ public class ChatSoporte extends BaseActivity {
     }
 
     private void loadReceiverDetails(){
-        manual = (ClaseChat) getIntent().getExtras().getSerializable("manual");
+        manual = (ClaseChat) getIntent().getSerializableExtra("manual");
         binding.txtTituloCursoChat.setText(manual.nombre_manual);
         binding.txtUsuarioChat.setText(manual.nombre_usuario_receiver);
         binding.ivProfileChat.setImageBitmap(getBitmapFromEncodedString(manual.imagen));
@@ -236,6 +260,10 @@ public class ChatSoporte extends BaseActivity {
                 binding.listviewChat.smoothScrollToPosition(chatMessages.size() - 1);
            }
            binding.progressBarChat.setVisibility(View.GONE);
+           if(conversationId == null){
+               checkForConversion();
+           }
+
            if(chatMessages.size() > 0)
                binding.listviewChat.smoothScrollToPosition(chatMessages.size() - 1);
       }
@@ -244,6 +272,38 @@ public class ChatSoporte extends BaseActivity {
     private String getReadableDateTime(Date date){
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
     }
+
+    private void addConversion(HashMap<String, Object> conversion){
+        database.collection(Constants.KEY_CONVERSATIONS)
+                .add(conversion)
+                .addOnSuccessListener(documentReference -> conversationId = documentReference.getId());
+    }
+
+    private void updateConversion(String message){
+        DocumentReference documentReference =
+                database.collection(Constants.KEY_CONVERSATIONS).document(conversationId);
+        documentReference.update(Constants.KEY_ULTIMO_MENSAJE, message, Constants.KEY_FECHA_MENSAJE, new Date());
+    }
+
+    private void checkForConversion(){
+        if(chatMessages.size() != 0){
+            checkForConversionRemotely(String.valueOf(manual.id_usuario_manual));
+        }
+    }
+
+    private void checkForConversionRemotely(String id_usuario_manual){
+        database.collection(Constants.KEY_CONVERSATIONS)
+                .whereEqualTo("id_usuario_manual", id_usuario_manual)
+                .get()
+                .addOnCompleteListener(conversionOnCompleteListener);
+    }
+
+    private final OnCompleteListener<QuerySnapshot> conversionOnCompleteListener = task -> {
+        if(task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0){
+            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+            conversationId = documentSnapshot.getId();
+        }
+    };
 
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();

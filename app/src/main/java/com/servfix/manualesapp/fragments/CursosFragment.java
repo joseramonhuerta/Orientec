@@ -38,7 +38,7 @@ import com.servfix.manualesapp.GridViewScrollable;
 import com.servfix.manualesapp.classes.Manual;
 import com.servfix.manualesapp.adapters.MyRecyclerViewAdapter;
 import com.servfix.manualesapp.R;
-import com.servfix.manualesapp.RecyclerViewOnItemClickListener;
+import com.servfix.manualesapp.interfaces.RecyclerViewOnItemClickListener;
 import com.servfix.manualesapp.adapters.SliderAdapterExample;
 import com.servfix.manualesapp.classes.SliderItem;
 import com.smarteist.autoimageslider.IndicatorView.animation.type.IndicatorAnimationType;

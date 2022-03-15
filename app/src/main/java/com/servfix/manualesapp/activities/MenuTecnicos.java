@@ -16,6 +16,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.fragments.ChatsFragment;
+import com.servfix.manualesapp.fragments.ConversacionesFragment;
 import com.servfix.manualesapp.fragments.PerfilFragment;
 import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
@@ -28,7 +29,7 @@ public class MenuTecnicos extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_tecnicos);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        showSeletedFragment(new ChatsFragment(), "Fragment", R.id.menu_tecnicos);
+        showSeletedFragment(new ConversacionesFragment(), "Fragment", R.id.menu_tecnicos);
 
         mMenu = (BottomNavigationView) findViewById(R.id.menu_tecnicos);
 
@@ -37,7 +38,7 @@ public class MenuTecnicos extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
                 if(item.getItemId() == R.id.menu_chats & itemSelected != item.getItemId()){
-                    showSeletedFragment(new ChatsFragment(), "ChatsFragment", item.getItemId());
+                    showSeletedFragment(new ConversacionesFragment(), "ConversacionesFragment", item.getItemId());
                 }
                 /*
                 if(item.getItemId() == R.id.menu_carrito & itemSelected != item.getItemId()){

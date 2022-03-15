@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.servfix.manualesapp.classes.Categoria;
 import com.servfix.manualesapp.R;
-import com.servfix.manualesapp.RecyclerViewOnItemClickListener;
+import com.servfix.manualesapp.interfaces.RecyclerViewOnItemClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
