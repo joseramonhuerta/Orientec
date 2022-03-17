@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -20,17 +21,19 @@ import com.servfix.manualesapp.fragments.ConversacionesFragment;
 import com.servfix.manualesapp.fragments.PerfilFragment;
 import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
+import com.servfix.manualesapp.utilities.PreferenceManager;
 
 public class MenuTecnicos extends BaseActivity {
     BottomNavigationView mMenu;
     int itemSelected;
+    private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_tecnicos);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         showSeletedFragment(new ConversacionesFragment(), "Fragment", R.id.menu_tecnicos);
-
+        preferenceManager = new PreferenceManager(getApplicationContext());
         mMenu = (BottomNavigationView) findViewById(R.id.menu_tecnicos);
 
         mMenu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -65,7 +68,7 @@ public class MenuTecnicos extends BaseActivity {
     @Override public void onBackPressed() {
 
     }
-
+    /*
     private void getToken(){
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MenuTecnicos.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -83,5 +86,28 @@ public class MenuTecnicos extends BaseActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference documentReference = database.collection("users").document(id);
         documentReference.update(Constants.KEY_FCM_TOKEN, token);
+    }*/
+
+    private void getToken(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(@NonNull InstanceIdResult instanceIdResult) {
+                String updatedToken = instanceIdResult.getToken();
+                updateToken(updatedToken);
+            }
+        });
+    }
+
+    private void updateToken(String token){
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = database.collection(Constants.KEY_USERS).document(
+                preferenceManager.getString(Constants.KEY_ID_USUARIO_FIREBASE)
+        );
+        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+                .addOnFailureListener(e -> showToast("No se pudo obtener el token"));
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

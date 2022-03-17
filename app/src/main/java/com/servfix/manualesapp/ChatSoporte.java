@@ -66,7 +66,6 @@ public class ChatSoporte extends BaseActivity {
         setContentView(binding.getRoot());
         gv = new GlobalVariables();
         preferenceManager = new PreferenceManager(getApplicationContext());
-        id_usuario = gv.id_usuario;
         setListeners();
         loadReceiverDetails();
         init();
@@ -75,7 +74,7 @@ public class ChatSoporte extends BaseActivity {
 
     private void init(){
         chatMessages = new ArrayList<>();
-        chatAdapter = new ChatAdapter(chatMessages, getBitmapFromEncodedString(manual.imagen), String.valueOf(id_usuario));
+        chatAdapter = new ChatAdapter(chatMessages, getBitmapFromEncodedString(manual.imagen_receiver), String.valueOf(id_usuario));
         binding.listviewChat.setAdapter(chatAdapter);
         binding.listviewChat.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         database = FirebaseFirestore.getInstance();
@@ -103,8 +102,8 @@ public class ChatSoporte extends BaseActivity {
             conversion.put(Constants.KEY_ID_USUARIO_FIREBASE, preferenceManager.getString(Constants.KEY_ID_USUARIO_FIREBASE));
             conversion.put(Constants.KEY_ID_USUARIO_RECIBE, String.valueOf(manual.id_usuario_receiver));
             conversion.put(Constants.KEY_NOMBRE_USUARIO_RECIBE, String.valueOf(manual.nombre_usuario_receiver));
-            conversion.put(Constants.KEY_IMAGEN_RECIBE, String.valueOf(manual.imagen));
-            conversion.put(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE, manual.id_usuario_firebase);
+            conversion.put(Constants.KEY_IMAGEN_RECIBE, String.valueOf(manual.imagen_receiver));
+            conversion.put(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE, manual.id_usuario_firebase_receiver);
             conversion.put(Constants.KEY_ULTIMO_MENSAJE, binding.txtSendMessage.getText().toString());
             conversion.put(Constants.KEY_FECHA_MENSAJE, new Date());
             addConversion(conversion);
@@ -115,20 +114,21 @@ public class ChatSoporte extends BaseActivity {
                 tokens.put(receiverToken);
 
                 JSONObject data = new JSONObject();
-                data.put("id_usuario", manual.id_usuario_sender);
+                data.put("id_usuario_sender", manual.id_usuario_sender);
+                data.put("id_usuario_receiver", manual.id_usuario_receiver);
                 data.put("id_usuario_manual", String.valueOf(manual.id_usuario_manual));
                 data.put("nombre_usuario_sender", manual.nombre_usuario_sender);
                 data.put("nombre_usuario_receiver", manual.nombre_usuario_receiver);
                 data.put("nombre_manual", manual.nombre_manual);
-                data.put("id_usuario_firebase", manual.id_usuario_firebase_sender);
-                data.put("id_usuario_firebase_sender", manual.id_usuario_firebase);
+                data.put("id_usuario_firebase", manual.id_usuario_firebase_receiver);
+                data.put("id_usuario_firebase_sender", manual.id_usuario_firebase_sender);
                 /*data.put("imagen", manual.imagen_sender);*/
                 //data.put("fcmToken", gv.fcmToken);
                 data.put("mensaje", binding.txtSendMessage.getText().toString());
 
                 JSONObject body = new JSONObject();
-                body.put("data", data);
-                body.put("registration_ids", tokens);
+                body.put(Constants.REMOTE_MSG_DATA, data);
+                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
 
                 sendNotification(body.toString());
             }catch (Exception e){
@@ -168,9 +168,10 @@ public class ChatSoporte extends BaseActivity {
 
     private void loadReceiverDetails(){
         manual = (ClaseChat) getIntent().getSerializableExtra("manual");
+        id_usuario = manual.id_usuario_sender;
         binding.txtTituloCursoChat.setText(manual.nombre_manual);
         binding.txtUsuarioChat.setText(manual.nombre_usuario_receiver);
-        binding.ivProfileChat.setImageBitmap(getBitmapFromEncodedString(manual.imagen));
+        binding.ivProfileChat.setImageBitmap(getBitmapFromEncodedString(manual.imagen_receiver));
     }
 
     private void setListeners(){
@@ -200,7 +201,7 @@ public class ChatSoporte extends BaseActivity {
 
     private void listenAvailabilityReceiver(){
         database.collection("users").document(
-                manual.id_usuario_firebase
+                manual.id_usuario_firebase_receiver
         ).addSnapshotListener(ChatSoporte.this, (value, error) ->{
            if(error != null){
                 return;
@@ -213,7 +214,7 @@ public class ChatSoporte extends BaseActivity {
                    isReceiverAvailable = availability == 1;
                }
                receiverToken = value.getString(Constants.KEY_FCM_TOKEN);
-               if(manual.imagen == null){
+               if(manual.imagen_receiver == null){
                    manual.imagen_sender = value.getString("imagen");
                    chatAdapter.setReceiverProfileImage(getBitmapFromEncodedString(manual.imagen_sender));
                    binding.ivProfileChat.setImageBitmap(getBitmapFromEncodedString(manual.imagen_sender));

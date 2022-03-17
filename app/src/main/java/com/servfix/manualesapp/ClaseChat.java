@@ -9,9 +9,9 @@ public class ClaseChat implements Serializable {
     public String nombre_usuario_sender;
     public String nombre_usuario_receiver;
     public String nombre_manual;
-    public String imagen;
+    public String imagen_receiver;
     public String imagen_sender;
-    public String id_usuario_firebase;
+    public String id_usuario_firebase_receiver;
     public String id_usuario_firebase_sender;
     public String token;
     /*

@@ -59,22 +59,22 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
 
         void setData(MensajeChat chatMessage){
             binding.ivImagenUsuarioConversacion.setImageBitmap(getConversionImage(chatMessage.imagen_conversacion));
-            binding.txtNombreUsuarioConversacion.setText(chatMessage.nombre_usuario_conversacion);
+            binding.txtNombreUsuarioConversacion.setText(chatMessage.nombre_usuario_recibe);
             binding.txtNombreManualConversacion.setText(chatMessage.nombre_manual_conversacion);
             binding.txtRecentMessageConversacion.setText(chatMessage.ultimo_mensaje);
             binding.txtRecentDateConversacion.setText(chatMessage.fecha_conversacion);
             binding.getRoot().setOnClickListener(v -> {
                 ClaseChat chat = new ClaseChat();
-
                 chat.id_usuario_manual = Integer.parseInt(chatMessage.id_usuario_manual);
-                chat.id_usuario_sender =  Integer.parseInt(chatMessage.id_usuario_manual);
-                chat.id_usuario_receiver =  Integer.parseInt(chatMessage.id_usuario_manual);
+                chat.id_usuario_sender =  Integer.parseInt(chatMessage.id_usuario_recibe);
+                chat.id_usuario_receiver =  Integer.parseInt(chatMessage.id_usuario_envia);
                 chat.nombre_manual = chatMessage.nombre_manual_conversacion;
-                chat.nombre_usuario_sender = chatMessage.nombre_usuario_conversacion;
-                chat.nombre_usuario_receiver = chatMessage.nombre_usuario_conversacion;
-                chat.imagen = chatMessage.imagen_conversacion;
+                //chat.nombre_usuario_sender = chatMessage.nombre_usuario_conversacion;
+                chat.nombre_usuario_receiver = chatMessage.nombre_usuario_recibe;
+                chat.nombre_usuario_sender = chatMessage.nombre_usuario_envia;
+                chat.imagen_receiver = chatMessage.imagen_conversacion;
                 chat.imagen_sender = chatMessage.imagen_conversacion;
-                chat.id_usuario_firebase = chatMessage.id_usuario_firebase_recibe;
+                chat.id_usuario_firebase_receiver = chatMessage.id_usuario_firebase_recibe;
                 chat.id_usuario_firebase_sender = chatMessage.id_usuario_firebase_envia;
                 conversacionesListerner.onConversionClicked(chat);
 

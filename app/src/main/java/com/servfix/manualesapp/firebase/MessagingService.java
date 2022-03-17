@@ -33,14 +33,15 @@ public class MessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         ClaseChat chat = new ClaseChat();
-        chat.id_usuario_sender = Integer.parseInt(remoteMessage.getData().get("id_usuario"));
+        chat.id_usuario_sender = Integer.parseInt(remoteMessage.getData().get("id_usuario_receiver"));
+        chat.id_usuario_receiver = Integer.parseInt(remoteMessage.getData().get("id_usuario_sender"));
         chat.id_usuario_manual = Integer.parseInt(remoteMessage.getData().get("id_usuario_manual"));
-        chat.nombre_usuario_sender = remoteMessage.getData().get("nombre_usuario_sender");
-        chat.nombre_usuario_receiver = remoteMessage.getData().get("nombre_usuario_receiver");
+        chat.nombre_usuario_sender = remoteMessage.getData().get("nombre_usuario_receiver");
+        chat.nombre_usuario_receiver =  remoteMessage.getData().get("nombre_usuario_sender");
         chat.nombre_manual = remoteMessage.getData().get("nombre_manual");
         /*chat.imagen = remoteMessage.getData().get("imagen");*/
-        chat.id_usuario_firebase = remoteMessage.getData().get("id_usuario_firebase");
-        chat.id_usuario_firebase_sender = remoteMessage.getData().get("id_usuario_firebase_sender");
+        chat.id_usuario_firebase_receiver = remoteMessage.getData().get("id_usuario_firebase_sender");
+        chat.id_usuario_firebase_sender = remoteMessage.getData().get("id_usuario_firebase");
         chat.token = remoteMessage.getData().get("fcmToken");
 
         int notificationId = new Random().nextInt();
@@ -53,7 +54,7 @@ public class MessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
         builder.setSmallIcon(R.drawable.ic_notification);
-        builder.setContentTitle(chat.nombre_usuario_sender);
+        builder.setContentTitle(chat.nombre_usuario_receiver);
         builder.setContentText(remoteMessage.getData().get("mensaje"));
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(
             remoteMessage.getData().get("mensaje")

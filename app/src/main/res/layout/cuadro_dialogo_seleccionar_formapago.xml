@@ -36,10 +36,10 @@
             <ImageView
                 android:id="@+id/btnPagoPayPal"
                 android:layout_width="300dp"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/dialog_container"
+                android:scaleType="fitXY"
                 android:src="@drawable/paypal2" />
 
             <Space
@@ -49,10 +49,10 @@
             <ImageView
                 android:id="@+id/btnPagoStripe"
                 android:layout_width="300dp"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/dialog_container"
+                android:scaleType="fitXY"
                 android:src="@drawable/stripe" />
 
             <Space
@@ -60,13 +60,27 @@
                 android:layout_height="20dp" />
 
             <ImageView
-                android:id="@+id/btnPagoOxxo"
+                android:id="@+id/btnPagoPaynet"
                 android:layout_width="300dp"
-                android:layout_height="100dp"
-                android:scaleType="fitXY"
+                android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/dialog_container"
+                android:scaleType="fitXY"
+                android:visibility="gone"
                 android:src="@drawable/paynet" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+
+            <ImageView
+                android:id="@+id/btnPagoOxxo"
+                android:layout_width="300dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/dialog_container"
+                android:scaleType="fitXY"
+                android:src="@drawable/oxxo" />
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />

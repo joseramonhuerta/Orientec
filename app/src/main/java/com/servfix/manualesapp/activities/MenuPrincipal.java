@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,17 +26,19 @@ import com.servfix.manualesapp.fragments.MisCursosFragment;
 import com.servfix.manualesapp.fragments.PerfilFragment;
 import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
+import com.servfix.manualesapp.utilities.PreferenceManager;
 
 public class MenuPrincipal extends BaseActivity {
     BottomNavigationView mMenu;
     int itemSelected;
+    private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_principal);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         showSeletedFragment(new CursosFragment(), "CursosFragment", R.id.menu_cursos);
-
+        preferenceManager = new PreferenceManager(getApplicationContext());
         mMenu = (BottomNavigationView) findViewById(R.id.menu_principal);
 
         mMenu.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,7 +63,7 @@ public class MenuPrincipal extends BaseActivity {
             }
         });
 
-        //getToken();
+        getToken();
 
     }
 
@@ -74,7 +77,7 @@ public class MenuPrincipal extends BaseActivity {
     @Override public void onBackPressed() {
 
     }
-
+    /*
     private void getToken(){
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(MenuPrincipal.this, new OnSuccessListener<InstanceIdResult>() {
             @Override
@@ -92,5 +95,30 @@ public class MenuPrincipal extends BaseActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         DocumentReference documentReference = database.collection("users").document(id);
         documentReference.update(Constants.KEY_FCM_TOKEN, token);
+    }*/
+
+    private void getToken(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(@NonNull InstanceIdResult instanceIdResult) {
+                String updatedToken = instanceIdResult.getToken();
+                updateToken(updatedToken);
+            }
+        });
     }
+
+    private void updateToken(String token){
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        DocumentReference documentReference = database.collection(Constants.KEY_USERS).document(
+                preferenceManager.getString(Constants.KEY_ID_USUARIO_FIREBASE)
+        );
+        documentReference.update(Constants.KEY_FCM_TOKEN, token)
+                .addOnFailureListener(e -> showToast("No se pudo obtener el token"));
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+
 }

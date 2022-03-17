@@ -114,6 +114,9 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
             }
             procesarStripe(mView);
         }else if(tipo == 3){
+            Log.i(TAG, "procesarPagoPaynet");
+            procesarPagoPaynet(mView);
+        }else if(tipo == 4){
             Log.i(TAG, "procesarPagoOxxo");
             procesarPagoOxxo(mView);
         }
@@ -248,8 +251,10 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
 
 
     public void procesarPagoPayPal(View view){
+        GlobalVariables gv = new GlobalVariables();
+        String pagado_por = "pagado por " + gv.nombre_usuario + " " + gv.paterno + " " + gv.materno;
         importeTotalCarrito = txtImporteTotalCarrito.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(importeTotalCarrito)),"MXN", "pagado por ramon huerta",PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(importeTotalCarrito)),"MXN", pagado_por,PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(CarritoCompras.this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
@@ -257,6 +262,12 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
     }
 
     public void procesarPagoOxxo(View view){
+        FragmentManager fm = getSupportFragmentManager();
+        CuadroDialogoPagoOxxo editNameDialogFragment = new CuadroDialogoPagoOxxo(mContext, mView, totalCarrito);
+        editNameDialogFragment.show(fm, "fragment_edit_oxxo");
+    }
+
+    public void procesarPagoPaynet(View view){
         //FragmentManager fm = getSupportFragmentManager();
         //CuadroDialogoPagoOxxo editNameDialogFragment = new CuadroDialogoPagoOxxo(mContext, mView, totalCarrito);
         //editNameDialogFragment.show(fm, "fragment_edit_oxxo");
@@ -409,8 +420,8 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
     }
 
     @Override
-    public void actualizaActividad() {
-        //pagarCarrito(mView);
+    public void actualizaActividad(View mView) {
+        pagarCarrito(mView,"","");
     }
 
     private class ParseJSonDataClass extends AsyncTask<Void, Void, Void> {

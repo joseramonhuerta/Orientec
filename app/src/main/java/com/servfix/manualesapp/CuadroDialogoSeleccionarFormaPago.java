@@ -1,6 +1,5 @@
 package com.servfix.manualesapp;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -12,25 +11,11 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.DecimalFormat;
 
 import static java.lang.Integer.parseInt;
 
@@ -42,6 +27,7 @@ public class CuadroDialogoSeleccionarFormaPago extends DialogFragment {
 
     ImageView btnPayPal;
     ImageView btnStripe;
+    ImageView btnPaynet;
     ImageView btnOxxo;
     Button btnCancelar;
 
@@ -80,6 +66,7 @@ public class CuadroDialogoSeleccionarFormaPago extends DialogFragment {
 
         btnPayPal = (ImageView) v.findViewById(R.id.btnPagoPayPal);
         btnStripe = (ImageView) v.findViewById(R.id.btnPagoStripe);
+        btnPaynet = (ImageView) v.findViewById(R.id.btnPagoPaynet);
         btnOxxo = (ImageView) v.findViewById(R.id.btnPagoOxxo);
         btnCancelar = (Button) v.findViewById(R.id.btnSalirDialogoFormaPago);
 
@@ -116,12 +103,22 @@ public class CuadroDialogoSeleccionarFormaPago extends DialogFragment {
             }
         });
 
-        btnOxxo.setOnClickListener(new View.OnClickListener() {
+        btnPaynet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //aceptarSolicitud();
                 dialogo.dismiss();
                 listener.formaPagoConfirmada(3);
+
+            }
+        });
+
+        btnOxxo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //aceptarSolicitud();
+                dialogo.dismiss();
+                listener.formaPagoConfirmada(4);
 
             }
         });

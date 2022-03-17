@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.servfix.manualesapp.R;
+import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.PaymentIntentResult;
 import com.stripe.android.Stripe;
@@ -51,10 +52,12 @@ public class Checkout extends BaseActivity {
         //pk_live_51ItcdaJc0kH60q11J0rh7a6dqlbiybDyKpDbsN8dre1tKk7NGgBIXcQX93KvWEZFj2d2ugdMFcBF8MWSPJuCjy3j00Gj0Etsqf
         //pk_test_51ItcdaJc0kH60q11ZGJJ48BSDQtWAjzNb1TsbZqoUDE07Jrv38XKWF2Nkkqne4tj0KDZjzPwdvGgaCjxxeDWN3te00aZy4QMuT
         setContentView(R.layout.activity_checkout);
+        GlobalVariables gv = new GlobalVariables();
+        String key_stripe = gv.STRIPE_PRODUCTION_KEY;
         totalCarrito = getIntent().getStringExtra("totalcarrito");
         stripe = new Stripe(
                 getApplicationContext(),
-                Objects.requireNonNull("pk_test_51ItcdaJc0kH60q11ZGJJ48BSDQtWAjzNb1TsbZqoUDE07Jrv38XKWF2Nkkqne4tj0KDZjzPwdvGgaCjxxeDWN3te00aZy4QMuT")
+                Objects.requireNonNull(key_stripe)
         );
         startCheckOut();
     }

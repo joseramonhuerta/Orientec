@@ -54,7 +54,7 @@ public class CuadroDialogoPagoOxxo extends DialogFragment implements Response.Li
 
     public interface Actualizar {
 
-        public void actualizaActividad();
+        public void actualizaActividad(View mView);
 
     }
     Actualizar listener;
@@ -136,7 +136,7 @@ public class CuadroDialogoPagoOxxo extends DialogFragment implements Response.Li
         progressBar.setVisibility(View.VISIBLE);
 
         String url = vg.URLServicio + "validarcodigopago.php?id_usuario="+String.valueOf(vg.id_usuario)+
-                "&total="+String.valueOf(this.importe);
+                "&total="+String.valueOf(this.importe) + "&codigo="+txtCodigoPago.getEditText().getText();
 
         jrq=new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -150,8 +150,8 @@ public class CuadroDialogoPagoOxxo extends DialogFragment implements Response.Li
 
                     if(success){
                         dialogo.dismiss();
-                        //listener.actualizaActividadUsuario(mView,id_usuario,nombre_usuario);
-                        listener.actualizaActividad();
+                        listener.actualizaActividad(mView);
+                        //listener.actualizaActividad(mView);
                     }
 
                     Toast.makeText(getContext(),msg, Toast.LENGTH_SHORT).show();
@@ -169,6 +169,7 @@ public class CuadroDialogoPagoOxxo extends DialogFragment implements Response.Li
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getContext(),"Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }

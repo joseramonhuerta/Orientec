@@ -66,7 +66,7 @@ public class ConversacionesFragment extends Fragment implements ConversacionesLi
         listView = (RecyclerView) view.findViewById(R.id.listviewConversacion);
         preferenceManager = new PreferenceManager(getContext());
         init();
-        getToken();
+        //getToken();
         //setListeners();
         listenConversations();
         return view;
@@ -106,20 +106,27 @@ public class ConversacionesFragment extends Fragment implements ConversacionesLi
                     mensajeChat.id_usuario_recibe = receiverId;
                     if (String.valueOf(preferenceManager.getInt(Constants.KEY_ID_USUARIO_ENVIA)).equals(senderId)) {
                         mensajeChat.imagen_conversacion = documentChange.getDocument().getString(Constants.KEY_IMAGEN_RECIBE);
-                        mensajeChat.nombre_usuario_conversacion = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_RECIBE);
+                        mensajeChat.nombre_usuario_envia = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_ENVIA);
+                        mensajeChat.nombre_usuario_recibe = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_RECIBE);
                         mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_RECIBE);
-                        mensajeChat.id_usuario_firebase_envia = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE_ENVIA);
+                        mensajeChat.id_usuario_firebase_envia = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE);
+                        mensajeChat.id_usuario_firebase_recibe = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE);
+
                     } else {
                         mensajeChat.imagen_conversacion = documentChange.getDocument().getString(Constants.KEY_IMAGEN);
-                        mensajeChat.nombre_usuario_conversacion = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_ENVIA);
+                        mensajeChat.nombre_usuario_envia = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_RECIBE);
+                        mensajeChat.nombre_usuario_recibe = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_ENVIA);
                         mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_ENVIA);
-                        mensajeChat.id_usuario_firebase_recibe = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE);
+                        mensajeChat.id_usuario_firebase_envia = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE);
+                        mensajeChat.id_usuario_firebase_recibe = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE);
                     }
                     mensajeChat.id_usuario_manual = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_MANUAL);
                     mensajeChat.nombre_manual_conversacion = documentChange.getDocument().getString(Constants.KEY_NOMBRE_MANUAL);
                     mensajeChat.ultimo_mensaje = documentChange.getDocument().getString(Constants.KEY_ULTIMO_MENSAJE);
                     mensajeChat.fecha_conversacion = getReadableDateTime(documentChange.getDocument().getDate(Constants.KEY_FECHA_MENSAJE));
                     conversations.add(mensajeChat);
+
+
                 }else if(documentChange.getType() == DocumentChange.Type.MODIFIED){
                     for(int i=0; i < conversations.size(); i++){
                         String senderId = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_ENVIA);
@@ -159,7 +166,7 @@ public class ConversacionesFragment extends Fragment implements ConversacionesLi
     }
 
     private String getReadableDateTime(Date date){
-        String fechaFormateada = new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
+        String fechaFormateada = new SimpleDateFormat("dd/mm/yyyy hh:mm a", Locale.getDefault()).format(date);
         return fechaFormateada;
     }
 

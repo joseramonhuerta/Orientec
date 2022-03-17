@@ -88,9 +88,9 @@ public class ChatsFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 chat.nombre_manual = manual.getNombre_manual();
                 chat.nombre_usuario_sender = manual.getNombre_tecnico();
                 chat.nombre_usuario_receiver = manual.getNombre_usuario();
-                chat.imagen = manual.getImagen_usuario();
+                chat.imagen_receiver = manual.getImagen_usuario();
                 chat.imagen_sender = manual.getImagen_tecnico();
-                chat.id_usuario_firebase = manual.getId_usuario_firebase();
+                chat.id_usuario_firebase_receiver = manual.getId_usuario_firebase();
                 chat.id_usuario_firebase_sender = manual.getId_usuario_firebase_sender();
 
                 Intent intencion = new Intent(mContext, ChatSoporte.class);
