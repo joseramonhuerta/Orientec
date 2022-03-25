@@ -1,4 +1,4 @@
-package com.servfix.manualesapp.adapters;
+ package com.servfix.manualesapp.adapters;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
