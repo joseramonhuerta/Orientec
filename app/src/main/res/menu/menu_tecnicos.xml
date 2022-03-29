@@ -5,7 +5,9 @@
         android:title="Chats"
         android:icon="@drawable/miscursos_selector"/>
 
-
+    <item android:id="@+id/menu_cursostecnico"
+        android:title="Cursos"
+        android:icon="@drawable/catalogo_selector"/>
 
     <item android:id="@+id/menu_perfil"
         android:title="Mi Perfil"

@@ -18,6 +18,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.fragments.ChatsFragment;
 import com.servfix.manualesapp.fragments.ConversacionesFragment;
+import com.servfix.manualesapp.fragments.CursosTecnicoFragment;
 import com.servfix.manualesapp.fragments.PerfilFragment;
 import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
@@ -43,11 +44,11 @@ public class MenuTecnicos extends BaseActivity {
                 if(item.getItemId() == R.id.menu_chats & itemSelected != item.getItemId()){
                     showSeletedFragment(new ConversacionesFragment(), "ConversacionesFragment", item.getItemId());
                 }
-                /*
-                if(item.getItemId() == R.id.menu_carrito & itemSelected != item.getItemId()){
-                    showSeletedFragment(new CarritoFragment(), "CarritoFragment", item.getItemId());
+
+                if(item.getItemId() == R.id.menu_cursostecnico & itemSelected != item.getItemId()){
+                    showSeletedFragment(new CursosTecnicoFragment(), "CursosTecnicoFragment", item.getItemId());
                 }
-                */
+
                 if(item.getItemId() == R.id.menu_perfil & itemSelected != item.getItemId()){
                     showSeletedFragment(new PerfilFragment(), "PerfilFragment", item.getItemId());
                 }

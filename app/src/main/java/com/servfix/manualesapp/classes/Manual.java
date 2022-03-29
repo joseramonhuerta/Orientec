@@ -7,6 +7,7 @@ public class Manual implements Serializable {
     int id_usuario_manual;
     int id_usuario;
     int id_usuario_tecnico;
+    int id_categoria;
     String nombre_manual;
     String descripcion_manual;
     String paginas;
@@ -22,6 +23,7 @@ public class Manual implements Serializable {
     String imagen_usuario;
     String id_usuario_firebase;
     String id_usuario_firebase_sender;
+    String nombre_categoria;
 
     public double getPrecio() {
         return precio;
@@ -171,5 +173,21 @@ public class Manual implements Serializable {
 
     public void setId_usuario_firebase_sender(String id_usuario_firebase_sender) {
         this.id_usuario_firebase_sender = id_usuario_firebase_sender;
+    }
+
+    public int getId_categoria() {
+        return id_categoria;
+    }
+
+    public void setId_categoria(int id_categoria) {
+        this.id_categoria = id_categoria;
+    }
+
+    public String getNombre_categoria() {
+        return nombre_categoria;
+    }
+
+    public void setNombre_categoria(String nombre_categoria) {
+        this.nombre_categoria = nombre_categoria;
     }
 }
