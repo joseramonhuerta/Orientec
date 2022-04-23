@@ -37,6 +37,7 @@ import org.json.JSONObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.lang.Double.parseDouble;
 import static java.lang.Integer.parseInt;
 
 public class InicioSesion extends AppCompatActivity implements Response.Listener<JSONObject>, Response.ErrorListener{
@@ -92,6 +93,8 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
             usuario.setCelular(preferenceManager.getString(Constants.KEY_CELULAR));
             usuario.setTipo_usuario(preferenceManager.getInt(Constants.KEY_TIPO_USUARIO));
             usuario.setImagen(preferenceManager.getString(Constants.KEY_IMAGEN));
+            usuario.setConocimientos_tecnicos(preferenceManager.getString(Constants.KEY_CONOCIMIENTOS_TECNICOS));
+            usuario.setPassword(preferenceManager.getString(Constants.KEY_PASSWORD));
 
             GlobalVariables variablesGlobales = new GlobalVariables();
             variablesGlobales.id_usuario = usuario.getId_usuario();
@@ -103,6 +106,7 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
             variablesGlobales.tipo_usuario = usuario.getTipo_usuario();
             variablesGlobales.id_usuario_firebase = usuario.getId_usuario_firebase();
             variablesGlobales.imagen = usuario.getImagen();
+            variablesGlobales.conocimientos_tecnicos = usuario.getConocimientos_tecnicos();
 
             tipo_usuario = usuario.getTipo_usuario();
 
@@ -212,6 +216,10 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
             usuario.setTipo_usuario(parseInt(jsonObject.optString("tipo_usuario")));
             usuario.setId_usuario_firebase(jsonObject.optString("id_usuario_firebase"));
             usuario.setImagen(jsonObject.optString("imagen"));
+            usuario.setConocimientos_tecnicos(jsonObject.optString("conocimientos_tecnicos"));
+            usuario.setPassword(jsonObject.optString("password"));
+            usuario.setBeneficiario(jsonObject.optString("beneficiario"));
+            usuario.setCuenta_bancaria(jsonObject.optString("cuenta_bancaria"));
 
             preferenceManager.putBoolean(Constants.KEY_LOGEADO, true);
             preferenceManager.putString(Constants.KEY_USUARIO, txtUsuario.getEditText().getText().toString());
@@ -226,6 +234,9 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
             preferenceManager.putInt(Constants.KEY_TIPO_USUARIO, usuario.getTipo_usuario());
             preferenceManager.putString(Constants.KEY_ID_USUARIO_FIREBASE, usuario.getId_usuario_firebase());
             preferenceManager.putString(Constants.KEY_IMAGEN, usuario.getImagen());
+            preferenceManager.putString(Constants.KEY_CONOCIMIENTOS_TECNICOS, usuario.getConocimientos_tecnicos());
+            preferenceManager.putString(Constants.KEY_BENEFICIARIO, usuario.getBeneficiario());
+            preferenceManager.putString(Constants.KEY_CUENTA_BANCARIA, usuario.getCuenta_bancaria());
 
             GlobalVariables variablesGlobales = new GlobalVariables();
             variablesGlobales.id_usuario = usuario.getId_usuario();
@@ -237,6 +248,9 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
             variablesGlobales.tipo_usuario = usuario.getTipo_usuario();
             variablesGlobales.id_usuario_firebase = usuario.getId_usuario_firebase();
             variablesGlobales.imagen = usuario.getImagen();
+            variablesGlobales.conocimientos_tecnicos = usuario.getConocimientos_tecnicos();
+            variablesGlobales.beneficiario = usuario.getBeneficiario();
+            variablesGlobales.cuenta_bancaria = usuario.getCuenta_bancaria();
 
             tipo_usuario = usuario.getTipo_usuario();
 

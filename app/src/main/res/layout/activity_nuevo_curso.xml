@@ -47,7 +47,7 @@
                         android:layout_marginLeft="10dp"
                         android:text="Nuevo curso"
                         android:textColor="#fff"
-                        android:textSize="30dp"
+                        android:textSize="28dp"
                         android:textStyle="bold"
                         />
 
@@ -179,6 +179,7 @@
 
                                 <ImageView
                                     android:id="@+id/ivImagenCursoTecnicoNuevo"
+                                    android:layout_marginTop="5dp"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"
                                     android:adjustViewBounds="true"
@@ -245,6 +246,14 @@
                                 </com.google.android.material.textfield.TextInputLayout>
 
                             </LinearLayout>
+
+                            <CheckBox
+                                android:id="@+id/checkGratuito"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:textColor="@color/secondary_text"
+                                android:text="Es gratuito"/>
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -363,7 +372,11 @@
                                         android:inputType="textShortMessage" />
 
                                 </com.google.android.material.textfield.TextInputLayout>
-
+                                <TextView
+                                    android:layout_marginTop="1dp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Ejemplo: https://player.vimeo.com/video/681925414/config" />
                             </LinearLayout>
 
                         </LinearLayout>

@@ -20,6 +20,9 @@ public class Constants {
     public static final String KEY_ID_USUARIO_FIREBASE = "id_usuario_firebase";
     public static final String KEY_IMAGEN = "imagen";
     public static final String KEY_FCM_TOKEN = "fcmToken";
+    public static final String KEY_CONOCIMIENTOS_TECNICOS = "conocimientos_tecnicos";
+    public static final String KEY_BENEFICIARIO = "beneficiario";
+    public static final String KEY_CUENTA_BANCARIA = "cuenta_bancaria";
     //Chats
     public static final String KEY_CHATS= "chats";
     public static final String KEY_ID_USUARIO_ENVIA = "id_usuario_envia";

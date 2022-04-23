@@ -5,14 +5,16 @@
     android:layout_height="match_parent"
     android:background="#fff"
     app:cardBackgroundColor="#fff"
-
+    app:cardCornerRadius="10dp"
+    android:layout_margin="10dp"
+    android:elevation="3dp"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="0dp">
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/txtTituloCurso"
@@ -49,6 +51,32 @@
             android:textColor="#000000"
             android:textSize="10sp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/rtCalificacionCurso"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/star"></ImageView>
+
+
+            <TextView
+                android:id="@+id/txtCalificacionCurso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="0.0"
+                android:textColor="@color/greyblack"
+                android:textSize="20sp" />
+
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/txtPaginasCurso"
@@ -63,13 +91,27 @@
         <TextView
             android:id="@+id/txtPrecioCurso"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="$ 100.00"
             android:textColor="#0071b6"
             android:textStyle="bold"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtGratuitoCurso"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/esquinas_redondeadas"
+            android:text="Gratuito"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:visibility="gone"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"

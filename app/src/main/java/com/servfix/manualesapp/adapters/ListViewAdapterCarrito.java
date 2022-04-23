@@ -27,6 +27,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -106,7 +107,7 @@ public class ListViewAdapterCarrito extends BaseAdapter
         }
 
         viewItem.txtNombre_manual.setText(String.valueOf(TempCarritoList.get(position).getNombre_manual()));
-        viewItem.txtPrecio_manual.setText("$ " + String.valueOf(TempCarritoList.get(position).getPrecio()));
+        viewItem.txtPrecio_manual.setText("$ " + getPrecioFormatoMoneda(TempCarritoList.get(position).getPrecio()));
         Picasso.get().load(TempCarritoList.get(position).getPortada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivImagenManual);
@@ -251,6 +252,13 @@ public class ListViewAdapterCarrito extends BaseAdapter
             sDialogo.show();
 
         }
+    }
+
+    public String getPrecioFormatoMoneda(double precio){
+        String precioFormateado = "";
+        DecimalFormat form = new DecimalFormat("0.00");
+        precioFormateado = String.valueOf(form.format(precio));
+        return precioFormateado;
     }
 
 }

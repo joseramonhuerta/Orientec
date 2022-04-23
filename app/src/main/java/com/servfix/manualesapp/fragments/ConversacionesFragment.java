@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,6 +57,8 @@ public class ConversacionesFragment extends Fragment implements ConversacionesLi
     private PreferenceManager preferenceManager;
     private FirebaseFirestore database;
     private String conversacionId = null;
+    ProgressBar progressBar;
+    TextView txtSinChats;
     RecyclerView listView;
     SweetAlertDialog pDialogo;
 
@@ -65,6 +69,8 @@ public class ConversacionesFragment extends Fragment implements ConversacionesLi
 
         listView = (RecyclerView) view.findViewById(R.id.listviewConversacion);
         preferenceManager = new PreferenceManager(getContext());
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBarChatConversations);
+        txtSinChats = (TextView) view.findViewById(R.id.txtSinChats);
         init();
         //getToken();
         //setListeners();
@@ -96,6 +102,7 @@ public class ConversacionesFragment extends Fragment implements ConversacionesLi
         if(error != null){
             return;
         }
+        progressBar.setVisibility(View.GONE);
         if(value != null){
             for(DocumentChange documentChange : value.getDocumentChanges()){
                 if(documentChange.getType() == DocumentChange.Type.ADDED) {
@@ -139,10 +146,16 @@ public class ConversacionesFragment extends Fragment implements ConversacionesLi
                     }
                 }
             }
+
+            if(conversations.size() > 0){
+                txtSinChats.setVisibility(View.GONE);
+            }else{
+                txtSinChats.setVisibility(View.VISIBLE);
+            }
+
             Collections.sort(conversations, (obj1, obj2) -> obj2.fecha_conversacion.compareTo(obj1.fecha_conversacion));
             conversationsAdapter.notifyDataSetChanged();
             listView.smoothScrollToPosition(0);
-
         }
     };
 

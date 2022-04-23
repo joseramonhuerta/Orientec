@@ -2,6 +2,9 @@ package com.servfix.manualesapp.adapters;
 
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +48,16 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         //holder.getPersonImageView().setImageResource(R.drawable.selector_tecnicos);
         //set image with picasso.
         //permission required : android.permission.INTERNET
-        Picasso.get()
-                .load(categoria.getIcono())
-                .into(holder.getPersonImageView());
+        if(categoria.getId_categoria() == 0){
+            Picasso.get()
+                    .load(categoria.getIcono())
+                    .into(holder.getPersonImageView());
+        }else{
+            holder.getPersonImageView().setImageBitmap(getConversionImage(categoria.getImagen_categoria()));
+        }
+
+
+
         /*
         if (!selected.contains(position)){
             holder.getPersonImageView().setImageResource(R.drawable.tecnic);
@@ -60,6 +70,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
 
 
+    }
+
+    private Bitmap getConversionImage(String encodedImage){
+        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     @Override

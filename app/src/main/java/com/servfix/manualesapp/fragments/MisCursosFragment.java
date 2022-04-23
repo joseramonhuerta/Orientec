@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -48,7 +49,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     Context mContext;
     ImageView btnMisCursosCarrito;
-
+    TextView txtSinManuales;
     ListView listView;
     static View mView;
     androidx.appcompat.widget.Toolbar myToolbar;
@@ -73,7 +74,7 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                 a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mContext = getActivity().getApplicationContext();
-
+        txtSinManuales = (TextView) view.findViewById(R.id.txtSinManuales);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.srlContainerMiscursos);
         listView = (ListView) view.findViewById(R.id.listviewMisCursos);
         btnMisCursosCarrito =  (ImageView) view.findViewById(R.id.btnMisCursosCarrito);
@@ -112,6 +113,7 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                     GlobalVariables gv = new GlobalVariables();
                     ClaseChat chat = new ClaseChat();
 
+                    chat.id_manual = manual.getId_manual();
                     chat.id_usuario_manual = manual.getId_usuario_manual();
                     chat.id_usuario_sender = manual.getId_usuario();
                     chat.id_usuario_receiver = manual.getId_usuario_tecnico();
@@ -122,6 +124,7 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                     chat.imagen_sender = manual.getImagen_usuario();
                     chat.id_usuario_firebase_receiver = manual.getId_usuario_firebase();
                     chat.id_usuario_firebase_sender = manual.getId_usuario_firebase_sender();
+                    chat.calificacion = manual.getCalificacion();
                     //chat.setToken();
 
 
@@ -136,7 +139,7 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
             }
         });
 
-        loadMisCursos(mView);
+        //loadMisCursos(mView);
         return view;
     }
 
@@ -256,6 +259,7 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                             manual.setImagen_usuario(jsonObject.getString("imagen_sender"));
                             manual.setId_usuario_firebase(jsonObject.getString("id_usuario_firebase"));
                             manual.setId_usuario_firebase_sender(jsonObject.getString("id_usuario_firebase_sender"));
+                            manual.setCalificacion(Double.parseDouble(jsonObject.getString("calificacion")));
 
                             manualesList.add(manual);
                         }
@@ -275,7 +279,11 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
         protected void onPostExecute(Void result)
         {
             final ListViewAdapterManuales adapter = new ListViewAdapterManuales(manualesList, context);
-
+            if(manualesList.size() > 0){
+                txtSinManuales.setVisibility(View.GONE);
+            }else{
+                txtSinManuales.setVisibility(View.VISIBLE);
+            }
             // Setting up all data into ListView.
             listView.setAdapter(adapter);
             swipeContainer.setRefreshing(false);
@@ -284,6 +292,12 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
 
 
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadMisCursos(mView);
     }
 
     @Override

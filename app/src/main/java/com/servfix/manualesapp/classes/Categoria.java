@@ -4,6 +4,7 @@ public class Categoria {
     int id_categoria;
     String nombre_categoria;
     String icono;
+    String imagen_categoria;
 
     public int getId_categoria() {
         return id_categoria;
@@ -27,5 +28,13 @@ public class Categoria {
 
     public void setIcono(String icono) {
         this.icono = icono;
+    }
+
+    public String getImagen_categoria() {
+        return imagen_categoria;
+    }
+
+    public void setImagen_categoria(String imagen_categoria) {
+        this.imagen_categoria = imagen_categoria;
     }
 }

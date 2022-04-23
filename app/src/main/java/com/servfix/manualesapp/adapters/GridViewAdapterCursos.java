@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
@@ -19,6 +20,7 @@ import com.servfix.manualesapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class GridViewAdapterCursos extends BaseAdapter {
@@ -81,8 +83,9 @@ public class GridViewAdapterCursos extends BaseAdapter {
             viewItem.txtPaginasCurso = (TextView)convertView.findViewById(R.id.txtPaginasCurso);
             viewItem.txtDescripcionCurso = (TextView)convertView.findViewById(R.id.txtDescripcionCurso);
             viewItem.txtPrecioCurso = (TextView)convertView.findViewById(R.id.txtPrecioCurso);
+            viewItem.txtGratuitoCurso = (TextView)convertView.findViewById(R.id.txtGratuitoCurso);
             viewItem.btnComprarCurso = (Button)convertView.findViewById(R.id.btnComprarCurso);
-
+            viewItem.txtCalificacion = (TextView)convertView.findViewById(R.id.txtCalificacionCurso);
 
             convertView.setTag(viewItem);
         }
@@ -94,8 +97,15 @@ public class GridViewAdapterCursos extends BaseAdapter {
         viewItem.txtTituloCurso.setText(manualesArray.get(position).getNombre_manual());
         viewItem.txtPaginasCurso.setText(manualesArray.get(position).getPaginas());
         viewItem.txtDescripcionCurso.setText(manualesArray.get(position).getDescripcion_manual());
-        viewItem.txtPrecioCurso.setText("$ " + String.valueOf(manualesArray.get(position).getPrecio()));
+        if(manualesArray.get(position).getEsgratuito() == 1){
+            viewItem.txtPrecioCurso.setVisibility(View.GONE);
+            viewItem.txtGratuitoCurso.setVisibility(View.VISIBLE);
+        }else{
+            viewItem.txtPrecioCurso.setText("$ " + getPrecioFormatoMoneda(manualesArray.get(position).getPrecio()));
+        }
+
         viewItem.ivImagenCurso.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        viewItem.txtCalificacion.setText(String.valueOf(manualesArray.get(position).getCalificacion()));
         //viewItem.ivImagenPagina.setLayoutParams(new GridView.LayoutParams(340, 350));
 
         viewItem.btnComprarCurso.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +115,7 @@ public class GridViewAdapterCursos extends BaseAdapter {
 
                 Intent intencion = new Intent(mContext, DetalleManual.class);
                 intencion.putExtra("manual", (Serializable)manual);
+                intencion.putExtra("perfilUsuario", 0);
                 intencion.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 mContext.startActivity(intencion);
 
@@ -120,6 +131,13 @@ public class GridViewAdapterCursos extends BaseAdapter {
 
 
     }
+
+    public String getPrecioFormatoMoneda(double precio){
+        String precioFormateado = "";
+        DecimalFormat form = new DecimalFormat("0.00");
+        precioFormateado = String.valueOf(form.format(precio));
+        return precioFormateado;
+    }
 }
 
 class ViewItemCurso
@@ -128,7 +146,8 @@ class ViewItemCurso
     TextView txtDescripcionCurso;
     TextView txtPaginasCurso;
     TextView txtPrecioCurso;
-
+    TextView txtGratuitoCurso;
+    TextView txtCalificacion;
     ImageView ivImagenCurso;
 
     Button btnComprarCurso;

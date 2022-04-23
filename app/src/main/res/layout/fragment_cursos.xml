@@ -95,7 +95,7 @@
 
                 <androidx.cardview.widget.CardView
                     app:cardCornerRadius="6dp"
-                    android:layout_margin="16dp"
+                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -123,7 +123,8 @@
                     android:id="@+id/ivBanner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
                      />
 
                 <com.servfix.manualesapp.GridViewScrollable
@@ -134,10 +135,11 @@
                     android:background="#dbdcdb"
                     android:columnWidth="90dp"
                     android:gravity="center"
-                    android:horizontalSpacing="1dp"
+                    android:horizontalSpacing="10dp"
                     android:numColumns="2"
+                    android:layout_margin="10dp"
                     android:stretchMode="columnWidth"
-                    android:verticalSpacing="1dp" />
+                    android:verticalSpacing="10dp" />
 
             </LinearLayout>
         </ScrollView>

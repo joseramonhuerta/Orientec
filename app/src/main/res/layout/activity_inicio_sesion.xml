@@ -26,15 +26,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:transitionName="logo_text"
+            android:layout_gravity="center_horizontal"
             android:fontFamily="@font/bungee"
             android:text="Bienvenido"
-            android:textColor="#000"
+            android:textColor="@color/greyblack"
             android:textSize="40sp" />
 
         <TextView
             android:id="@+id/txtSesion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:fontFamily="@font/antic"
             android:text="Inicie Sesión para continuar"
             android:textSize="18sp"
@@ -68,6 +70,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/txtPassword"
                 app:passwordToggleEnabled="true"
+                android:layout_marginTop="20dp"
                 android:hint="Contraseña"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 >
@@ -85,9 +88,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Iniciar Sesión"
-                android:background="#000"
+                android:background="@color/colorPrimaryDark"
                 android:textColor="#fff"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/btnIniciarSesion"
                 />
@@ -99,7 +102,7 @@
                 android:text="Registrarse"
                 android:background="#fff"
                 android:elevation="0dp"
-                android:textColor="#000"
+                android:textColor="@color/secondary_text"
                 android:layout_margin="5dp"
                 android:id="@+id/btnRegistrarse"
 

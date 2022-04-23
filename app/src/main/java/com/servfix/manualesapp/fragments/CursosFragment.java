@@ -141,7 +141,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
         loadCarrucel(mView);
         loadBanner(mView);
-        loadCursos(mView);
+        //loadCursos(mView);
         return view;
     }
 
@@ -171,7 +171,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
         GlobalVariables variablesGlobales = new GlobalVariables();
 
-        HTTP_URL = variablesGlobales.URLServicio + "obtenermanuales.php?filtro_tipo="+filtro+"&busqueda="+txtBusquedaCursos.getText().toString() + "&filtro_categoria=" + filtro_categoria;
+        HTTP_URL = variablesGlobales.URLServicio + "obtenermanuales.php?filtro_tipo="+filtro+"&busqueda="+txtBusquedaCursos.getText().toString() + "&filtro_categoria=" + filtro_categoria + "&id_usuario=" + String.valueOf(variablesGlobales.id_usuario);
         // Creating StringRequest and set the JSON server URL in here.
         StringRequest stringRequest = new StringRequest(HTTP_URL,
                 new Response.Listener<String>() {
@@ -233,10 +233,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                     }
                 });
 
-        // Creating String Request Object.
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-
-        // Passing String request into RequestQueue.
         requestQueue.add(stringRequest);
     }
 
@@ -269,17 +266,12 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
                     }
                 });
-
-        // Creating String Request Object.
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
-
-        // Passing String request into RequestQueue.
         requestQueue.add(stringRequest);
     }
 
     private void seleccionarFiltro(View view){
         String[] opciones = {"Todos", "Manuales", "Videos", "Asesoria"};
-
         //0=Recibido,1=Revision,2=Cotizacion,3=Reparacion,4=Reparado,5=Entregado,6=Devolucion
         AlertDialog.Builder builder =  new AlertDialog.Builder(getContext());
         builder.setTitle("Filtro");
@@ -323,9 +315,6 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
         public Context context;
         public View view;
         public Fragment fragment;
-
-        // Defining CustomSubjectNamesList AS Array List.
-        // Creating List of Subject class.
         List<Manual> manualesList;
 
         public ParseJSonDataClass(View view) {
@@ -333,13 +322,10 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
             this.context = view.getContext();
         }
 
-        //@Override
         protected void onPreExecute() {
-
             super.onPreExecute();
         }
 
-        //@Override
         protected Void doInBackground(Void... arg0) {
 
             try {
@@ -385,7 +371,12 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
                             manual.setTipo_descripcion(jsonObject.getString("tipo_descripcion"));
-
+                            manual.setEsgratuito(Integer.parseInt(jsonObject.getString("esgratuito")));
+                            manual.setObtenido(Integer.parseInt(jsonObject.getString("obtenido")));
+                            manual.setCalificacion(Double.parseDouble(jsonObject.getString("calificacion")));
+                            manual.setNombre_tecnico(jsonObject.getString("nombre_usuario"));
+                            manual.setImagen_tecnico(jsonObject.getString("imagen_usuario"));
+                            manual.setId_usuario_tecnico(Integer.parseInt(jsonObject.getString("id_usuario_creador")));
                             manualesList.add(manual);
                         }
                     } catch (JSONException e) {
@@ -402,20 +393,10 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
         @Override
         protected void onPostExecute(Void result)
-
         {
-            // After all done loading set complete CustomSubjectNamesList with application context to ListView adapter.
-            //listImagenes = imagenesList;
-            //Fragment ff = Entregar.this;
-            //fm.beginTransaction().set
             final GridViewAdapterCursos adapter = new GridViewAdapterCursos(manualesList, context);
-
-            // Setting up all data into ListView.
             gridView.setAdapter(adapter);
-            //swipeContainer.setRefreshing(false);
             pDialogo.dismiss();
-
-
         }
     }
 
@@ -424,7 +405,6 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
         public Context context;
         public View view;
         public Fragment fragment;
-        // Creating List of Subject class.
         List<Categoria> categoriasList;
 
         public ParseJSonDataClassCategorias(View view) {
@@ -446,44 +426,32 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                 // Checking whether FinalJSonObject is not equals to null.
                 if (FinalJSonObjectCategorias != null) {
 
-                    // Creating and setting up JSON array as null.
                     JSONArray jsonArray = null;
                     try {
 
-                        // Adding JSON response object into JSON array.
                         jsonArray = new JSONArray(FinalJSonObjectCategorias);
 
-                        // Creating JSON Object.
                         JSONObject jsonObject;
 
-                        // Creating Subject class object.
                         Categoria categoria;
 
-                        // Defining CustomSubjectNamesList AS Array List.
                         categoriasList = new ArrayList<Categoria>();
-
                         categoria = new Categoria();
-
                         categoria.setId_categoria(0);
                         categoria.setNombre_categoria("Todas las categorías");
                         categoria.setIcono(GlobalVariables.URLServicio + "images/icono_todas.png");
-
                         categoriasList.add(categoria);
-
-
-
                         for (int i = 0; i < jsonArray.length(); i++) {
 
                             categoria = new Categoria();
 
                             jsonObject = jsonArray.getJSONObject(i);
 
-                            //Storing ID into subject list.
                             categoria.setId_categoria(Integer.parseInt(jsonObject.getString("id_categoria")));
                             categoria.setNombre_categoria(jsonObject.getString("nombre_categoria"));
                             categoria.setIcono(GlobalVariables.URLServicio + "images/" + jsonObject.getString("icono"));
+                            categoria.setImagen_categoria(jsonObject.getString("imagen_categoria"));
 
-                            // Adding subject list object into CustomSubjectNamesList.
                             categoriasList.add(categoria);
                         }
                     } catch (JSONException e) {
@@ -500,33 +468,17 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
         @Override
         protected void onPostExecute(Void result)
-
         {
-
-            //listViewTecnicos.setAdapter(adapter);
-
             listViewCategorias.setAdapter(new MyRecyclerViewAdapter(categoriasList, new RecyclerViewOnItemClickListener() {
 
                 @Override
                 public void onClick(View v, int position) {
-                    //Toast.makeText(OrdenesServicios.this, tecnicosList.get(position).getNombre_tecnico(), Toast.LENGTH_SHORT).show();
                     filtro_categoria = categoriasList.get(position).getId_categoria();
-
-                    //ImageView ivImagentecnico = (ImageView)v.findViewById(R.id.ivImagenTecnico);
-                    //ivImagentecnico.setImageResource(R.drawable.filtro_tecnico_selected);
                     loadCursos(mView);
-
-
-
                 }
             }, getActivity().getApplicationContext()));
-
             //Horizontal orientation.
             listViewCategorias.setLayoutManager(new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false));
-
-
-
-
         }
     }
 
@@ -535,7 +487,6 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
         public Context context;
         public View view;
         public Fragment fragment;
-        // Creating List of Subject class.
         List<SliderItem> carrucelList;
 
         public ParseJSonDataClassCarrucel(View view) {
@@ -624,12 +575,10 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
         }
     }
 
-
-
     @Override
     public void onResume(){
         super.onResume();
-        //loadCursos(mView);
+        loadCursos(mView);
     }
 
     /*

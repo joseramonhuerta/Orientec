@@ -29,5 +29,8 @@ public class GlobalVariables {
     public static String id_usuario_firebase;
     public static String fcmToken;
     public static String imagen;
+    public static String conocimientos_tecnicos;
+    public static String beneficiario;
+    public static String cuenta_bancaria;
 
 }

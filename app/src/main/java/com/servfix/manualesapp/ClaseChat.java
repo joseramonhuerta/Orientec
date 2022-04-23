@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class ClaseChat implements Serializable {
     public int id_usuario_manual;
+    public int id_manual;
     public int id_usuario_sender;
     public int id_usuario_receiver;
     public String nombre_usuario_sender;
@@ -14,6 +15,7 @@ public class ClaseChat implements Serializable {
     public String id_usuario_firebase_receiver;
     public String id_usuario_firebase_sender;
     public String token;
+    public double calificacion;
     /*
     public int getId_usuario_manual() {
         return id_usuario_manual;

@@ -46,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,6 +100,7 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
     int id_carrito_compras = 0;
     int cantidad_carrito = 0;
     int formapago = 0;
+    int esgratuito = 0;
 
     @Override
     public void formaPagoConfirmada(int tipo){
@@ -171,7 +173,7 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
         txtIDCarrito = (TextView) findViewById(R.id.txtIdCarrito);
         txtCantidadCarrito = (TextView) findViewById(R.id.txtCantidadCarrito);
 
-        txtImporteTotalCarrito.setText(String.valueOf(totalCarrito));
+        txtImporteTotalCarrito.setText("$ " + getPrecioFormatoMoneda(totalCarrito));
         txtIDCarrito.setText(String.valueOf(id_carrito_compras));
         txtCantidadCarrito.setText(String.valueOf(cantidad_carrito));
         /*
@@ -211,7 +213,9 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
                             //procesarPagoPayPal(v);
                             //procesarMercadoPago(v);
                             //pagarCarrito(v);
+
                             seleccionarFormaPago();
+
                         }
                     })
                             .setCancelButton("NO", new SweetAlertDialog.OnSweetClickListener() {
@@ -559,7 +563,7 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
 
             int id_user = variablesGlobales.id_usuario;
 
-            HTTP_URL = variablesGlobales.URLServicio + "pagarcarrito.php?id_carrito_compras=" + String.valueOf(this.id_carrito_compras) + "&id_openpay=" + id_openpay + "&referencia_openpay=" + referencia + "&formapago=" + String.valueOf(formapago);
+            HTTP_URL = variablesGlobales.URLServicio + "pagarcarrito.php?id_carrito_compras=" + String.valueOf(this.id_carrito_compras) + "&id_openpay=" + id_openpay + "&referencia_openpay=" + referencia + "&formapago=" + String.valueOf(formapago) + "&id_manual=" + String.valueOf(0) + "&id_usuario=" + String.valueOf(0);
             // Creating StringRequest and set the JSON server URL in here.
             StringRequest stringRequest = new StringRequest(HTTP_URL,
                     new Response.Listener<String>() {
@@ -594,6 +598,13 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
             e.printStackTrace();
         }
 
+    }
+
+    public String getPrecioFormatoMoneda(double precio){
+        String precioFormateado = "";
+        DecimalFormat form = new DecimalFormat("0.00");
+        precioFormateado = String.valueOf(form.format(precio));
+        return precioFormateado;
     }
 
     private class ParseJSonDataClassPagarCarrito extends AsyncTask<Void, Void, Void> {

@@ -75,6 +75,55 @@
                     android:layout_height="360dp"
                     app:srcCompat="@drawable/ic_baseline_broken_image_24" />
 
+                <LinearLayout
+                    android:id="@+id/layInfoUsuarioCurso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/input_background"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/layImagenUsuarioCurso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        >
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp">
+
+                            <com.makeramen.roundedimageview.RoundedImageView
+                                android:id="@+id/ivProfileCurso"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:background="@drawable/background_image"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_perfil"
+                                app:riv_oval="true"/>
+
+
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txtNombreUsuarioCurso"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                        android:text="Nombre usuario"
+                        android:textSize="18sp"
+                        android:textColor="@color/greyblack"
+
+                        />
+
+
+
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/txtDescripcionCursoDetalle"
                     android:layout_width="match_parent"
@@ -91,6 +140,47 @@
                     android:textColor="#0071b6"
                     android:textStyle="bold"
                     android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/txtGratuitoCursoDetalle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/esquinas_redondeadas"
+                    android:text="Gratuito"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:visibility="gone"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <RatingBar
+                        android:id="@+id/rtCalificacionCursoDetalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:numStars="5"
+                        android:isIndicator="true"
+                        android:progressTint="@color/colorPrimary"
+                        android:secondaryProgressTint="@android:color/transparent"
+                        />
+
+
+                    <TextView
+                        android:id="@+id/txtCalificacionCursoDetalle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_gravity="center_horizontal"
+                        android:text="0.0"
+                        android:textColor="@color/greyblack"
+                        android:textSize="36sp" />
+
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btnAgregarCursoDetalle"

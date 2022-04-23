@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -42,6 +43,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class CursosTecnicoFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
     Context mContext;
     ImageView btnAgregarCurso;
-
+    TextView txtSinCursos;
     ListView listView;
     static View mView;
     androidx.appcompat.widget.Toolbar myToolbar;
@@ -75,7 +77,7 @@ public class CursosTecnicoFragment extends Fragment implements SwipeRefreshLayou
             a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         mContext = getActivity().getApplicationContext();
-
+        txtSinCursos = (TextView) view.findViewById(R.id.txtSinCursos);
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.srlContainerCursosTecnico);
         listView = (ListView) view.findViewById(R.id.listviewCursosTecnico);
         btnAgregarCurso =  (ImageView) view.findViewById(R.id.btnAgregarCursoTecnico);
@@ -108,7 +110,7 @@ public class CursosTecnicoFragment extends Fragment implements SwipeRefreshLayou
             }
         });
 
-        loadMisCursos(mView);
+        //loadMisCursos(mView);
         return view;
     }
 
@@ -221,6 +223,9 @@ public class CursosTecnicoFragment extends Fragment implements SwipeRefreshLayou
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
                             manual.setTipo_descripcion(jsonObject.getString("tipo_descripcion"));
                             manual.setUrl(jsonObject.getString("url"));
+                            manual.setId_categoria(Integer.parseInt(jsonObject.getString("id_categoria")));
+                            manual.setEsgratuito(Integer.parseInt(jsonObject.getString("esgratuito")));
+                            manual.setNombre_categoria(jsonObject.getString("nombre_categoria"));
 
                             manualesList.add(manual);
                         }
@@ -241,7 +246,12 @@ public class CursosTecnicoFragment extends Fragment implements SwipeRefreshLayou
         {
             final ListViewAdapterManualesTecnico adapter = new ListViewAdapterManualesTecnico(manualesList, context);
 
-            // Setting up all data into ListView.
+            if(manualesList.size() > 0){
+                txtSinCursos.setVisibility(View.GONE);
+            }else{
+                txtSinCursos.setVisibility(View.VISIBLE);
+            }
+
             listView.setAdapter(adapter);
             swipeContainer.setRefreshing(false);
             pDialogo.dismiss();
@@ -249,6 +259,12 @@ public class CursosTecnicoFragment extends Fragment implements SwipeRefreshLayou
 
 
         }
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        loadMisCursos(mView);
     }
 
     @Override

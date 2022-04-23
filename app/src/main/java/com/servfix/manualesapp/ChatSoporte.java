@@ -1,6 +1,7 @@
 package com.servfix.manualesapp;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.pm.ActivityInfo;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.servfix.manualesapp.activities.BaseActivity;
 import com.servfix.manualesapp.databinding.ActivityChatSoporteBinding;
+import com.servfix.manualesapp.fragments.CuadroDialogoRankin;
 import com.servfix.manualesapp.interfaces.ApiService;
 import com.servfix.manualesapp.network.ApiClient;
 import com.servfix.manualesapp.utilities.Constants;
@@ -172,6 +174,10 @@ public class ChatSoporte extends BaseActivity {
         binding.txtTituloCursoChat.setText(manual.nombre_manual);
         binding.txtUsuarioChat.setText(manual.nombre_usuario_receiver);
         binding.ivProfileChat.setImageBitmap(getBitmapFromEncodedString(manual.imagen_receiver));
+
+        if(!(manual.calificacion > 0)){
+            calificar();
+        }
     }
 
     private void setListeners(){
@@ -236,7 +242,8 @@ public class ChatSoporte extends BaseActivity {
     }
 
     private final EventListener<QuerySnapshot> eventListener = (value, error)->{
-      if(error != null){
+        binding.progressBarChat.setVisibility(View.GONE);
+        if(error != null){
           return;
       }
       if(value != null){
@@ -260,7 +267,7 @@ public class ChatSoporte extends BaseActivity {
                 chatAdapter.notifyItemRangeInserted(chatMessages.size(), chatMessages.size());
                 binding.listviewChat.smoothScrollToPosition(chatMessages.size() - 1);
            }
-           binding.progressBarChat.setVisibility(View.GONE);
+
            if(conversationId == null){
                checkForConversion();
            }
@@ -348,5 +355,13 @@ public class ChatSoporte extends BaseActivity {
     protected void onResume() {
         super.onResume();
         listenAvailabilityReceiver();
+    }
+
+    private void calificar(){
+        FragmentManager fm = getSupportFragmentManager();
+
+        CuadroDialogoRankin editNameDialogFragment = new CuadroDialogoRankin(getApplicationContext(), manual.id_usuario_manual, manual.id_manual);
+
+        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }

@@ -1,6 +1,7 @@
 package com.servfix.manualesapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.servfix.manualesapp.classes.Manual;
+import com.servfix.manualesapp.fragments.CuadroDialogoRankin;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 
 public class DetalleManualPdf extends AppCompatActivity {
@@ -60,6 +62,17 @@ public class DetalleManualPdf extends AppCompatActivity {
         String URLPDF = URL + "manuales/" + String.valueOf(id_manual) + "/" + nombrePdf;
         new RecibirPDFStream(pdfView, progressBar).execute(URLPDF);
 
+        if(!(manual.getCalificacion() > 0)){
+            calificar();
+        }
 
+    }
+
+    private void calificar(){
+        FragmentManager fm = getSupportFragmentManager();
+
+        CuadroDialogoRankin editNameDialogFragment = new CuadroDialogoRankin(getApplicationContext(), manual.getId_usuario_manual(), manual.getId_manual());
+
+        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }

@@ -52,8 +52,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Registrarse extends AppCompatActivity {
-    TextInputLayout txtNombre, txtUsuario,txtPassword, txtPaterno, txtMaterno, txtCelular, txtCodigoRegistro;
-    CheckBox chkTecnico;
+    TextInputLayout txtNombre, txtUsuario,txtPassword, txtPaterno, txtMaterno, txtCelular;
     Button btnRegistro, btnBackLogin;
     ImageView logo,ivProfile;
     TextView txtLogoName, txtAgregarImagen;
@@ -82,7 +81,6 @@ public class Registrarse extends AppCompatActivity {
         txtUsuario = (TextInputLayout) findViewById(R.id.txtUsuarioRegistro);
         txtPaterno = (TextInputLayout) findViewById(R.id.txtPaternoRegistro);
         txtMaterno = (TextInputLayout) findViewById(R.id.txtMaternoRegistro);
-        txtCodigoRegistro = (TextInputLayout) findViewById(R.id.txtCodigoRegistro);
         txtCelular = (TextInputLayout) findViewById(R.id.txtCelularRegistro);
         txtPassword = (TextInputLayout) findViewById(R.id.txtPasswordRegistro);
         btnRegistro = (Button) findViewById(R.id.btnRegistro);
@@ -92,12 +90,12 @@ public class Registrarse extends AppCompatActivity {
         txtLogoName = (TextView) findViewById(R.id.txtLogoNameRegistro);
         txtAgregarImagen = (TextView) findViewById(R.id.layAgregarImagen);
         layoutImage = (FrameLayout) findViewById(R.id.layoutImage);
-        chkTecnico = (CheckBox) findViewById(R.id.chkTecnico);
+
 
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validarUsuario() | !validaNombre() | !validaPassword() | !validaPaterno() | !validaMaterno() | !validaCelular() | !validaImagen()  | !validaCodigoRegistro())
+                if(!validarUsuario() | !validaNombre() | !validaPassword() | !validaPaterno() | !validaMaterno() | !validaCelular() | !validaImagen())
                     return;
 
                 registrar(mView);
@@ -110,18 +108,6 @@ public class Registrarse extends AppCompatActivity {
                 Intent intent = new Intent(Registrarse.this, InicioSesion.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-            }
-        });
-
-        chkTecnico.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(chkTecnico.isChecked()){
-                    txtCodigoRegistro.setVisibility(View.VISIBLE);
-                }else{
-                    txtCodigoRegistro.setVisibility(View.GONE);
-                    txtCodigoRegistro.setError(null);
-                }
             }
         });
 
@@ -168,6 +154,8 @@ public class Registrarse extends AppCompatActivity {
 
     );
 
+
+
     private boolean validaPassword() {
         boolean valido = false;
 
@@ -200,25 +188,8 @@ public class Registrarse extends AppCompatActivity {
         return valido;
     }
 
-    private boolean validaCodigoRegistro(){
-        boolean valido = false;
-
-        String val = txtCodigoRegistro.getEditText().getText().toString();
-
-        if(val.isEmpty() && chkTecnico.isChecked()){
-            txtCodigoRegistro.setError("Introduzca el codigo de registro");
-            valido = false;
-        }else{
-            txtCodigoRegistro.setError(null);
-            valido = true;
-        }
-
-        return valido;
-    }
-
     private boolean validaImagen(){
         boolean valido = false;
-
         String val = encodedImage;
 
         if(val.isEmpty()){
@@ -232,7 +203,6 @@ public class Registrarse extends AppCompatActivity {
 
     private boolean validaPaterno(){
         boolean valido = false;
-
         String val = txtPaterno.getEditText().getText().toString();
 
         if(val.isEmpty()){
@@ -331,13 +301,9 @@ public class Registrarse extends AppCompatActivity {
                 String paterno = txtPaterno.getEditText().getText().toString();
                 String materno = txtMaterno.getEditText().getText().toString();
                 String celular = txtCelular.getEditText().getText().toString();
-                String codigo_registro = txtCodigoRegistro.getEditText().getText().toString();
                 String imagen = null;
 
-                if(chkTecnico.isChecked())
-                    tipo = "2";
-                else
-                    tipo = "1";
+                tipo = "1";
 
                 Map<String, String> parametros = new HashMap<>();
 
@@ -348,8 +314,6 @@ public class Registrarse extends AppCompatActivity {
                 parametros.put("materno", materno);
                 parametros.put("celular", celular);
                 parametros.put("tipo_usuario", tipo);
-                parametros.put("codigo_registro", codigo_registro);
-
 
                 if(encodedImage != null){
                     parametros.put("imagen", encodedImage);

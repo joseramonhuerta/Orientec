@@ -13,6 +13,7 @@ import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.classes.Manual;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ListViewAdapterManualesTecnico extends BaseAdapter
@@ -84,7 +85,7 @@ public class ListViewAdapterManualesTecnico extends BaseAdapter
         viewItem.txtNombre_manual.setText(String.valueOf(TempManualList.get(position).getNombre_manual()));
         viewItem.txtDescripcion_manual.setText(String.valueOf(TempManualList.get(position).getDescripcion_manual()));
         viewItem.txtNum_paginas.setText(TempManualList.get(position).getPaginas());
-        String precioString = "$ " + String.valueOf(TempManualList.get(position).getPrecio());
+        String precioString = "$ " + getPrecioFormatoMoneda(TempManualList.get(position).getPrecio());
         viewItem.txtPrecio.setText(precioString);
         Picasso.get().load(TempManualList.get(position).getPortada())
                 .error(R.drawable.ic_baseline_broken_image_24)
@@ -93,7 +94,12 @@ public class ListViewAdapterManualesTecnico extends BaseAdapter
         return convertView;
     }
 
-
+    public String getPrecioFormatoMoneda(double precio){
+        String precioFormateado = "";
+        DecimalFormat form = new DecimalFormat("0.00");
+        precioFormateado = String.valueOf(form.format(precio));
+        return precioFormateado;
+    }
 
 }
 

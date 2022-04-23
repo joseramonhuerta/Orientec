@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.ConversacionesFragment">
-
+<!--
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -32,4 +32,28 @@
             />
     </LinearLayout>
 
+
+    <TextView
+        android:id="@+id/txtSinChats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No hay chats"
+        android:textStyle="bold"
+        android:textSize="36dp"
+        android:textColor="@color/secondary_text"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressBarChatConversations"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="visible"
+
+        />
+-->
 </RelativeLayout>

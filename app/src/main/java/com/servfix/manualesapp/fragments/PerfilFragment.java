@@ -2,12 +2,14 @@ package com.servfix.manualesapp.fragments;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
@@ -17,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.servfix.manualesapp.PerfilUsuario;
+import com.servfix.manualesapp.activities.MiBilletera;
+import com.servfix.manualesapp.activities.MisChats;
+import com.servfix.manualesapp.activities.MisCursosTecnico;
+import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.classes.User;
@@ -43,11 +51,15 @@ public class PerfilFragment extends Fragment {
     int id_usuario;
     GlobalVariables vg;
 
-    TextView txtNombreUsuario, txtPaterno, txtMaterno, txtCelular, txtEmail;
+    TextView txtNombreUsuario, txtPaterno, txtCelular, txtEmail;
     LinearLayout btnSalir;
     FrameLayout layoutImage;
     ImageView ivProfile;
-
+    CardView layEditarPerfil;
+    CardView layCursos;
+    CardView layChats;
+    CardView layBilletera;
+    ProgressBar progressBarMiCuenta;
     View mView;
 
     String encodedImage;
@@ -70,13 +82,17 @@ public class PerfilFragment extends Fragment {
         mView = view;
         Activity a = getActivity();
         if(a != null) a.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        txtNombreUsuario = (TextView) view.findViewById(R.id.txtUsuarioPerfil);
-        txtPaterno = (TextView) view.findViewById(R.id.txtPaternoPerfil);
-        txtMaterno = (TextView) view.findViewById(R.id.txtMaternoPerfil);
+        txtNombreUsuario = (TextView) view.findViewById(R.id.txtNombreUsuarioPerfil);
+        txtPaterno = (TextView) view.findViewById(R.id.txtApellidosUsuarioPerfil);
         txtEmail = (TextView) view.findViewById(R.id.txtEmailPerfil);
         txtCelular = (TextView) view.findViewById(R.id.txtCelularPerfil);
         ivProfile = (ImageView) view.findViewById(R.id.ivProfilePerfil);
         btnSalir = (LinearLayout) view.findViewById(R.id.laySalir);
+        layEditarPerfil = (CardView) view.findViewById(R.id.layEditarPerfil);
+        layCursos = (CardView) view.findViewById(R.id.layCursos);
+        layChats = (CardView) view.findViewById(R.id.layChats);
+        layBilletera = (CardView) view.findViewById(R.id.layBilletera);
+        progressBarMiCuenta = (ProgressBar) view.findViewById(R.id.progressBarMiCuenta);
 
         preferenceManager = new PreferenceManager(getContext());
 
@@ -91,11 +107,72 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        loadPerfil(view);
+        layEditarPerfil.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PerfilUsuario.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
 
+            }
+        });
+
+        layCursos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MisCursosTecnico.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+
+            }
+        });
+
+        layChats.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MisChats.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+
+            }
+        });
+
+        layBilletera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MiBilletera.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+
+            }
+        });
+
+        //loadPerfil(view);
+        setPerfilValues();
         return view;
     }
 
+    private void setPerfilValues(){
+        txtNombreUsuario.setText(preferenceManager.getString(Constants.KEY_NOMBRE_USUARIO));
+        txtPaterno.setText(preferenceManager.getString(Constants.KEY_PATERNO_USUARIO) + " " + preferenceManager.getString(Constants.KEY_MATERNO_USUARIO));
+        txtEmail.setText(preferenceManager.getString(Constants.KEY_EMAIL_USUARIO));
+        txtCelular.setText(preferenceManager.getString(Constants.KEY_CELULAR));
+
+        if(preferenceManager.getString(Constants.KEY_IMAGEN).length() > 0) {
+            byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGEN), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            ivProfile.setImageBitmap(bitmap);
+        }
+        progressBarMiCuenta.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setPerfilValues();
+    }
+
+    /*
     private void loadPerfil(View vista){
 
         GlobalVariables gv = new GlobalVariables();
@@ -207,8 +284,7 @@ public class PerfilFragment extends Fragment {
             if(this.success){
 
                 txtNombreUsuario.setText(user.getNombre());
-                txtPaterno.setText(user.getPaterno());
-                txtMaterno.setText(user.getMaterno());
+                txtPaterno.setText(user.getPaterno() + " " + user.getMaterno());
                 txtEmail.setText(user.getUsuario());
                 txtCelular.setText(user.getCelular());
 
@@ -221,7 +297,8 @@ public class PerfilFragment extends Fragment {
                 Toast.makeText(getActivity().getApplicationContext(), this.msg, Toast.LENGTH_SHORT).show();
             }
 
-
+            progressBarMiCuenta.setVisibility(View.GONE);
         }
     }
+    */
 }

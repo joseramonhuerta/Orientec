@@ -35,16 +35,17 @@
             android:id="@+id/txtLogoNameRegistro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:fontFamily="@font/bungee"
             android:text="Registro"
-            android:layout_gravity="center_horizontal"
-            android:textColor="#000"
-            android:transitionName="logo_text"
-            android:textSize="40sp" />
+            android:textColor="@color/greyblack"
+            android:textSize="40sp"
+            android:transitionName="logo_text" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:fontFamily="@font/antic"
             android:text="Registrese para iniciar sesión"
             android:transitionName="desc_text"
@@ -144,32 +145,6 @@
                         android:inputType="phone"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/chkTecnico"
-                    android:layout_marginTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Soy Tecnico"
-                    android:inputType="phone"/>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/txtCodigoRegistro"
-                    android:hint="Codigo Registro"
-                    android:visibility="gone"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    >
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"

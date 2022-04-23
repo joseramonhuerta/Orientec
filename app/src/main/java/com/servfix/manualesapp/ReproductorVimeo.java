@@ -1,6 +1,7 @@
 package com.servfix.manualesapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.TextHttpResponseHandler;
 import com.servfix.manualesapp.classes.Manual;
+import com.servfix.manualesapp.fragments.CuadroDialogoRankin;
 
 
 import org.json.JSONArray;
@@ -68,6 +70,9 @@ public class ReproductorVimeo extends AppCompatActivity implements View.OnClickL
         //Build vimeo configuration
         configVimeoClient();
 
+        if(!(manual.getCalificacion() > 0)){
+            calificar();
+        }
     } //onCreate
 
 
@@ -155,5 +160,13 @@ public class ReproductorVimeo extends AppCompatActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         player.stop();
+    }
+
+    private void calificar(){
+        FragmentManager fm = getSupportFragmentManager();
+
+        CuadroDialogoRankin editNameDialogFragment = new CuadroDialogoRankin(getApplicationContext(), manual.getId_usuario_manual(), manual.getId_manual());
+
+        editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 }

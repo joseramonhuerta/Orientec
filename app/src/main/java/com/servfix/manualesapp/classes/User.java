@@ -1,7 +1,7 @@
 package com.servfix.manualesapp.classes;
 
 public class User {
-    private String usuario,nombre,paterno,materno,celular,imagen, fcmToken, id_usuario_firebase;
+    private String usuario,nombre,paterno,materno,celular,imagen, fcmToken, id_usuario_firebase, conocimientos_tecnicos, password, beneficiario, cuenta_bancaria;
     private int  id_usuario, tipo_usuario;
 
 
@@ -87,5 +87,37 @@ public class User {
 
     public void setId_usuario_firebase(String id_usuario_firebase) {
         this.id_usuario_firebase = id_usuario_firebase;
+    }
+
+    public void setConocimientos_tecnicos(String conocimientos_tecnicos){
+        this.conocimientos_tecnicos = conocimientos_tecnicos;
+    }
+
+    public String getConocimientos_tecnicos(){
+        return conocimientos_tecnicos;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getBeneficiario() {
+        return beneficiario;
+    }
+
+    public void setBeneficiario(String beneficiario) {
+        this.beneficiario = beneficiario;
+    }
+
+    public String getCuenta_bancaria() {
+        return cuenta_bancaria;
+    }
+
+    public void setCuenta_bancaria(String cuenta_bancaria) {
+        this.cuenta_bancaria = cuenta_bancaria;
     }
 }

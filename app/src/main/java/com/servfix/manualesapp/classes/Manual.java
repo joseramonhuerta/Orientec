@@ -24,6 +24,9 @@ public class Manual implements Serializable {
     String id_usuario_firebase;
     String id_usuario_firebase_sender;
     String nombre_categoria;
+    int esgratuito;
+    int obtenido;
+    double calificacion;
 
     public double getPrecio() {
         return precio;
@@ -189,5 +192,29 @@ public class Manual implements Serializable {
 
     public void setNombre_categoria(String nombre_categoria) {
         this.nombre_categoria = nombre_categoria;
+    }
+
+    public int getEsgratuito() {
+        return esgratuito;
+    }
+
+    public void setEsgratuito(int esgratuito) {
+        this.esgratuito = esgratuito;
+    }
+
+    public int getObtenido() {
+        return obtenido;
+    }
+
+    public void setObtenido(int obtenido) {
+        this.obtenido = obtenido;
+    }
+
+    public double getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(double calificacion) {
+        this.calificacion = calificacion;
     }
 }
