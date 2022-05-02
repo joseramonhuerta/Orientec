@@ -165,7 +165,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="bottom"
                                         android:layout_marginRight="10dp"
-                                        android:text="Portada" />
+                                        android:text="Imagen Miniatura" />
 
                                     <ImageView
                                         android:id="@+id/btnCamaraCursoTecnicoNuevo"
@@ -179,6 +179,43 @@
 
                                 <ImageView
                                     android:id="@+id/ivImagenCursoTecnicoNuevo"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:adjustViewBounds="true"
+                                    android:scaleType="fitCenter" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="bottom"
+                                        android:layout_marginRight="10dp"
+                                        android:text="Imagen Detalle" />
+
+                                    <ImageView
+                                        android:id="@+id/btnCamaraCursoTecnicoNuevoFotoDetalle"
+                                        android:layout_width="50dp"
+                                        android:layout_height="50dp"
+                                        android:layout_gravity="center_vertical"
+                                        android:src="@drawable/icon_camara" />
+
+
+                                </LinearLayout>
+
+                                <ImageView
+                                    android:id="@+id/ivImagenCursoTecnicoNuevoFotoDetalle"
                                     android:layout_marginTop="5dp"
                                     android:layout_width="fill_parent"
                                     android:layout_height="wrap_content"

@@ -2,6 +2,9 @@ package com.servfix.manualesapp.adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,9 +90,11 @@ public class ListViewAdapterManualesTecnico extends BaseAdapter
         viewItem.txtNum_paginas.setText(TempManualList.get(position).getPaginas());
         String precioString = "$ " + getPrecioFormatoMoneda(TempManualList.get(position).getPrecio());
         viewItem.txtPrecio.setText(precioString);
-        Picasso.get().load(TempManualList.get(position).getPortada())
+        /*Picasso.get().load(TempManualList.get(position).getPortada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivPortada);
+        */
+        viewItem.ivPortada.setImageBitmap(getBitmapFromEncodedString(TempManualList.get(position).getPortada()));
 
         return convertView;
     }
@@ -100,6 +105,17 @@ public class ListViewAdapterManualesTecnico extends BaseAdapter
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
     }
+
+    private Bitmap getBitmapFromEncodedString(String encodedImage){
+        if(encodedImage != null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else{
+            return null;
+        }
+    }
+
+
 
 }
 

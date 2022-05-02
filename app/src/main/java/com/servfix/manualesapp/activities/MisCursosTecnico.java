@@ -28,6 +28,7 @@ import com.servfix.manualesapp.classes.Manual;
 import com.servfix.manualesapp.databinding.ActivityChatSoporteBinding;
 import com.servfix.manualesapp.databinding.ActivityMisCursosTecnicoBinding;
 import com.servfix.manualesapp.fragments.CursosTecnicoFragment;
+import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 
 import org.json.JSONArray;
@@ -60,7 +61,7 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
 
         binding.srlContainerCursosTecnico.setOnRefreshListener(this);
 
-        loadMisCursos(mView);
+        //loadMisCursos(mView);
 
         setListeners();
     }
@@ -193,8 +194,7 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
                             manual.setDescripcion_manual(jsonObject.getString("descripcion_manual"));
                             manual.setPaginas(jsonObject.getString("paginas"));
                             manual.setNombre_pdf(jsonObject.getString("nombrepdf"));
-                            String portada = URLPORTADA + "/manuales/" + jsonObject.getString("id_manual") + "/portada.jpg";
-                            manual.setPortada(portada);
+                            manual.setPortada(jsonObject.getString("imagen_miniatura"));
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
                             manual.setTipo_descripcion(jsonObject.getString("tipo_descripcion"));
@@ -202,6 +202,7 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
                             manual.setId_categoria(Integer.parseInt(jsonObject.getString("id_categoria")));
                             manual.setEsgratuito(Integer.parseInt(jsonObject.getString("esgratuito")));
                             manual.setNombre_categoria(jsonObject.getString("nombre_categoria"));
+                            /*manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));*/
 
                             manualesList.add(manual);
                         }
@@ -220,6 +221,7 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
         @Override
         protected void onPostExecute(Void result)
         {
+            pDialogo.dismiss();
             final ListViewAdapterManualesTecnico adapter = new ListViewAdapterManualesTecnico(manualesList, context);
 
             if(manualesList.size() > 0){
@@ -230,7 +232,7 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
 
             binding.listviewCursosTecnico.setAdapter(adapter);
             binding.srlContainerCursosTecnico.setRefreshing(false);
-            pDialogo.dismiss();
+
 
 
 
@@ -239,6 +241,12 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
+        loadMisCursos(mView);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadMisCursos(mView);
     }
 }

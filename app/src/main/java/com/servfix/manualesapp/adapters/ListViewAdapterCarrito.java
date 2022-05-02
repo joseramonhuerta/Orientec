@@ -2,8 +2,11 @@ package com.servfix.manualesapp.adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,9 +111,12 @@ public class ListViewAdapterCarrito extends BaseAdapter
 
         viewItem.txtNombre_manual.setText(String.valueOf(TempCarritoList.get(position).getNombre_manual()));
         viewItem.txtPrecio_manual.setText("$ " + getPrecioFormatoMoneda(TempCarritoList.get(position).getPrecio()));
-        Picasso.get().load(TempCarritoList.get(position).getPortada())
+        /*Picasso.get().load(TempCarritoList.get(position).getPortada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivImagenManual);
+        */
+
+        viewItem.ivImagenManual.setImageBitmap(getBitmapFromEncodedString(TempCarritoList.get(position).getPortada()));
 
         viewItem.btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,6 +265,15 @@ public class ListViewAdapterCarrito extends BaseAdapter
         DecimalFormat form = new DecimalFormat("0.00");
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
+    }
+
+    private Bitmap getBitmapFromEncodedString(String encodedImage){
+        if(encodedImage != null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else{
+            return null;
+        }
     }
 
 }

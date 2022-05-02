@@ -48,9 +48,10 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public class DetalleManual extends AppCompatActivity {
     int id_curso = 0;
     int id_usuario = 0;
+    int id_usuario_tecnico = 0;
     Context mContext;
     StringRequest stringRequest;
-    String FinalJSonObject;
+    String FinalJSonObject, FinalJSonObjectDetalle, FinalJSonObjectUsuario;
     String HTTP_URL;
 
     View mView;
@@ -103,7 +104,7 @@ public class DetalleManual extends AppCompatActivity {
         Intent intent = getIntent();
         manual = (Manual) intent.getExtras().getSerializable("manual");
         int perfilUsuario = intent.getExtras().getInt("perfilUsuario");
-
+        id_usuario_tecnico = manual.getId_usuario_tecnico();
         id_curso = manual.getId_manual();
         txtTituloCursoDetalle.setText(manual.getNombre_manual());
         txtDescripcionCursoDetalle.setText(manual.getDescripcion_manual());
@@ -133,12 +134,14 @@ public class DetalleManual extends AppCompatActivity {
         if(manual.getObtenido() > 0){
             btnAgregarCursoDetalle.setVisibility(View.GONE);
         }
-
+        /*
         Picasso.get().load(manual.getPortada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(ivImagenCursoDetalle);
-
-
+        */
+        //ivImagenCursoDetalle.setImageBitmap(getBitmapFromEncodedString(manual.getImagen_detalle()));
+        getImagenDetalle(mView, id_curso);
+        getImagenUsuario(mView, id_usuario_tecnico);
         btnAtrasCursoDetalle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,6 +181,80 @@ public class DetalleManual extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void getImagenDetalle(View vista, int id_manual){
+        GlobalVariables variablesGlobales = new GlobalVariables();
+        final int id_usuario = variablesGlobales.id_usuario;
+
+        HTTP_URL =variablesGlobales.URLServicio + "obtenerimagendetalle.php?";
+        // Creating StringRequest and set the JSON server URL in here.
+        StringRequest sq = new StringRequest(Request.Method.POST, HTTP_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // After done Loading store JSON response in FinalJSonObject string variable.
+                FinalJSonObjectDetalle = response ;
+
+                // Calling method to parse JSON object.
+                new DetalleManual.ParseJSonDataClassImagenDetalle(vista).execute();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Showing error message if something goes wrong.
+                Toast.makeText(vista.getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("id_manual", String.valueOf(id_manual));
+                return parametros;
+            }
+        };
+
+        // Creating String Request Object.
+        RequestQueue requestQueue = Volley.newRequestQueue(vista.getContext());
+
+        // Passing String request into RequestQueue.
+        requestQueue.add(sq);
+    }
+
+    private void getImagenUsuario(View vista, int id_user_tecnico){
+        GlobalVariables variablesGlobales = new GlobalVariables();
+        final int id_usuario = variablesGlobales.id_usuario;
+
+        HTTP_URL =variablesGlobales.URLServicio + "obtenerimagenusuario.php?";
+        // Creating StringRequest and set the JSON server URL in here.
+        StringRequest sq = new StringRequest(Request.Method.POST, HTTP_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                // After done Loading store JSON response in FinalJSonObject string variable.
+                FinalJSonObjectUsuario = response ;
+
+                // Calling method to parse JSON object.
+                new DetalleManual.ParseJSonDataClassImagenUsuario(vista).execute();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Showing error message if something goes wrong.
+                Toast.makeText(vista.getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("id_usuario", String.valueOf(id_user_tecnico));
+                return parametros;
+            }
+        };
+
+        // Creating String Request Object.
+        RequestQueue requestQueue = Volley.newRequestQueue(vista.getContext());
+
+        // Passing String request into RequestQueue.
+        requestQueue.add(sq);
     }
 
     private Bitmap getBitmapFromEncodedString(String encodedImage){
@@ -433,5 +510,131 @@ public class DetalleManual extends AppCompatActivity {
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
     }
+
+    private class ParseJSonDataClassImagenDetalle extends AsyncTask<Void, Void, Void> {
+
+        public Context context;
+        public View view;
+        public String msg;
+        public String imagen_detalle;
+        // Creating List of Subject class.
+
+
+        public ParseJSonDataClassImagenDetalle(View view) {
+            this.view = view;
+            this.context = view.getContext();
+        }
+
+        //@Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+
+        //@Override
+        protected Void doInBackground(Void... arg0) {
+
+            try {
+
+                // Checking whether FinalJSonObject is not equals to null.
+                if (FinalJSonObjectDetalle != null) {
+
+                    // Creating and setting up JSON array as null.
+                    JSONArray jsonArray = null;
+                    try {
+
+                        // Adding JSON response object into JSON array.
+                        jsonArray = new JSONArray(FinalJSonObjectDetalle);
+
+                        // Creating JSON Object.
+                        JSONObject jsonObject;
+
+                        jsonObject = jsonArray.getJSONObject(0);
+                        imagen_detalle = jsonObject.getString("imagen_detalle");
+
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+
+        {
+            ivImagenCursoDetalle.setImageBitmap(getBitmapFromEncodedString(imagen_detalle));
+
+        }
+    }
+
+
+    private class ParseJSonDataClassImagenUsuario extends AsyncTask<Void, Void, Void> {
+
+        public Context context;
+        public View view;
+        public String msg;
+        public String imagen_usuario;
+        // Creating List of Subject class.
+
+
+        public ParseJSonDataClassImagenUsuario(View view) {
+            this.view = view;
+            this.context = view.getContext();
+        }
+
+        //@Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+
+        //@Override
+        protected Void doInBackground(Void... arg0) {
+
+            try {
+
+                // Checking whether FinalJSonObject is not equals to null.
+                if (FinalJSonObjectUsuario != null) {
+
+                    // Creating and setting up JSON array as null.
+                    JSONArray jsonArray = null;
+                    try {
+
+                        // Adding JSON response object into JSON array.
+                        jsonArray = new JSONArray(FinalJSonObjectUsuario);
+
+                        // Creating JSON Object.
+                        JSONObject jsonObject;
+
+                        jsonObject = jsonArray.getJSONObject(0);
+                        imagen_usuario = jsonObject.getString("imagen_usuario");
+
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+
+        {
+            ivImagenUsuario.setImageBitmap(getBitmapFromEncodedString(imagen_usuario));
+
+        }
+    }
+
 
 }

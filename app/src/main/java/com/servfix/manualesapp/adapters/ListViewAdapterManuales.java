@@ -2,6 +2,9 @@ package com.servfix.manualesapp.adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,14 +86,25 @@ public class ListViewAdapterManuales extends BaseAdapter
         viewItem.txtNombre_manual.setText(String.valueOf(TempManualList.get(position).getNombre_manual()));
         viewItem.txtDescripcion_manual.setText(String.valueOf(TempManualList.get(position).getDescripcion_manual()));
         viewItem.txtNum_paginas.setText(TempManualList.get(position).getPaginas());
+        /*
         Picasso.get().load(TempManualList.get(position).getPortada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivPortada);
+        */
+
+        viewItem.ivPortada.setImageBitmap(getBitmapFromEncodedString(TempManualList.get(position).getImagen_detalle()));
 
         return convertView;
     }
 
-
+    private Bitmap getBitmapFromEncodedString(String encodedImage){
+        if(encodedImage != null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else{
+            return null;
+        }
+    }
 
 }
 

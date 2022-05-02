@@ -23,6 +23,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.Registrarse;
 import com.servfix.manualesapp.utilities.Constants;
@@ -136,8 +137,15 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
                 startActivity(intent);
             }
         });
+
+        notifications();
     }
 
+    private void notifications(){
+        //registrar usuario a topic
+        FirebaseMessaging.getInstance().subscribeToTopic("manuales");
+
+    }
     private Boolean validarUsuario(){
         boolean valido = false;
 

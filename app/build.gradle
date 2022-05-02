@@ -11,8 +11,8 @@ android {
         applicationId "com.servfix.manualesapp"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 7
-        versionName "1.22"
+        versionCode 8
+        versionName "1.23"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -20,6 +20,7 @@ android {
     dataBinding {
         enabled true
     }
+
 
 
     buildTypes {

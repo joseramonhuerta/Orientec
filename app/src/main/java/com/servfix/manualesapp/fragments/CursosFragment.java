@@ -366,8 +366,8 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                             manual.setDescripcion_manual(jsonObject.getString("descripcion_manual"));
                             manual.setPaginas(jsonObject.getString("paginas"));
                             manual.setNombre_pdf(jsonObject.getString("nombrepdf"));
-                            String portada = URLPORTADA + "manuales/" + jsonObject.getString("id_manual") + "/portada.jpg";
-                            manual.setPortada(portada);
+                            manual.setPortada(jsonObject.getString("imagen_miniatura"));
+                            //manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
                             manual.setTipo_descripcion(jsonObject.getString("tipo_descripcion"));
@@ -375,7 +375,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                             manual.setObtenido(Integer.parseInt(jsonObject.getString("obtenido")));
                             manual.setCalificacion(Double.parseDouble(jsonObject.getString("calificacion")));
                             manual.setNombre_tecnico(jsonObject.getString("nombre_usuario"));
-                            manual.setImagen_tecnico(jsonObject.getString("imagen_usuario"));
+                            //manual.setImagen_tecnico(jsonObject.getString("imagen_usuario"));
                             manual.setId_usuario_tecnico(Integer.parseInt(jsonObject.getString("id_usuario_creador")));
                             manualesList.add(manual);
                         }

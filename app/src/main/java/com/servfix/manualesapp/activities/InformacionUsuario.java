@@ -184,11 +184,11 @@ public class InformacionUsuario extends AppCompatActivity implements Informacion
                         {
                             manual = new Manual();
                             jsonObjectDatos = jsonArrayDatos.getJSONObject(i);
+                            manual.setId_manual(Integer.parseInt(jsonObjectDatos.getString("id_manual")));
                             manual.setNombre_manual(jsonObjectDatos.getString("nombre_manual"));
                             manual.setDescripcion_manual(jsonObjectDatos.getString("descripcion_manual"));
                             manual.setPaginas(jsonObjectDatos.getString("paginas"));
-                            String portada = URLPORTADA + "manuales/" + jsonObjectDatos.getString("id_manual") + "/portada.jpg";
-                            manual.setPortada(portada);
+                            manual.setPortada(jsonObjectDatos.getString("imagen_miniatura"));
                             manual.setPrecio(Double.parseDouble(jsonObjectDatos.getString("precio")));
                             manual.setNombre_categoria(jsonObjectDatos.getString("nombre_categoria"));
                             manual.setCalificacion(Double.parseDouble(jsonObjectDatos.getString("calificacion")));

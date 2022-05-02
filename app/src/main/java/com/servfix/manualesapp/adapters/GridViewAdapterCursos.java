@@ -2,6 +2,9 @@ package com.servfix.manualesapp.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,10 +125,12 @@ public class GridViewAdapterCursos extends BaseAdapter {
 
             }
         });
-
+        /*
         Picasso.get().load(manualesArray.get(position).getPortada())
                 .error(R.drawable.ic_baseline_broken_image_24)
-                .into(viewItem.ivImagenCurso);
+                .into(viewItem.ivImagenCurso);*/
+
+        viewItem.ivImagenCurso.setImageBitmap(getBitmapFromEncodedString(manualesArray.get(position).getPortada()));
 
         return convertView;
 
@@ -137,6 +142,15 @@ public class GridViewAdapterCursos extends BaseAdapter {
         DecimalFormat form = new DecimalFormat("0.00");
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
+    }
+
+    private Bitmap getBitmapFromEncodedString(String encodedImage){
+        if(encodedImage != null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else{
+            return null;
+        }
     }
 }
 

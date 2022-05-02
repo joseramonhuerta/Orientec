@@ -249,8 +249,9 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                             manual.setDescripcion_manual(jsonObject.getString("descripcion_manual"));
                             manual.setPaginas(jsonObject.getString("paginas"));
                             manual.setNombre_pdf(jsonObject.getString("nombrepdf"));
-                            String portada = URLPORTADA + "/manuales/" + jsonObject.getString("id_manual") + "/portada.jpg";
-                            manual.setPortada(portada);
+
+                            manual.setPortada(jsonObject.getString("imagen_miniatura"));
+                            manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
                             manual.setTipo_descripcion(jsonObject.getString("tipo_descripcion"));

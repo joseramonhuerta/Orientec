@@ -12,6 +12,7 @@ public class Manual implements Serializable {
     String descripcion_manual;
     String paginas;
     String portada;
+    String imagen_detalle;
     String nombre_pdf;
     String url;
     double precio;
@@ -216,5 +217,13 @@ public class Manual implements Serializable {
 
     public void setCalificacion(double calificacion) {
         this.calificacion = calificacion;
+    }
+
+    public String getImagen_detalle(){
+        return imagen_detalle;
+    }
+
+    public void setImagen_detalle(String imagen_detalle){
+        this.imagen_detalle = imagen_detalle;
     }
 }

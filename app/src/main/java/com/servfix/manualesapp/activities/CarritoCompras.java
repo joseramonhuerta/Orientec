@@ -502,8 +502,8 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
                                 Double precio = Double.parseDouble(jsonObjectDetalle.getString("precio"));
                                 totalCarrito += precio;
                                 carrito.setPrecio(precio);
-                                String portada = URLPORTADA + "/manuales/" + jsonObjectDetalle.getString("id_manual") + "/portada.jpg";
-                                carrito.setPortada(portada);
+                                //String portada = URLPORTADA + "/manuales/" + jsonObjectDetalle.getString("id_manual") + "/portada.jpg";
+                                carrito.setPortada(jsonObjectDetalle.getString("imagen_miniatura"));
 
                                 // Adding subject list object into CustomSubjectNamesList.
                                 carritoList.add(carrito);

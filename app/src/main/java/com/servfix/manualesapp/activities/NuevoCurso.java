@@ -39,6 +39,9 @@ import com.servfix.manualesapp.classes.Manual;
 import com.servfix.manualesapp.databinding.ActivityChatSoporteBinding;
 import com.servfix.manualesapp.databinding.ActivityNuevoCursoBinding;
 import com.servfix.manualesapp.fragments.CuadroDialogoCategorias;
+import com.servfix.manualesapp.interfaces.ApiService;
+import com.servfix.manualesapp.network.ApiClient;
+import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.servfix.manualesapp.utilities.PreferenceManager;
 import com.squareup.picasso.Picasso;
@@ -61,6 +64,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCategorias.Actualizar{
     private static final int PICK_IMAGE_REQUEST = 7373;
@@ -71,7 +76,7 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
     ActivityNuevoCursoBinding binding;
     PreferenceManager preferenceManager;
     private GlobalVariables gv;
-    private String encodedImage;
+    private String encodedImage, encodedImagenDetalle;
     SweetAlertDialog pDialogo = null;
     private String encodedManualPDF;
     private String fileNameManual;
@@ -113,9 +118,24 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
             tipoSelected = manual.getTipo() - 1;
             binding.spnTipoCurso.setSelection(tipoSelected);
             fileNameManual = manual.getNombre_pdf();
-            Picasso.get().load(manual.getPortada())
+            /*
+            Picasso.get()(manual.getPortada())
                     .error(R.drawable.ic_baseline_broken_image_24)
                     .into(binding.ivImagenCursoTecnicoNuevo);
+
+            Picasso.get().load(manual.getImagen_detalle())
+                    .error(R.drawable.ic_baseline_broken_image_24)
+                    .into(binding.ivImagenCursoTecnicoNuevoFotoDetalle);
+            */
+            if(manual.getPortada() != null) {
+                encodedImage = manual.getPortada();
+                binding.ivImagenCursoTecnicoNuevo.setImageBitmap(getBitmapFromEncodedString(manual.getPortada()));
+            }
+
+            if(manual.getImagen_detalle() != null) {
+                encodedImagenDetalle = manual.getImagen_detalle();
+                binding.ivImagenCursoTecnicoNuevoFotoDetalle.setImageBitmap(getBitmapFromEncodedString(manual.getImagen_detalle()));
+            }
 
             if(manual.getEsgratuito() == 1){
                 binding.checkGratuito.setChecked(true);
@@ -194,7 +214,7 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
         binding.btnGuardarNuevoCursoTecnico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validarNombreCurso() | !validarDescripcion() | !validarCategoria() | !validarDuracion() | !validarImagenPortada() | !validarPrecio() | !validarURL() | !validarManual())
+                if(!validarNombreCurso() | !validarDescripcion() | !validarCategoria() | !validarDuracion() | !validarImagenPortada() | !validarPrecio() | !validarURL() | !validarManual() | !ValidarImagenDetalle())
                     return;
 
                 guardar(binding.getRoot());
@@ -213,6 +233,14 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
                 }
 
             }
+        });
+
+        binding.btnCamaraCursoTecnicoNuevoFotoDetalle.setOnClickListener((View v)-> {
+
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            pickImageDetalle.launch(intent);
+
         });
     }
 
@@ -257,6 +285,10 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
 
                 if(encodedImage != null){
                     parametros.put("portada", encodedImage);
+                }
+
+                if(encodedImagenDetalle != null){
+                    parametros.put("imagen_detalle", encodedImagenDetalle);
                 }
 
                 parametros.put("id_categoria", String.valueOf(id_categoria));
@@ -387,8 +419,19 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
 
     public boolean validarImagenPortada(){
         boolean valido = false;
-        if(id_manual == 0 && encodedImage == null){
-            Toast.makeText(getApplicationContext(), "Seleccione una imagen de portada", Toast.LENGTH_SHORT).show();
+        if(encodedImage.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Seleccione una imagen para miniatura", Toast.LENGTH_SHORT).show();
+            valido = false;
+        }else{
+            valido = true;
+        }
+        return valido;
+    }
+
+    public boolean ValidarImagenDetalle(){
+        boolean valido =false;
+        if(encodedImagenDetalle.isEmpty()){
+            Toast.makeText(getApplicationContext(), "Seleccione una imagen para detalle", Toast.LENGTH_LONG).show();
             valido = false;
         }else{
             valido = true;
@@ -468,6 +511,16 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
+    private String encodeImageDetalle(Bitmap bitmap){
+        int previewWidth = 600;
+        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -479,6 +532,26 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             binding.ivImagenCursoTecnicoNuevo.setImageBitmap(bitmap);
                             encodedImage = encodeImage(bitmap);
+                        }catch (FileNotFoundException e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+
+    );
+
+    private final ActivityResultLauncher<Intent> pickImageDetalle = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK){
+                    if(result.getData() != null){
+                        Uri imageUri = result.getData().getData();
+                        try{
+                            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            binding.ivImagenCursoTecnicoNuevoFotoDetalle.setImageBitmap(bitmap);
+                            encodedImagenDetalle = encodeImageDetalle(bitmap);
                         }catch (FileNotFoundException e){
                             e.printStackTrace();
                         }
@@ -518,5 +591,14 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
         this.id_categoria = id_cat;
         binding.txtCategoriaCursoTecnicoNuevo.getEditText().setText(nombre_categoria);
 
+    }
+
+    private Bitmap getBitmapFromEncodedString(String encodedImage){
+        if(encodedImage != null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else{
+            return null;
+        }
     }
 }

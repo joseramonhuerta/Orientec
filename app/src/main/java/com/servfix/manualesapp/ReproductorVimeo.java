@@ -160,6 +160,7 @@ public class ReproductorVimeo extends AppCompatActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         player.stop();
+
     }
 
     private void calificar(){

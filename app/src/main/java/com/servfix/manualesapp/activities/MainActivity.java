@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.servfix.manualesapp.R;
 
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         bottomAnim = AnimationUtils.loadAnimation(this, R.anim.bottom_animation);
 
         imagen = findViewById(R.id.imgLogo);
+        TextView txtVersion = (TextView) findViewById(R.id.txtVersion);
+        txtVersion.setText("Versión " + getVersionApp());
 
 
         imagen.setAnimation(topAnim);
@@ -60,5 +65,17 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }, SPLASH_SCREEN);
+    }
+
+    public String getVersionApp() {
+        String version = "";
+        try {
+            PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+            version = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return version;
     }
 }

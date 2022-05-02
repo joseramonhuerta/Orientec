@@ -66,9 +66,12 @@ public class InformacionUsuarioAdapter extends RecyclerView.Adapter<InformacionU
         }
 
         void setData(Manual manual){
+            /*
             Picasso.get().load(manual.getPortada())
                     .error(R.drawable.ic_baseline_broken_image_24)
                     .into(binding.ivImagenInformacionUsuario);
+            */
+            binding.ivImagenInformacionUsuario.setImageBitmap(getBitmapFromEncodedString(manual.getPortada()));
 
             binding.txtNombreInformacionUsuario.setText(manual.getNombre_manual());
             binding.txtDescripcionInformacionUsuario.setText(manual.getDescripcion_manual());
@@ -97,6 +100,15 @@ public class InformacionUsuarioAdapter extends RecyclerView.Adapter<InformacionU
         DecimalFormat form = new DecimalFormat("0.00");
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
+    }
+
+    private Bitmap getBitmapFromEncodedString(String encodedImage){
+        if(encodedImage != null) {
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }else{
+            return null;
+        }
     }
 
 
