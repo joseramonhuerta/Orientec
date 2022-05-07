@@ -74,10 +74,12 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
     int id_categoria = 0;
     int tipoSelected = -1;
     Manual manual;
+    boolean isNew = true;
     ActivityNuevoCursoBinding binding;
     PreferenceManager preferenceManager;
     private GlobalVariables gv;
-    public String encodedImage, encodedImagenDetalle;
+    public String encodedImage = "";
+    public String encodedImagenDetalle = "";
     public Bitmap bitmapPortada, bitmapDetalle;
     SweetAlertDialog pDialogo = null;
     private String encodedManualPDF;
@@ -109,6 +111,7 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
         id_manual = manual.getId_manual();
 
         if(id_manual > 0){
+            isNew = false;
             binding.txtTituloCursoTecnicoNuevo.setText("Editar curso");
             binding.txtNombreCursoTecnicoNuevo.getEditText().setText(manual.getNombre_manual());
             binding.txtDescripcionCursoTecnicoNuevo.getEditText().setText(manual.getDescripcion_manual());
@@ -337,6 +340,14 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
                         if(success){
                             jsonObjectDatos = jsonArray.getJSONObject(0);
                             id_manual = Integer.parseInt(jsonObjectDatos.getString("id_manual"));
+
+                            if(isNew) {
+                                String nombre_manual = jsonObjectDatos.getString("nombre_manual");
+                                String nombre_imagen = jsonObjectDatos.getString("url_portada");
+                                String url = GlobalVariables.URLServicio + "manuales/" + String.valueOf(id_manual) + "/" + nombre_imagen;
+                                nuevoCursoNotificacion("Nuevo curso disponible", nombre_manual, url);
+                            }
+
                             binding.txtTituloCursoTecnicoNuevo.setText("Editar curso");
                         }
 
@@ -360,7 +371,64 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
             Toast.makeText(view.getContext(),msg,Toast.LENGTH_LONG).show();
 
             binding.btnGuardarNuevoCursoTecnico.setEnabled(true);
+            isNew = false;
         }
+    }
+
+    public void nuevoCursoNotificacion(String titulo, String detalle, String foto){
+        try{
+            JSONObject data = new JSONObject();
+            data.put("titulo", titulo);
+            data.put("detalle", detalle);
+            data.put("foto", foto);
+            data.put("tipoNotificacion", "Curso");
+
+            JSONObject body = new JSONObject();
+            body.put("to","/topics/"+"manuales");
+            body.put(Constants.REMOTE_MSG_DATA, data);
+
+            sendNotification(body.toString());
+        }catch (Exception e){
+            showToast(e.getMessage());
+        }
+    }
+
+    private void sendNotification(String messageBody){
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody
+        ).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                if(response.isSuccessful()){
+                    try {
+                        if(response.body() != null){
+                            JSONObject responseJson = new JSONObject(response.body());
+                            JSONArray results = responseJson.getJSONArray("results");
+                            if(responseJson.getInt("failure") == 1){
+                                JSONObject error = (JSONObject) results.get(0);
+                                showToast(error.getString("error"));
+                                return;
+                            }
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }else{
+                    showToast("Error: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                showToast(t.getMessage());
+            }
+        });
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private void seleccionarArchivo(){
@@ -411,7 +479,7 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
 
     public boolean validarImagenPortada(){
         boolean valido = false;
-        if(encodedImage.isEmpty()){
+        if(encodedImage == null && encodedImage.isEmpty() && encodedImage.equals("null")){
             Toast.makeText(getApplicationContext(), "Seleccione una imagen para miniatura", Toast.LENGTH_SHORT).show();
             valido = false;
         }else{
@@ -422,7 +490,7 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
 
     public boolean ValidarImagenDetalle(){
         boolean valido =false;
-        if(encodedImagenDetalle.isEmpty()){
+        if(encodedImagenDetalle == null && encodedImagenDetalle.isEmpty() && encodedImagenDetalle.equals("null")){
             Toast.makeText(getApplicationContext(), "Seleccione una imagen para detalle", Toast.LENGTH_LONG).show();
             valido = false;
         }else{

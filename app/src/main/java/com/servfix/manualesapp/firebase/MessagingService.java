@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,7 +19,10 @@ import com.servfix.manualesapp.ChatSoporte;
 import com.servfix.manualesapp.ClaseChat;
 import com.servfix.manualesapp.MensajeChat;
 import com.servfix.manualesapp.R;
+import com.servfix.manualesapp.activities.MenuPrincipal;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Random;
 
@@ -33,6 +37,25 @@ public class MessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
+        if (remoteMessage.getData().size()>0){
+
+            if(remoteMessage.getData().get("tipoNotificacion") == "Chat")
+            {
+                notificacionChat(remoteMessage);
+            }
+
+            if(remoteMessage.getData().get("tipoNotificacion") == "Curso")
+            {
+                notificacionCursos(remoteMessage);
+            }
+
+
+        }
+
+
+    }
+
+    public void notificacionChat(RemoteMessage remoteMessage){
         ClaseChat chat = new ClaseChat();
         chat.id_usuario_sender = Integer.parseInt(remoteMessage.getData().get("id_usuario_receiver"));
         chat.id_usuario_receiver = Integer.parseInt(remoteMessage.getData().get("id_usuario_sender"));
@@ -76,7 +99,44 @@ public class MessagingService extends FirebaseMessagingService {
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(notificationId, builder.build());
+    }
 
+    public void notificacionCursos(RemoteMessage remoteMessage){
+        int notificationId = new Random().nextInt();
+        String channelId = "mensaje";
 
+        Intent intent = new Intent(this, MenuPrincipal.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        try {
+            Bitmap imf_foto= Picasso.get().load(remoteMessage.getData().get("foto")).get();
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
+            builder.setSmallIcon(R.drawable.ic_notification);
+            builder.setContentTitle(remoteMessage.getData().get("titulo"));
+            builder.setContentText(remoteMessage.getData().get("detalle"));
+            builder.setStyle(new NotificationCompat.BigPictureStyle()
+                    .bigPicture(imf_foto).bigLargeIcon(null));
+            builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            builder.setContentIntent(pendingIntent);
+            builder.setAutoCancel(true);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                CharSequence channelName = channelId;
+                String channelDescription = "This is the channer description";
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+                channel.setDescription(channelDescription);
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.createNotificationChannel(channel);
+            }
+
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
+            notificationManagerCompat.notify(notificationId, builder.build());
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
     }
 }

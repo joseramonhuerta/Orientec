@@ -152,37 +152,6 @@ public class GridViewAdapterCursos extends BaseAdapter {
 
     }
 
-    private void getImagenMiniatura(ViewItemCurso view, String id){
-        GlobalVariables gv = new GlobalVariables();
-        String url = gv.URLServicio;
-        Retrofit retrofit =  new Retrofit.Builder().baseUrl(url)
-        .addConverterFactory(GsonConverterFactory.create()).build();
-
-        ApiService api = retrofit.create(ApiService.class);
-            Call<List> call = api.getImagen(id);
-            call.enqueue(new Callback<List>() {
-                @Override
-                public void onResponse(Call<List> call, Response<List> response) {
-                    try{
-                        if(response.isSuccessful()){
-                            JSONArray jsonArray = new JSONArray(response.body());
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            view.ivImagenCurso.setImageBitmap(getBitmapFromEncodedString(jsonObject.getString("imagen_miniatura")));
-                        }
-
-                    }catch (Exception ex){
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<List> call, Throwable t) {
-
-                }
-            });
-
-    }
-
     public String getPrecioFormatoMoneda(double precio){
         String precioFormateado = "";
         DecimalFormat form = new DecimalFormat("0.00");
@@ -190,14 +159,6 @@ public class GridViewAdapterCursos extends BaseAdapter {
         return precioFormateado;
     }
 
-    private Bitmap getBitmapFromEncodedString(String encodedImage){
-        if(encodedImage != null) {
-            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        }else{
-            return null;
-        }
-    }
 }
 
 class ViewItemCurso

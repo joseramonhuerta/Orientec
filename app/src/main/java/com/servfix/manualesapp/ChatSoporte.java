@@ -124,7 +124,7 @@ public class ChatSoporte extends BaseActivity {
                 data.put("nombre_manual", manual.nombre_manual);
                 data.put("id_usuario_firebase", manual.id_usuario_firebase_receiver);
                 data.put("id_usuario_firebase_sender", manual.id_usuario_firebase_sender);
-                data.put("notificacion", "0");
+                data.put("tipoNotificacion", "Chat");
                 /*data.put("imagen", manual.imagen_sender);*/
                 //data.put("fcmToken", gv.fcmToken);
                 data.put("mensaje", binding.txtSendMessage.getText().toString());
