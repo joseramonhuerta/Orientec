@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -20,11 +21,22 @@ import androidx.fragment.app.FragmentManager;
 import com.servfix.manualesapp.DetalleManual;
 import com.servfix.manualesapp.classes.Manual;
 import com.servfix.manualesapp.R;
+import com.servfix.manualesapp.interfaces.ApiService;
+import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GridViewAdapterCursos extends BaseAdapter {
 
@@ -107,7 +119,7 @@ public class GridViewAdapterCursos extends BaseAdapter {
             viewItem.txtPrecioCurso.setText("$ " + getPrecioFormatoMoneda(manualesArray.get(position).getPrecio()));
         }
 
-        viewItem.ivImagenCurso.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
         viewItem.txtCalificacion.setText(String.valueOf(manualesArray.get(position).getCalificacion()));
         //viewItem.ivImagenPagina.setLayoutParams(new GridView.LayoutParams(340, 350));
 
@@ -122,7 +134,6 @@ public class GridViewAdapterCursos extends BaseAdapter {
                 intencion.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 mContext.startActivity(intencion);
 
-
             }
         });
         /*
@@ -130,10 +141,45 @@ public class GridViewAdapterCursos extends BaseAdapter {
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivImagenCurso);*/
 
-        viewItem.ivImagenCurso.setImageBitmap(getBitmapFromEncodedString(manualesArray.get(position).getPortada()));
-
+        //viewItem.ivImagenCurso.setImageBitmap(getBitmapFromEncodedString(manualesArray.get(position).getPortada()));
+        //int id = manualesArray.get(position).getId_manual();
+        //getImagenMiniatura(viewItem, String.valueOf(id));
+        Picasso.get().load(manualesArray.get(position).getUrl_portada())
+                .error(R.drawable.ic_baseline_broken_image_24)
+                .into(viewItem.ivImagenCurso);
         return convertView;
 
+
+    }
+
+    private void getImagenMiniatura(ViewItemCurso view, String id){
+        GlobalVariables gv = new GlobalVariables();
+        String url = gv.URLServicio;
+        Retrofit retrofit =  new Retrofit.Builder().baseUrl(url)
+        .addConverterFactory(GsonConverterFactory.create()).build();
+
+        ApiService api = retrofit.create(ApiService.class);
+            Call<List> call = api.getImagen(id);
+            call.enqueue(new Callback<List>() {
+                @Override
+                public void onResponse(Call<List> call, Response<List> response) {
+                    try{
+                        if(response.isSuccessful()){
+                            JSONArray jsonArray = new JSONArray(response.body());
+                            JSONObject jsonObject = jsonArray.getJSONObject(0);
+                            view.ivImagenCurso.setImageBitmap(getBitmapFromEncodedString(jsonObject.getString("imagen_miniatura")));
+                        }
+
+                    }catch (Exception ex){
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List> call, Throwable t) {
+
+                }
+            });
 
     }
 

@@ -7,6 +7,7 @@ public class Carrito {
     String nombre_manual;
     double precio;
     String portada;
+    String url_portada;
 
     public int getId_carrito_compras_detalle() {
         return id_carrito_compras_detalle;
@@ -54,5 +55,13 @@ public class Carrito {
 
     public void setPortada(String portada) {
         this.portada = portada;
+    }
+
+    public String getUrl_portada() {
+        return url_portada;
+    }
+
+    public void setUrl_portada(String url_portada) {
+        this.url_portada = url_portada;
     }
 }

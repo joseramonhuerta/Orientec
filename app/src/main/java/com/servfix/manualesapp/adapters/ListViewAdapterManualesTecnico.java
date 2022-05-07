@@ -90,11 +90,11 @@ public class ListViewAdapterManualesTecnico extends BaseAdapter
         viewItem.txtNum_paginas.setText(TempManualList.get(position).getPaginas());
         String precioString = "$ " + getPrecioFormatoMoneda(TempManualList.get(position).getPrecio());
         viewItem.txtPrecio.setText(precioString);
-        /*Picasso.get().load(TempManualList.get(position).getPortada())
+        Picasso.get().load(TempManualList.get(position).getUrl_portada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivPortada);
-        */
-        viewItem.ivPortada.setImageBitmap(getBitmapFromEncodedString(TempManualList.get(position).getPortada()));
+
+        //viewItem.ivPortada.setImageBitmap(getBitmapFromEncodedString(TempManualList.get(position).getPortada()));
 
         return convertView;
     }

@@ -249,9 +249,6 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                             manual.setDescripcion_manual(jsonObject.getString("descripcion_manual"));
                             manual.setPaginas(jsonObject.getString("paginas"));
                             manual.setNombre_pdf(jsonObject.getString("nombrepdf"));
-
-                            manual.setPortada(jsonObject.getString("imagen_miniatura"));
-                            manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
                             manual.setTipo_descripcion(jsonObject.getString("tipo_descripcion"));
@@ -261,17 +258,19 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                             manual.setId_usuario_firebase(jsonObject.getString("id_usuario_firebase"));
                             manual.setId_usuario_firebase_sender(jsonObject.getString("id_usuario_firebase_sender"));
                             manual.setCalificacion(Double.parseDouble(jsonObject.getString("calificacion")));
-
+                            manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_portada"));
                             manualesList.add(manual);
                         }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        pDialogo.dismiss();
                     }
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                pDialogo.dismiss();
             }
             return null;
         }
@@ -289,8 +288,6 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
             listView.setAdapter(adapter);
             swipeContainer.setRefreshing(false);
             pDialogo.dismiss();
-
-
 
         }
     }

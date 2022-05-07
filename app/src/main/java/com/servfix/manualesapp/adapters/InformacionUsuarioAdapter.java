@@ -16,12 +16,23 @@ import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.classes.Manual;
 import com.servfix.manualesapp.databinding.ListviewItemCursovendidoBinding;
 import com.servfix.manualesapp.databinding.ListviewItemInformacionusuarioBinding;
+import com.servfix.manualesapp.interfaces.ApiService;
 import com.servfix.manualesapp.listeners.ConversacionesListerner;
 import com.servfix.manualesapp.listeners.InformacionUsuarioListener;
+import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class InformacionUsuarioAdapter extends RecyclerView.Adapter<InformacionUsuarioAdapter.InformacionUsuarioViewHolder>{
 
@@ -66,12 +77,12 @@ public class InformacionUsuarioAdapter extends RecyclerView.Adapter<InformacionU
         }
 
         void setData(Manual manual){
-            /*
-            Picasso.get().load(manual.getPortada())
+
+            Picasso.get().load(manual.getUrl_portada())
                     .error(R.drawable.ic_baseline_broken_image_24)
                     .into(binding.ivImagenInformacionUsuario);
-            */
-            binding.ivImagenInformacionUsuario.setImageBitmap(getBitmapFromEncodedString(manual.getPortada()));
+
+            //binding.ivImagenInformacionUsuario.setImageBitmap(getBitmapFromEncodedString(manual.getPortada()));
 
             binding.txtNombreInformacionUsuario.setText(manual.getNombre_manual());
             binding.txtDescripcionInformacionUsuario.setText(manual.getDescripcion_manual());
@@ -101,16 +112,5 @@ public class InformacionUsuarioAdapter extends RecyclerView.Adapter<InformacionU
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
     }
-
-    private Bitmap getBitmapFromEncodedString(String encodedImage){
-        if(encodedImage != null) {
-            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        }else{
-            return null;
-        }
-    }
-
-
 
 }

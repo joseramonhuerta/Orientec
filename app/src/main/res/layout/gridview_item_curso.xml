@@ -6,130 +6,137 @@
     android:background="#fff"
     app:cardBackgroundColor="#fff"
     app:cardCornerRadius="10dp"
-    android:layout_margin="10dp"
     android:elevation="3dp"
+    app:cardUseCompatPadding="true"
     >
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/txtTituloCurso"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:text="Titulo del Curso"
-            android:textAlignment="textStart"
-            android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="0dp"
-        >
+        android:animateLayoutChanges="true"
+        android:layout_margin="5dp"
+       >
 
-        <ImageView
-            android:id="@+id/ivImagenCurso"
-            android:layout_width="150dp"
-            android:layout_height="85dp"
-            android:layout_gravity="center_horizontal"
-            android:scaleType="centerInside"
-            android:textAlignment="center"
-            app:srcCompat="@drawable/ic_baseline_broken_image_24" />
-    </LinearLayout>
-        <TextView
-            android:id="@+id/txtDescripcionCurso"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:textAlignment="textStart"
-            android:text="Descripcion del Curso"
-            android:textColor="#000000"
-            android:textSize="10sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+            <ImageView
+                android:layout_margin="5dp"
+                android:id="@+id/ivImagenCurso"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                 />
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:padding="0dp"
+            >
 
-            <ImageView
-                android:id="@+id/rtCalificacionCurso"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/star"></ImageView>
+            <TextView
+                android:id="@+id/txtTituloCurso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Titulo del Curso"
+                android:textAlignment="textStart"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
 
             <TextView
-                android:id="@+id/txtCalificacionCurso"
-                android:layout_width="wrap_content"
+                android:id="@+id/txtDescripcionCurso"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_gravity="center_horizontal"
-                android:text="0.0"
-                android:textColor="@color/greyblack"
-                android:textSize="20sp" />
+                android:textAlignment="textStart"
+                android:text="Descripcion del Curso"
+                android:textColor="#000000"
+                android:textSize="14sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/rtCalificacionCurso"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/star"></ImageView>
+
+
+                <TextView
+                    android:id="@+id/txtCalificacionCurso"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:text="0.0"
+                    android:textColor="@color/greyblack"
+                    android:textSize="20sp" />
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/txtPaginasCurso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Paginas/minutos"
+                android:textColor="#4f4f4f"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/txtPrecioCurso"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+
+                android:text="$ 100.00"
+                android:textColor="#0071b6"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtGratuitoCurso"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:background="@drawable/esquinas_redondeadas"
+                android:text="Gratuito"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:visibility="gone"
+                />
 
         </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/txtPaginasCurso"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:text="Paginas/minutos"
-            android:textColor="#4f4f4f"
-            android:textSize="14sp" />
+    </LinearLayout>
 
-        <TextView
-            android:id="@+id/txtPrecioCurso"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:text="$ 100.00"
-            android:textColor="#0071b6"
-            android:textStyle="bold"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/txtGratuitoCurso"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:background="@drawable/esquinas_redondeadas"
-            android:text="Gratuito"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:visibility="gone"
-            />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-           >
+            android:padding="2dp">
 
             <Button
                 android:id="@+id/btnComprarCurso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Comprar Ahora"
+                android:background="@drawable/boton_rounded"
                 android:backgroundTint="#109DFA"
 
 
-                android:background="@drawable/boton_rounded"
-                />
-    </LinearLayout>
+                android:text="Comprar Ahora" />
+        </LinearLayout>
     </LinearLayout>
 
 

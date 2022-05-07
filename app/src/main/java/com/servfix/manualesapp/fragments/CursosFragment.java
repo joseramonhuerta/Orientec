@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -76,8 +77,10 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
     Button btnComprarCurso;
     SliderView sliderView;
     ImageView ivBanner;
+    TextView txtSinCursos;
 
     GridViewScrollable gridView;
+    //ListView gridView;
     RecyclerView listViewCategorias;
     Context mContext;
 
@@ -100,7 +103,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
         //swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.srlContainerCursos);
         gridView = (GridViewScrollable) view.findViewById(R.id.gvCursos);
-        gridView.setNumColumns(2);
+        gridView.setNumColumns(1);
         gridView.setExpanded(true);
         txtBusquedaCursos = (EditText) view.findViewById(R.id.txtBusquedaCursos);
         txtFiltros = (TextView) view.findViewById(R.id.txtFiltros);
@@ -109,7 +112,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
         btnFiltrosBusquedaCursos = (ImageView) view.findViewById(R.id.btnFiltrosBusqueda);
         btnComprarCurso = (Button) view.findViewById(R.id.btnComprarCurso);
         listViewCategorias = (RecyclerView) view.findViewById(R.id.listViewCategorias);
-
+        txtSinCursos = (TextView) view.findViewById(R.id.txtSinCursosCursos);
         sliderView = view.findViewById(R.id.imageSlider);
         ivBanner = (ImageView) view.findViewById(R.id.ivBanner);
 
@@ -366,7 +369,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                             manual.setDescripcion_manual(jsonObject.getString("descripcion_manual"));
                             manual.setPaginas(jsonObject.getString("paginas"));
                             manual.setNombre_pdf(jsonObject.getString("nombrepdf"));
-                            manual.setPortada(jsonObject.getString("imagen_miniatura"));
+                            //manual.setPortada(jsonObject.getString("imagen_miniatura"));
                             //manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
@@ -377,16 +380,20 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                             manual.setNombre_tecnico(jsonObject.getString("nombre_usuario"));
                             //manual.setImagen_tecnico(jsonObject.getString("imagen_usuario"));
                             manual.setId_usuario_tecnico(Integer.parseInt(jsonObject.getString("id_usuario_creador")));
+                            manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_portada"));
+                            manual.setUrl_detalle(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_detalle"));
                             manualesList.add(manual);
                         }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        pDialogo.dismiss();
                     }
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                pDialogo.dismiss();
             }
             return null;
         }
@@ -395,6 +402,13 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
         protected void onPostExecute(Void result)
         {
             final GridViewAdapterCursos adapter = new GridViewAdapterCursos(manualesList, context);
+
+            if(manualesList.size() > 0){
+                txtSinCursos.setVisibility(View.GONE);
+            }else{
+                txtSinCursos.setVisibility(View.VISIBLE);
+            }
+
             gridView.setAdapter(adapter);
             pDialogo.dismiss();
         }

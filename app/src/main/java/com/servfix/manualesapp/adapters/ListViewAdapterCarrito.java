@@ -22,6 +22,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.servfix.manualesapp.classes.Carrito;
+import com.servfix.manualesapp.interfaces.ApiService;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.servfix.manualesapp.R;
 import com.squareup.picasso.Picasso;
@@ -34,6 +35,10 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListViewAdapterCarrito extends BaseAdapter
 {
@@ -111,12 +116,16 @@ public class ListViewAdapterCarrito extends BaseAdapter
 
         viewItem.txtNombre_manual.setText(String.valueOf(TempCarritoList.get(position).getNombre_manual()));
         viewItem.txtPrecio_manual.setText("$ " + getPrecioFormatoMoneda(TempCarritoList.get(position).getPrecio()));
-        /*Picasso.get().load(TempCarritoList.get(position).getPortada())
+
+        Picasso.get().load(TempCarritoList.get(position).getUrl_portada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivImagenManual);
-        */
 
-        viewItem.ivImagenManual.setImageBitmap(getBitmapFromEncodedString(TempCarritoList.get(position).getPortada()));
+
+        //viewItem.ivImagenManual.setImageBitmap(getBitmapFromEncodedString(TempCarritoList.get(position).getPortada()));
+
+        //int id = TempCarritoList.get(position).getId_manual();
+        //getImagenMiniatura(viewItem, String.valueOf(id));
 
         viewItem.btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -237,11 +246,13 @@ public class ListViewAdapterCarrito extends BaseAdapter
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        pDialogo.dismiss();
                     }
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                pDialogo.dismiss();
             }
             return null;
         }
@@ -265,15 +276,6 @@ public class ListViewAdapterCarrito extends BaseAdapter
         DecimalFormat form = new DecimalFormat("0.00");
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
-    }
-
-    private Bitmap getBitmapFromEncodedString(String encodedImage){
-        if(encodedImage != null) {
-            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        }else{
-            return null;
-        }
     }
 
 }

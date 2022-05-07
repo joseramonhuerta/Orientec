@@ -503,7 +503,7 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
                                 totalCarrito += precio;
                                 carrito.setPrecio(precio);
                                 //String portada = URLPORTADA + "/manuales/" + jsonObjectDetalle.getString("id_manual") + "/portada.jpg";
-                                carrito.setPortada(jsonObjectDetalle.getString("imagen_miniatura"));
+                                carrito.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObjectDetalle.getString("id_manual") + "/"+ jsonObjectDetalle.getString("url_portada"));
 
                                 // Adding subject list object into CustomSubjectNamesList.
                                 carritoList.add(carrito);

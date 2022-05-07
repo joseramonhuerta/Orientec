@@ -11,12 +11,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.servfix.manualesapp.R;
+import com.servfix.manualesapp.activities.CursosVendidos;
 import com.servfix.manualesapp.classes.Manual;
+import com.servfix.manualesapp.databinding.ActivityCursosVendidosBinding;
 import com.servfix.manualesapp.databinding.ListviewItemCursovendidoBinding;
+import com.servfix.manualesapp.databinding.ListviewItemInformacionusuarioBinding;
+import com.servfix.manualesapp.interfaces.ApiService;
+import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CursosVendidosAdapter extends RecyclerView.Adapter<CursosVendidosAdapter.CursosVendidosViewHolder>{
 
@@ -59,7 +73,7 @@ public class CursosVendidosAdapter extends RecyclerView.Adapter<CursosVendidosAd
         }
 
         void setData(Manual manual){
-            Picasso.get().load(manual.getPortada())
+            Picasso.get().load(manual.getUrl_portada())
                     .error(R.drawable.ic_baseline_broken_image_24)
                     .into(binding.ivImagenCursoVendido);
 
@@ -75,7 +89,6 @@ public class CursosVendidosAdapter extends RecyclerView.Adapter<CursosVendidosAd
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
     }
-
 
 
 }

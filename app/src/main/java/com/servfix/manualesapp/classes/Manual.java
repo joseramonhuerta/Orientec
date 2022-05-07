@@ -28,6 +28,8 @@ public class Manual implements Serializable {
     int esgratuito;
     int obtenido;
     double calificacion;
+    String url_portada;
+    String url_detalle;
 
     public double getPrecio() {
         return precio;
@@ -225,5 +227,21 @@ public class Manual implements Serializable {
 
     public void setImagen_detalle(String imagen_detalle){
         this.imagen_detalle = imagen_detalle;
+    }
+
+    public String getUrl_portada() {
+        return url_portada;
+    }
+
+    public void setUrl_portada(String url_portada) {
+        this.url_portada = url_portada;
+    }
+
+    public String getUrl_detalle() {
+        return url_detalle;
+    }
+
+    public void setUrl_detalle(String url_detalle) {
+        this.url_detalle = url_detalle;
     }
 }

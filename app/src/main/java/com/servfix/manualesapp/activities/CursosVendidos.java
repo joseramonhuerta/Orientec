@@ -136,21 +136,23 @@ public class CursosVendidos extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             manual = new Manual();
                             jsonObject = jsonArray.getJSONObject(i);
+                            manual.setId_manual(Integer.parseInt(jsonObject.getString("id_manual")));
                             manual.setNombre_manual(jsonObject.getString("nombre_manual"));
-                            String portada = URLPORTADA + "manuales/" + jsonObject.getString("id_manual") + "/portada.jpg";
-                            manual.setPortada(portada);
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setNombre_categoria(jsonObject.getString("nombre_categoria"));
+                            manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_portada"));
                             manualList.add(manual);
                         }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        binding.progressBarCursosVendidos.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                binding.progressBarCursosVendidos.setVisibility(View.GONE);
             }
             return null;
         }

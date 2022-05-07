@@ -3,7 +3,10 @@ package com.servfix.manualesapp.utilities;
 import java.util.HashMap;
 
 public class GlobalVariables {
+    //produccion
     public static final String URLServicio = "https://erp.servfix.com.mx/ws/manualesapp/";
+    //test
+    //public static final String URLServicio = "https://erp.servfix.com.mx/ws/manualesapptest/";
 
     //PAYPAL
     public static final String PAYPAL_CLIENT_ID = "AccHfI2JChSGd786mGBU1HRMl1L4VQg5KljkjVUwWrJWfxgclKM29ZUl7XXnobxzbjdNaqXrw6I8ZGhG"; //Produccion

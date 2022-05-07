@@ -116,7 +116,6 @@ public class DetalleManual extends AppCompatActivity {
             txtPrecioCursoDetalle.setText("$ " + getPrecioFormatoMoneda(manual.getPrecio()));
         }
 
-
         txtCalificacion.setText(String.valueOf(getPrecioFormatoMoneda(manual.getCalificacion())));
         rtCalificacion.setRating((float) manual.getCalificacion());
         txtNombreUsuario.setText(manual.getNombre_tecnico());
@@ -134,13 +133,13 @@ public class DetalleManual extends AppCompatActivity {
         if(manual.getObtenido() > 0){
             btnAgregarCursoDetalle.setVisibility(View.GONE);
         }
-        /*
-        Picasso.get().load(manual.getPortada())
+
+        Picasso.get().load(manual.getUrl_detalle())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(ivImagenCursoDetalle);
-        */
+
         //ivImagenCursoDetalle.setImageBitmap(getBitmapFromEncodedString(manual.getImagen_detalle()));
-        getImagenDetalle(mView, id_curso);
+        //getImagenDetalle(mView, id_curso);
         getImagenUsuario(mView, id_usuario_tecnico);
         btnAtrasCursoDetalle.setOnClickListener(new View.OnClickListener() {
             @Override

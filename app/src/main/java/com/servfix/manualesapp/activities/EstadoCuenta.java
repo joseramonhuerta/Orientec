@@ -145,11 +145,13 @@ public class EstadoCuenta extends AppCompatActivity {
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        binding.progressBarEstadoCuenta.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                binding.progressBarEstadoCuenta.setVisibility(View.GONE);
             }
             return null;
         }

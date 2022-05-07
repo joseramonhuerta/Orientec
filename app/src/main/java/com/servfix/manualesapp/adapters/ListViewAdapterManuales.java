@@ -11,12 +11,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.servfix.manualesapp.classes.Manual;
 import com.servfix.manualesapp.R;
+import com.servfix.manualesapp.interfaces.ApiService;
+import com.servfix.manualesapp.network.ApiClient;
+import com.servfix.manualesapp.utilities.Constants;
+import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ListViewAdapterManuales extends BaseAdapter
 {
@@ -31,10 +47,6 @@ public class ListViewAdapterManuales extends BaseAdapter
     {
         this.context = context;
         this.TempManualList = listValue;
-
-        //this.TempGastosListFilter = new ArrayList<Gasto>();
-        //this.TempGastosListFilter.addAll(TempGastosList);
-
 
     }
 
@@ -86,26 +98,13 @@ public class ListViewAdapterManuales extends BaseAdapter
         viewItem.txtNombre_manual.setText(String.valueOf(TempManualList.get(position).getNombre_manual()));
         viewItem.txtDescripcion_manual.setText(String.valueOf(TempManualList.get(position).getDescripcion_manual()));
         viewItem.txtNum_paginas.setText(TempManualList.get(position).getPaginas());
-        /*
-        Picasso.get().load(TempManualList.get(position).getPortada())
+
+        Picasso.get().load(TempManualList.get(position).getUrl_portada())
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivPortada);
-        */
-
-        viewItem.ivPortada.setImageBitmap(getBitmapFromEncodedString(TempManualList.get(position).getImagen_detalle()));
 
         return convertView;
     }
-
-    private Bitmap getBitmapFromEncodedString(String encodedImage){
-        if(encodedImage != null) {
-            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-        }else{
-            return null;
-        }
-    }
-
 }
 
 class ViewItemManual

@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -76,7 +77,8 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
     ActivityNuevoCursoBinding binding;
     PreferenceManager preferenceManager;
     private GlobalVariables gv;
-    private String encodedImage, encodedImagenDetalle;
+    public String encodedImage, encodedImagenDetalle;
+    public Bitmap bitmapPortada, bitmapDetalle;
     SweetAlertDialog pDialogo = null;
     private String encodedManualPDF;
     private String fileNameManual;
@@ -118,24 +120,12 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
             tipoSelected = manual.getTipo() - 1;
             binding.spnTipoCurso.setSelection(tipoSelected);
             fileNameManual = manual.getNombre_pdf();
-            /*
-            Picasso.get()(manual.getPortada())
-                    .error(R.drawable.ic_baseline_broken_image_24)
-                    .into(binding.ivImagenCursoTecnicoNuevo);
 
-            Picasso.get().load(manual.getImagen_detalle())
-                    .error(R.drawable.ic_baseline_broken_image_24)
-                    .into(binding.ivImagenCursoTecnicoNuevoFotoDetalle);
-            */
-            if(manual.getPortada() != null) {
-                encodedImage = manual.getPortada();
-                binding.ivImagenCursoTecnicoNuevo.setImageBitmap(getBitmapFromEncodedString(manual.getPortada()));
-            }
+            if(manual.getUrl_portada() != null)
+                new GetImageFromURL(binding.ivImagenCursoTecnicoNuevo).execute(manual.getUrl_portada());
 
-            if(manual.getImagen_detalle() != null) {
-                encodedImagenDetalle = manual.getImagen_detalle();
-                binding.ivImagenCursoTecnicoNuevoFotoDetalle.setImageBitmap(getBitmapFromEncodedString(manual.getImagen_detalle()));
-            }
+            if(manual.getUrl_detalle() != null)
+                new GetImageFromURLDetalle(binding.ivImagenCursoTecnicoNuevoFotoDetalle).execute(manual.getUrl_detalle());
 
             if(manual.getEsgratuito() == 1){
                 binding.checkGratuito.setChecked(true);
@@ -352,10 +342,12 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
 
                     }catch (JSONException e){
                         e.printStackTrace();
+                        pDialogo.dismiss();
                     }
                 }
             }catch (Exception e){
                 e.printStackTrace();
+                pDialogo.dismiss();
             }
 
             return null;
@@ -502,8 +494,8 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
     }
 
     private String encodeImage(Bitmap bitmap){
-        int previewWidth = 150;
-        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        int previewWidth = bitmap.getWidth();
+        int previewHeight = bitmap.getHeight();
         Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         previewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -512,8 +504,8 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
     }
 
     private String encodeImageDetalle(Bitmap bitmap){
-        int previewWidth = 600;
-        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
+        int previewWidth = bitmap.getWidth();
+        int previewHeight = bitmap.getHeight();
         Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         previewBitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -599,6 +591,64 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
             return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         }else{
             return null;
+        }
+    }
+
+    public class GetImageFromURL extends AsyncTask<String, Void, Bitmap>{
+        ImageView imgV;
+
+        public GetImageFromURL(ImageView imgV){
+            this.imgV = imgV;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... url){
+            String urldisplay = url[0];
+            bitmapPortada = null;
+            try {
+                InputStream srt = new java.net.URL(urldisplay).openStream();
+                bitmapPortada = BitmapFactory.decodeStream(srt);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return bitmapPortada;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap){
+            super.onPostExecute(bitmap);
+            imgV.setImageBitmap(bitmap);
+            encodedImage = encodeImage(bitmap);
+        }
+    }
+
+    public class GetImageFromURLDetalle extends AsyncTask<String, Void, Bitmap>{
+        ImageView imgV;
+
+        public GetImageFromURLDetalle(ImageView imgV){
+            this.imgV = imgV;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... url){
+            String urldisplay = url[0];
+            bitmapDetalle = null;
+            try {
+                InputStream srt = new java.net.URL(urldisplay).openStream();
+                bitmapDetalle = BitmapFactory.decodeStream(srt);
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            return bitmapDetalle;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap bitmap){
+            super.onPostExecute(bitmap);
+            imgV.setImageBitmap(bitmap);
+            encodedImagenDetalle = encodeImage(bitmap);
         }
     }
 }

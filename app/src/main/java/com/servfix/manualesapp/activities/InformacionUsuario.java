@@ -188,7 +188,6 @@ public class InformacionUsuario extends AppCompatActivity implements Informacion
                             manual.setNombre_manual(jsonObjectDatos.getString("nombre_manual"));
                             manual.setDescripcion_manual(jsonObjectDatos.getString("descripcion_manual"));
                             manual.setPaginas(jsonObjectDatos.getString("paginas"));
-                            manual.setPortada(jsonObjectDatos.getString("imagen_miniatura"));
                             manual.setPrecio(Double.parseDouble(jsonObjectDatos.getString("precio")));
                             manual.setNombre_categoria(jsonObjectDatos.getString("nombre_categoria"));
                             manual.setCalificacion(Double.parseDouble(jsonObjectDatos.getString("calificacion")));
@@ -197,16 +196,20 @@ public class InformacionUsuario extends AppCompatActivity implements Informacion
                             manual.setId_usuario_tecnico(Integer.parseInt(jsonObjectDatos.getString("id_usuario_creador")));
                             manual.setEsgratuito(Integer.parseInt(jsonObjectDatos.getString("esgratuito")));
                             manual.setObtenido(Integer.parseInt(jsonObjectDatos.getString("obtenido")));
+                            manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObjectDatos.getString("id_manual") + "/"+ jsonObjectDatos.getString("url_portada"));
+                            manual.setUrl_detalle(GlobalVariables.URLServicio + "manuales/" + jsonObjectDatos.getString("id_manual") + "/"+ jsonObjectDatos.getString("url_detalle"));
                             manualList.add(manual);
                         }
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        binding.progressBarInformacionUsuario.setVisibility(View.GONE);
                     }
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                binding.progressBarInformacionUsuario.setVisibility(View.GONE);
             }
             return null;
         }

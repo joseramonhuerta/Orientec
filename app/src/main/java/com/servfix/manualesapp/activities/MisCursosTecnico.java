@@ -194,7 +194,8 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
                             manual.setDescripcion_manual(jsonObject.getString("descripcion_manual"));
                             manual.setPaginas(jsonObject.getString("paginas"));
                             manual.setNombre_pdf(jsonObject.getString("nombrepdf"));
-                            manual.setPortada(jsonObject.getString("imagen_miniatura"));
+                            //manual.setPortada(jsonObject.getString("imagen_miniatura"));
+                            //manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setTipo(Integer.parseInt(jsonObject.getString("tipo")));
                             manual.setTipo_descripcion(jsonObject.getString("tipo_descripcion"));
@@ -202,6 +203,14 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
                             manual.setId_categoria(Integer.parseInt(jsonObject.getString("id_categoria")));
                             manual.setEsgratuito(Integer.parseInt(jsonObject.getString("esgratuito")));
                             manual.setNombre_categoria(jsonObject.getString("nombre_categoria"));
+                            String url_portada = jsonObject.getString("url_portada");
+                            String url_detalle = jsonObject.getString("url_detalle");
+
+                            if(url_portada != null && !url_portada.isEmpty() && !url_portada.equals("null"))
+                                manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ url_portada);
+                            if(url_detalle != null && !url_detalle.isEmpty() && !url_detalle.equals("null"))
+                                manual.setUrl_detalle(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+url_detalle);
+
                             /*manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));*/
 
                             manualesList.add(manual);
@@ -209,11 +218,13 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
+                        pDialogo.dismiss();
                     }
                 }
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
+                pDialogo.dismiss();
             }
             return null;
         }
