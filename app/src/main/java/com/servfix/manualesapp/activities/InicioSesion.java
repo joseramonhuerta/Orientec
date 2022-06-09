@@ -61,6 +61,7 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_inicio_sesion);
         rq = Volley.newRequestQueue(InicioSesion.this);
 
@@ -144,6 +145,7 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
     private void notifications(){
         //registrar usuario a topic
         FirebaseMessaging.getInstance().subscribeToTopic("manuales");
+
 
     }
     private Boolean validarUsuario(){

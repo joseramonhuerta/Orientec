@@ -132,26 +132,54 @@
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/txtPrecioCursoDetalle"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="$ 100.00"
-                    android:textColor="#0071b6"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/txtGratuitoCursoDetalle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/esquinas_redondeadas"
-                    android:text="Gratuito"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:visibility="gone"
-                    />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/txtPrecioCursoDetalle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:text="$ 100.00"
+                            android:textColor="#0071b6"
+                            android:textStyle="bold"
+                            android:textSize="20sp" />
+
+                        <TextView
+                            android:id="@+id/txtGratuitoCursoDetalle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/esquinas_redondeadas"
+                            android:text="Gratuito"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:visibility="gone"
+                            />
+                    </LinearLayout>
+
+
+
+                    <ImageView
+                        android:id="@+id/ivNuevoCursoDetalle"
+                        android:layout_width="90dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end"
+                        android:elevation="3dp"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
+                        android:src="@drawable/icon_new_large"
+                         />
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

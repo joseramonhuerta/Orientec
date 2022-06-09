@@ -24,4 +24,6 @@
 
     <color name="pressed_color">#4d90fe</color>
     <color name="default_color">#ffffff</color>
+    <color name="chat_activo">#014504</color>
+    <color name="chat_inactivo">#9E0404</color>
 </resources>

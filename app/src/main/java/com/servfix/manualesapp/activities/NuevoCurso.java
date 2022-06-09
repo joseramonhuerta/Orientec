@@ -68,11 +68,12 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCategorias.Actualizar{
+public class NuevoCurso extends BaseActivity implements CuadroDialogoCategorias.Actualizar{
     private static final int PICK_IMAGE_REQUEST = 7373;
     int id_manual = 0;
     int id_categoria = 0;
     int tipoSelected = -1;
+    int status_manual = 1;
     Manual manual;
     boolean isNew = true;
     ActivityNuevoCursoBinding binding;
@@ -104,6 +105,8 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
         String[] opciones_tipo = {"Manual", "Video","Asesoria"};
         ArrayAdapter adapter_tipo = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, opciones_tipo);
         binding.spnTipoCurso.setAdapter(adapter_tipo);
+
+        binding.tgbStatus.setChecked(true);
 
     }
     private void loadReceiverDetails(){
@@ -143,6 +146,13 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
                 binding.txtNombreArchivoManual.setText(manual.getNombre_pdf());
             if(tipoSelected == 1)
                 binding.txtURLCursoTecnico.getEditText().setText(manual.getUrl());
+
+            if(manual.getStatus_manual() == 1)
+                binding.tgbStatus.setChecked(true);
+            else
+                binding.tgbStatus.setChecked(false);
+
+            status_manual = manual.getStatus_manual();
 
             validarSeleccionTipoCurso(tipoSelected);
 
@@ -235,6 +245,16 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
             pickImageDetalle.launch(intent);
 
         });
+
+        binding.tgbStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked)
+                    status_manual = 1;
+                else
+                    status_manual = 0;
+            }
+        });
     }
 
     public void guardar(View view){
@@ -302,6 +322,8 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
 
                 if(tipoSelected == 1)
                     parametros.put("url", binding.txtURLCursoTecnico.getEditText().getText().toString());
+
+                parametros.put("status_manual", String.valueOf(status_manual));
 
                 return parametros;
             }
@@ -381,7 +403,7 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
             data.put("titulo", titulo);
             data.put("detalle", detalle);
             data.put("foto", foto);
-            data.put("tipoNotificacion", "Curso");
+            data.put("tipoNotificacion", "2");
 
             JSONObject body = new JSONObject();
             body.put("to","/topics/"+"manuales");
@@ -416,7 +438,7 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
                     }
 
                 }else{
-                    showToast("Error: " + response.code());
+                    showToast("Error Notificacion: " + response.code());
                 }
             }
 
@@ -479,22 +501,23 @@ public class NuevoCurso extends AppCompatActivity implements CuadroDialogoCatego
 
     public boolean validarImagenPortada(){
         boolean valido = false;
-        if(encodedImage == null && encodedImage.isEmpty() && encodedImage.equals("null")){
+        if(encodedImage.length() > 0){
+            valido = true;
+        }else{
+
             Toast.makeText(getApplicationContext(), "Seleccione una imagen para miniatura", Toast.LENGTH_SHORT).show();
             valido = false;
-        }else{
-            valido = true;
         }
         return valido;
     }
 
     public boolean ValidarImagenDetalle(){
         boolean valido =false;
-        if(encodedImagenDetalle == null && encodedImagenDetalle.isEmpty() && encodedImagenDetalle.equals("null")){
+        if(encodedImagenDetalle.length() > 0){
+            valido = true;
+        }else{
             Toast.makeText(getApplicationContext(), "Seleccione una imagen para detalle", Toast.LENGTH_LONG).show();
             valido = false;
-        }else{
-            valido = true;
         }
         return valido;
     }

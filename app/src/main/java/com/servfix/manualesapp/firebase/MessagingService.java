@@ -36,15 +36,17 @@ public class MessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
+        Log.i("FirebaseMessaging", "onMessageReceived");
         if (remoteMessage.getData().size()>0){
 
-            if(remoteMessage.getData().get("tipoNotificacion") == "Chat")
+            int opcion = Integer.parseInt(remoteMessage.getData().get("tipoNotificacion"));
+
+            if( opcion== 1)
             {
                 notificacionChat(remoteMessage);
             }
 
-            if(remoteMessage.getData().get("tipoNotificacion") == "Curso")
+            if(opcion == 2)
             {
                 notificacionCursos(remoteMessage);
             }
@@ -56,6 +58,8 @@ public class MessagingService extends FirebaseMessagingService {
     }
 
     public void notificacionChat(RemoteMessage remoteMessage){
+        Log.i("FirebaseMessaging", "notificacionChat");
+
         ClaseChat chat = new ClaseChat();
         chat.id_usuario_sender = Integer.parseInt(remoteMessage.getData().get("id_usuario_receiver"));
         chat.id_usuario_receiver = Integer.parseInt(remoteMessage.getData().get("id_usuario_sender"));
@@ -77,7 +81,7 @@ public class MessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
-        builder.setSmallIcon(R.drawable.ic_notification);
+        builder.setSmallIcon(R.drawable.ic_notification_orientec);
         builder.setContentTitle(chat.nombre_usuario_receiver);
         builder.setContentText(remoteMessage.getData().get("mensaje"));
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(
@@ -88,6 +92,7 @@ public class MessagingService extends FirebaseMessagingService {
         builder.setAutoCancel(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.i("FirebaseMessaging", "Build.VERSION_CODES.O");
             CharSequence channelName = "Chat Message";
             String channelDescription = "This is the channer description";
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -99,30 +104,41 @@ public class MessagingService extends FirebaseMessagingService {
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
         notificationManagerCompat.notify(notificationId, builder.build());
+        Log.i("FirebaseMessaging", "Notification Sended");
     }
 
     public void notificacionCursos(RemoteMessage remoteMessage){
+        boolean conFoto = true;
         int notificationId = new Random().nextInt();
         String channelId = "mensaje";
-
+        Bitmap imf_foto = null;
         Intent intent = new Intent(this, MenuPrincipal.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         try {
-            Bitmap imf_foto= Picasso.get().load(remoteMessage.getData().get("foto")).get();
 
+            try {
+                imf_foto= Picasso.get().load(remoteMessage.getData().get("foto")).get();
+            } catch (IOException e) {
+               conFoto = false;
+
+            }
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this, channelId);
-            builder.setSmallIcon(R.drawable.ic_notification);
+            builder.setSmallIcon(R.drawable.ic_notification_orientec);
             builder.setContentTitle(remoteMessage.getData().get("titulo"));
             builder.setContentText(remoteMessage.getData().get("detalle"));
-            builder.setStyle(new NotificationCompat.BigPictureStyle()
+            if (conFoto)
+            {
+                builder.setStyle(new NotificationCompat.BigPictureStyle()
                     .bigPicture(imf_foto).bigLargeIcon(null));
+            }
             builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
             builder.setContentIntent(pendingIntent);
             builder.setAutoCancel(true);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.i("FirebaseMessaging", "Build.VERSION_CODES.O");
                 CharSequence channelName = channelId;
                 String channelDescription = "This is the channer description";
                 int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -134,7 +150,9 @@ public class MessagingService extends FirebaseMessagingService {
 
             NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
             notificationManagerCompat.notify(notificationId, builder.build());
-        } catch (IOException e) {
+            Log.i("FirebaseMessaging", "Notification Sended");
+        } catch (Exception e) {
+            Log.i("FirebaseMessaging", "IOException");
             e.printStackTrace();
 
         }

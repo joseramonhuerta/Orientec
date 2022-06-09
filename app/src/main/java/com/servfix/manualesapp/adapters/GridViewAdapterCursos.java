@@ -101,7 +101,7 @@ public class GridViewAdapterCursos extends BaseAdapter {
             viewItem.txtGratuitoCurso = (TextView)convertView.findViewById(R.id.txtGratuitoCurso);
             viewItem.btnComprarCurso = (Button)convertView.findViewById(R.id.btnComprarCurso);
             viewItem.txtCalificacion = (TextView)convertView.findViewById(R.id.txtCalificacionCurso);
-
+            viewItem.ivNuevoCurso = (ImageView)convertView.findViewById(R.id.ivNuevoCurso);
             convertView.setTag(viewItem);
         }
         else
@@ -117,6 +117,12 @@ public class GridViewAdapterCursos extends BaseAdapter {
             viewItem.txtGratuitoCurso.setVisibility(View.VISIBLE);
         }else{
             viewItem.txtPrecioCurso.setText("$ " + getPrecioFormatoMoneda(manualesArray.get(position).getPrecio()));
+        }
+
+        if(manualesArray.get(position).getEsnuevo() == 1){
+            viewItem.ivNuevoCurso.setVisibility(View.VISIBLE);
+        }else{
+            viewItem.ivNuevoCurso.setVisibility(View.GONE);
         }
 
 
@@ -170,7 +176,7 @@ class ViewItemCurso
     TextView txtGratuitoCurso;
     TextView txtCalificacion;
     ImageView ivImagenCurso;
-
+    ImageView ivNuevoCurso;
     Button btnComprarCurso;
 
 

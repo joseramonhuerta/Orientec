@@ -17,7 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/layMensajes"
+        android:layout_above="@+id/layBotonesChat"
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
@@ -108,24 +108,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            app:stackFromEnd="true"
+            android:divider="@null"
             android:overScrollMode="never"
             android:scrollbars="none"
-            android:divider="@null"
+            app:stackFromEnd="true"
 
             >
 
         </androidx.recyclerview.widget.RecyclerView>
 
     </LinearLayout>
+
     <LinearLayout
-        android:id="@+id/layMensajes"
-        android:layout_margin="5dp"
+        android:id="@+id/layBotonesChat"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layMensajes"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <EditText
@@ -149,9 +158,7 @@
             android:id="@+id/layoutSend"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="12dp"
+
             android:background="@drawable/background_chat_input"
             >
 
@@ -166,6 +173,15 @@
             app:tint="@color/white" />
         </FrameLayout>
 
+
+    </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCerrarChat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Finalizar chat"
+            android:layout_gravity="center_horizontal"/>
 
     </LinearLayout>
 

@@ -97,6 +97,13 @@ public class InformacionUsuarioAdapter extends RecyclerView.Adapter<InformacionU
                 binding.txtPrecioInformacionUsuario.setText("$ " + getPrecioFormatoMoneda(manual.getPrecio()));
                 binding.txtGratuitoInformacionUsuario.setVisibility(View.GONE);
             }
+
+            if(manual.getEsnuevo() == 1){
+                binding.ivNuevoInformacion.setVisibility(View.VISIBLE);
+            }else{
+                binding.ivNuevoInformacion.setVisibility(View.GONE);
+            }
+
             binding.getRoot().setOnClickListener(v -> {
 
                 informacionUsuarioListener.onInformacionUsuarioClicked(manual);

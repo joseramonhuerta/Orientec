@@ -16,6 +16,8 @@ public class ClaseChat implements Serializable {
     public String id_usuario_firebase_sender;
     public String token;
     public double calificacion;
+    public int status_manual;
+    public int puede_calificar;
     /*
     public int getId_usuario_manual() {
         return id_usuario_manual;

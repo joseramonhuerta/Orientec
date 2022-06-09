@@ -30,7 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursosVendidos extends AppCompatActivity {
+public class CursosVendidos extends BaseActivity {
     ActivityCursosVendidosBinding binding;
     View mView;
     String FinalJSonObject;

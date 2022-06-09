@@ -6,150 +6,174 @@
             name="ListviewItemInformacionUsuarioBinding"
             type="com.servfix.manualesapp.classes.Manual" />
     </data>
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
-        app:cardBackgroundColor="#fff"
-        app:cardElevation="3dp"
-        app:cardCornerRadius="5dp"
-        app:cardUseCompatPadding="true"
         >
-        <LinearLayout
+
+        <ImageView
+            android:id="@+id/ivNuevoInformacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:elevation="5dp"
+            android:scaleType="fitXY"
+            android:visibility="gone"
+            android:src="@drawable/icon_new_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:layout_margin="0dp">
+            android:background="#fff"
+            app:cardBackgroundColor="#fff"
+            app:cardElevation="3dp"
+            app:cardCornerRadius="5dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
 
+            >
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_margin="5dp">
+                android:animateLayoutChanges="true"
+                android:layout_margin="0dp">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp">
-
-                <ImageView
-                    android:id="@+id/ivImagenInformacionUsuario"
-                    android:layout_width="120dp"
-                    android:layout_height="80dp"
-                    />
-
-                    <TextView
-                        android:id="@+id/txtCategoriaInformacionUsuario"
-                        android:background="@drawable/esquinas_redondeadas_linea"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="1dp"
-                        android:padding="5dp"
-                        android:text="Lavadoras"
-                        android:textSize="14dp"
-                        android:textColor="@color/white"
-                        android:textStyle="bold|italic"
-
-                        />
-                </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10px"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp">
 
-
-                    <TextView
-                        android:id="@+id/txtNombreInformacionUsuario"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Titulo del Manual"
-                        android:textSize="18dp"
-                        android:textColor="@color/primary_text"
+                        android:orientation="vertical"
+                        android:layout_margin="5dp">
 
+                    <ImageView
+                        android:id="@+id/ivImagenInformacionUsuario"
+                        android:layout_width="120dp"
+                        android:layout_height="80dp"
                         />
 
-                    <TextView
-                        android:id="@+id/txtDescripcionInformacionUsuario"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Descripcion larga del curso, curso para mantenimiento de lavadoras"
-                        android:textSize="14dp"
-                        android:textColor="@color/secondary_text"
+                        <TextView
+                            android:id="@+id/txtCategoriaInformacionUsuario"
+                            android:background="@drawable/esquinas_redondeadas_linea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:padding="5dp"
+                            android:text="Lavadoras"
+                            android:textSize="14dp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold|italic"
 
-                        />
-
-                    <TextView
-                        android:id="@+id/txtPaginasInformacionUsuario"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="16 páginas"
-                        android:textSize="16dp"
-                        android:textColor="@color/greyblack"
-
-                        />
-
+                            />
+                    </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:layout_marginLeft="10px"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
 
                         <TextView
-                            android:id="@+id/txtPrecioInformacionUsuario"
-                            android:layout_width="wrap_content"
+                            android:id="@+id/txtNombreInformacionUsuario"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="$ 100.00"
-                            android:textSize="22dp"
-                            android:textColor="@color/secondary_text"
-                            android:textStyle="bold|italic"
+                            android:text="Titulo del Manual"
+                            android:textSize="18dp"
+                            android:textColor="@color/primary_text"
+
                             />
 
                         <TextView
-                            android:id="@+id/txtGratuitoInformacionUsuario"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:gravity="center"
-                            android:background="@drawable/esquinas_redondeadas"
-                            android:text="Gratuito"
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:textSize="22dp"
-                            android:visibility="gone"/>
-
-                        <Space
+                            android:id="@+id/txtDescripcionInformacionUsuario"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"/>
+                            android:text="Descripcion larga del curso, curso para mantenimiento de lavadoras"
+                            android:textSize="14dp"
+                            android:textColor="@color/secondary_text"
+
+                            />
+
+                        <TextView
+                            android:id="@+id/txtPaginasInformacionUsuario"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="16 páginas"
+                            android:textSize="16dp"
+                            android:textColor="@color/greyblack"
+
+                            />
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
                             android:orientation="horizontal">
 
-                            <ImageView
-                                android:id="@+id/rtCalificacionInformacionUsuario"
-                                android:layout_width="25dp"
-                                android:layout_height="25dp"
-                                android:src="@drawable/star"></ImageView>
-
-
                             <TextView
-                                android:id="@+id/txtCalificacionInformacionUsuario"
+                                android:id="@+id/txtPrecioInformacionUsuario"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
+                                android:text="$ 100.00"
+                                android:textSize="22dp"
+                                android:textColor="@color/secondary_text"
+                                android:textStyle="bold|italic"
+                                />
+
+                            <TextView
+                                android:id="@+id/txtGratuitoInformacionUsuario"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center_horizontal"
-                                android:text="0.0"
-                                android:textColor="@color/greyblack"
-                                android:textSize="20sp" />
+                                android:gravity="center"
+                                android:background="@drawable/esquinas_redondeadas"
+                                android:text="Gratuito"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="22dp"
+                                android:visibility="gone"/>
+
+                            <Space
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"/>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center_horizontal"
+                                android:orientation="horizontal">
+
+                                <ImageView
+                                    android:id="@+id/rtCalificacionInformacionUsuario"
+                                    android:layout_width="25dp"
+                                    android:layout_height="25dp"
+                                    android:src="@drawable/star"></ImageView>
+
+
+                                <TextView
+                                    android:id="@+id/txtCalificacionInformacionUsuario"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="0.0"
+                                    android:textColor="@color/greyblack"
+                                    android:textSize="20sp" />
+
+
+                            </LinearLayout>
 
 
                         </LinearLayout>
-
 
                     </LinearLayout>
 
@@ -157,8 +181,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
 
-
-    </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

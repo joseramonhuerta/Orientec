@@ -382,6 +382,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
                             manual.setId_usuario_tecnico(Integer.parseInt(jsonObject.getString("id_usuario_creador")));
                             manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_portada"));
                             manual.setUrl_detalle(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_detalle"));
+                            manual.setEsnuevo(Integer.parseInt(jsonObject.getString("esnuevo")));
                             manualesList.add(manual);
                         }
                     } catch (JSONException e) {

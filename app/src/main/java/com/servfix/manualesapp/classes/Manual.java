@@ -30,6 +30,9 @@ public class Manual implements Serializable {
     double calificacion;
     String url_portada;
     String url_detalle;
+    int status_manual;
+    int esnuevo;
+    int puede_calificar;
 
     public double getPrecio() {
         return precio;
@@ -244,4 +247,29 @@ public class Manual implements Serializable {
     public void setUrl_detalle(String url_detalle) {
         this.url_detalle = url_detalle;
     }
+
+    public void setStatus_manual(int status_manual){
+        this.status_manual = status_manual;
+    }
+
+    public int getStatus_manual(){
+        return status_manual;
+    }
+
+    public int getEsnuevo() {
+        return esnuevo;
+    }
+
+    public void setEsnuevo(int esnuevo) {
+        this.esnuevo = esnuevo;
+    }
+
+    public int getPuede_calificar() {
+        return puede_calificar;
+    }
+
+    public void setPuede_calificar(int puede_calificar) {
+        this.puede_calificar = puede_calificar;
+    }
+
 }

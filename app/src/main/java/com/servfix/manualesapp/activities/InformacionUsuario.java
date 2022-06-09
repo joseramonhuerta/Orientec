@@ -43,7 +43,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InformacionUsuario extends AppCompatActivity implements InformacionUsuarioListener {
+public class InformacionUsuario extends BaseActivity implements InformacionUsuarioListener {
     ActivityInformacionUsuarioBinding binding;
     int id_usuario = 0;
     GlobalVariables globalVariables;
@@ -198,6 +198,7 @@ public class InformacionUsuario extends AppCompatActivity implements Informacion
                             manual.setObtenido(Integer.parseInt(jsonObjectDatos.getString("obtenido")));
                             manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObjectDatos.getString("id_manual") + "/"+ jsonObjectDatos.getString("url_portada"));
                             manual.setUrl_detalle(GlobalVariables.URLServicio + "manuales/" + jsonObjectDatos.getString("id_manual") + "/"+ jsonObjectDatos.getString("url_detalle"));
+                            manual.setEsnuevo(Integer.parseInt(jsonObjectDatos.getString("esnuevo")));
                             manualList.add(manual);
                         }
                     } catch (JSONException e) {

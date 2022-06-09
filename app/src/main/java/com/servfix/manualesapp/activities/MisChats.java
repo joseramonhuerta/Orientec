@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MisChats extends AppCompatActivity implements ConversacionesListerner {
+public class MisChats extends BaseActivity implements ConversacionesListerner {
     private User receiverUser;
     private List<MensajeChat> conversations;
     private ConversacionesAdapter conversationsAdapter;
@@ -57,8 +57,6 @@ public class MisChats extends AppCompatActivity implements ConversacionesListern
         //getToken();
         setListeners();
         listenConversations();
-
-
     }
 
     private void setListeners(){
@@ -102,7 +100,8 @@ public class MisChats extends AppCompatActivity implements ConversacionesListern
                         mensajeChat.imagen_conversacion = documentChange.getDocument().getString(Constants.KEY_IMAGEN_RECIBE);
                         mensajeChat.nombre_usuario_envia = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_ENVIA);
                         mensajeChat.nombre_usuario_recibe = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_RECIBE);
-                        mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_RECIBE);
+                        //mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_RECIBE);
+                        mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_MANUAL);
                         mensajeChat.id_usuario_firebase_envia = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE);
                         mensajeChat.id_usuario_firebase_recibe = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE);
 
@@ -110,7 +109,8 @@ public class MisChats extends AppCompatActivity implements ConversacionesListern
                         mensajeChat.imagen_conversacion = documentChange.getDocument().getString(Constants.KEY_IMAGEN);
                         mensajeChat.nombre_usuario_envia = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_RECIBE);
                         mensajeChat.nombre_usuario_recibe = documentChange.getDocument().getString(Constants.KEY_NOMBRE_USUARIO_ENVIA);
-                        mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_ENVIA);
+                        //mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_ENVIA);
+                        mensajeChat.id_conversacion = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_MANUAL);
                         mensajeChat.id_usuario_firebase_envia = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE);
                         mensajeChat.id_usuario_firebase_recibe = documentChange.getDocument().getString(Constants.KEY_ID_USUARIO_FIREBASE);
                     }
@@ -118,6 +118,8 @@ public class MisChats extends AppCompatActivity implements ConversacionesListern
                     mensajeChat.nombre_manual_conversacion = documentChange.getDocument().getString(Constants.KEY_NOMBRE_MANUAL);
                     mensajeChat.ultimo_mensaje = documentChange.getDocument().getString(Constants.KEY_ULTIMO_MENSAJE);
                     mensajeChat.fecha_conversacion = getReadableDateTime(documentChange.getDocument().getDate(Constants.KEY_FECHA_MENSAJE));
+                    mensajeChat.status = documentChange.getDocument().getString(Constants.KEY_CONVERSATIONS_STATUS);
+                    mensajeChat.puede_calificar = 0;
                     conversations.add(mensajeChat);
 
 
@@ -128,6 +130,7 @@ public class MisChats extends AppCompatActivity implements ConversacionesListern
                         if(conversations.get(i).id_usuario_envia.equals(senderId) && conversations.get(i).id_usuario_recibe.equals(receiverId)){
                             conversations.get(i).ultimo_mensaje = documentChange.getDocument().getString(Constants.KEY_ULTIMO_MENSAJE);
                             conversations.get(i).fecha_conversacion = getReadableDateTime(documentChange.getDocument().getDate(Constants.KEY_FECHA_MENSAJE));
+                            conversations.get(i).status = documentChange.getDocument().getString(Constants.KEY_CONVERSATIONS_STATUS);
                             break;
                         }
                     }
@@ -170,11 +173,12 @@ public class MisChats extends AppCompatActivity implements ConversacionesListern
         return fechaFormateada;
     }
 
-
     @Override
     public void onConversionClicked(ClaseChat claseChat) {
         Intent intent = new Intent(MisChats.this, ChatSoporte.class);
         intent.putExtra("manual", (Serializable) claseChat);
         startActivity(intent);
     }
+
+
 }

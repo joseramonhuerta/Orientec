@@ -25,7 +25,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="5dp">
 
@@ -41,7 +41,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15px"
                 android:orientation="vertical">
 
@@ -89,6 +89,17 @@
 
                         />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/txtStatusConversacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/primary_text"
+
+                    />
 
             </LinearLayout>
         </LinearLayout>

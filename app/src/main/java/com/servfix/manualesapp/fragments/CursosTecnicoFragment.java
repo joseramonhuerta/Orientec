@@ -226,7 +226,7 @@ public class CursosTecnicoFragment extends Fragment implements SwipeRefreshLayou
                             manual.setId_categoria(Integer.parseInt(jsonObject.getString("id_categoria")));
                             manual.setEsgratuito(Integer.parseInt(jsonObject.getString("esgratuito")));
                             manual.setNombre_categoria(jsonObject.getString("nombre_categoria"));
-
+                            manual.setStatus_manual(Integer.parseInt(jsonObject.getString("status_manual")));
                             manualesList.add(manual);
                         }
                     } catch (JSONException e) {

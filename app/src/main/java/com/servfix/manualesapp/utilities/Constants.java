@@ -46,6 +46,7 @@ public class Constants {
     public static final String KEY_ID_USUARIO_FIREBASE_RECIBE = "id_usuario_firebase_recibe";
     public static final String KEY_ULTIMO_MENSAJE = "ultimo_mensaje";
     public static final String KEY_FECHA_MENSAJE = "fecha_mensaje";
+    public static final String KEY_CONVERSATIONS_STATUS = "status";
 
     public static HashMap<String, String> remoteMsgHeaders = null;
 

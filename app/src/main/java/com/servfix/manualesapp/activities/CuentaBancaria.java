@@ -31,7 +31,7 @@ import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class CuentaBancaria extends AppCompatActivity {
+public class CuentaBancaria extends BaseActivity {
     int id_usuario = 0;
     ActivityCuentaBancariaBinding binding;
     PreferenceManager preferenceManager;

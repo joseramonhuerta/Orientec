@@ -416,6 +416,33 @@
                                     android:text="Ejemplo: https://player.vimeo.com/video/681925414/config" />
                             </LinearLayout>
 
+                            <LinearLayout
+                                android:id="@+id/layStatus"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="18sp"
+                                    android:text="Estatus: "/>
+
+                                <ToggleButton
+                                    android:id="@+id/tgbStatus"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
+                                    android:layout_centerHorizontal="true"
+                                    android:layout_centerVertical="true"
+                                    android:background="@drawable/toggle_selector"
+                                    android:checked="false"
+                                    android:text=""
+                                    android:textOff=""
+                                    android:textOn="" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                     </LinearLayout>

@@ -76,6 +76,7 @@ public class ListViewAdapterManualesTecnico extends BaseAdapter
             viewItem.txtPrecio = (TextView)convertView.findViewById(R.id.txtPrecioManualTecnico);
 
             viewItem.ivPortada = (ImageView) convertView.findViewById(R.id.ivManualTecnico);
+            viewItem.ivStatusManual = (ImageView) convertView.findViewById(R.id.ivStatusManual);
 
 
             convertView.setTag(viewItem);
@@ -94,7 +95,11 @@ public class ListViewAdapterManualesTecnico extends BaseAdapter
                 .error(R.drawable.ic_baseline_broken_image_24)
                 .into(viewItem.ivPortada);
 
-        //viewItem.ivPortada.setImageBitmap(getBitmapFromEncodedString(TempManualList.get(position).getPortada()));
+        if(TempManualList.get(position).getStatus_manual() == 1)
+            viewItem.ivStatusManual.setImageResource(R.drawable.toggle_on);
+        else
+            viewItem.ivStatusManual.setImageResource(R.drawable.toggle_off);
+
 
         return convertView;
     }
@@ -126,6 +131,7 @@ class ViewItemManualTecnico
     TextView txtNum_paginas;
     TextView txtPrecio;
     ImageView ivPortada;
+    ImageView ivStatusManual;
 
 
 

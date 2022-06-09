@@ -32,7 +32,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EstadoCuenta extends AppCompatActivity {
+public class EstadoCuenta extends BaseActivity {
     ActivityEstadoCuentaBinding binding;
     View mView;
     String FinalJSonObject;

@@ -41,7 +41,7 @@ import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class MisCursosTecnico extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
     Context mContext;
     View mView;
     SwipeRefreshLayout swipeContainer;
@@ -211,7 +211,7 @@ public class MisCursosTecnico extends AppCompatActivity implements SwipeRefreshL
                             if(url_detalle != null && !url_detalle.isEmpty() && !url_detalle.equals("null"))
                                 manual.setUrl_detalle(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+url_detalle);
 
-                            /*manual.setImagen_detalle(jsonObject.getString("imagen_detalle"));*/
+                            manual.setStatus_manual(Integer.parseInt(jsonObject.getString("status_manual")));
 
                             manualesList.add(manual);
                         }

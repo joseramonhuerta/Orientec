@@ -32,7 +32,7 @@ import java.util.Date;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-public class MiBilletera extends AppCompatActivity {
+public class MiBilletera extends BaseActivity {
     ActivityMiBilleteraBinding binding;
     String FechaInicio;
     String FechaFin;

@@ -116,9 +116,9 @@ public class CuadroDialogoSeleccionarFormaPago extends DialogFragment {
         btnOxxo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //aceptarSolicitud();
-                dialogo.dismiss();
-                listener.formaPagoConfirmada(4);
+                ////aceptarSolicitud();
+                //dialogo.dismiss();
+                //listener.formaPagoConfirmada(4);
 
             }
         });

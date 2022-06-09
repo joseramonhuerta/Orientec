@@ -2,15 +2,18 @@
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.servfix.manualesapp.ClaseChat;
 import com.servfix.manualesapp.MensajeChat;
+import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.databinding.ListviewItemsConversacionesBinding;
 import com.servfix.manualesapp.listeners.ConversacionesListerner;
 
@@ -63,6 +66,18 @@ public class ConversacionesAdapter extends RecyclerView.Adapter<ConversacionesAd
             binding.txtNombreManualConversacion.setText(chatMessage.nombre_manual_conversacion);
             binding.txtRecentMessageConversacion.setText(chatMessage.ultimo_mensaje);
             binding.txtRecentDateConversacion.setText(chatMessage.fecha_conversacion);
+            if(Integer.parseInt(chatMessage.status) == 1) {
+                binding.txtStatusConversacion.setText("Activo");
+                binding.txtStatusConversacion.setTextColor(Color.parseColor("#014504"));
+            }else{
+                binding.txtStatusConversacion.setText("Inactivo");
+                binding.txtStatusConversacion.setTextColor(Color.parseColor("#9E0404"));
+
+            }
+
+
+
+
             binding.getRoot().setOnClickListener(v -> {
                 ClaseChat chat = new ClaseChat();
                 chat.id_usuario_manual = Integer.parseInt(chatMessage.id_usuario_manual);

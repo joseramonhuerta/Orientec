@@ -47,7 +47,7 @@ public class ReproductorVimeo extends AppCompatActivity implements View.OnClickL
 
         //Reference exoplayer view
         playerView = findViewById(R.id.video_view);
-        Button playBtn = findViewById(R.id.button2);
+
         ImageView btnAtrasVimeo = findViewById(R.id.btnAtrasVimeo);
 
         //VIMDEO_ID = "669513404";
@@ -55,8 +55,6 @@ public class ReproductorVimeo extends AppCompatActivity implements View.OnClickL
         manual = (Manual) intent.getExtras().getSerializable("manual");
 
         URL_VIMEO = manual.getUrl();
-
-        playBtn.setOnClickListener(this);
 
         btnAtrasVimeo.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -69,6 +69,7 @@ public class DetalleManual extends AppCompatActivity {
     TextView txtNombreUsuario;
     ImageView ivImagenUsuario;
     LinearLayout layInfoUsuarioCurso;
+    ImageView ivNuevoCursoDetalle;
 
     GlobalVariables vg;
     SweetAlertDialog pDialogo;
@@ -98,6 +99,7 @@ public class DetalleManual extends AppCompatActivity {
         txtNombreUsuario = (TextView) findViewById(R.id.txtNombreUsuarioCurso);
         layInfoUsuarioCurso = (LinearLayout) findViewById(R.id.layInfoUsuarioCurso);
         txtGratuitoCursoDetalle = (TextView) findViewById(R.id.txtGratuitoCursoDetalle);
+        ivNuevoCursoDetalle = (ImageView) findViewById(R.id.ivNuevoCursoDetalle);
 
         vg = new GlobalVariables();
         id_usuario = vg.id_usuario;
@@ -114,6 +116,12 @@ public class DetalleManual extends AppCompatActivity {
             txtGratuitoCursoDetalle.setVisibility(View.VISIBLE);
         }else {
             txtPrecioCursoDetalle.setText("$ " + getPrecioFormatoMoneda(manual.getPrecio()));
+        }
+
+        if(manual.getEsnuevo() == 1){
+            ivNuevoCursoDetalle.setVisibility(View.VISIBLE);
+        }else {
+            ivNuevoCursoDetalle.setVisibility(View.GONE);
         }
 
         txtCalificacion.setText(String.valueOf(getPrecioFormatoMoneda(manual.getCalificacion())));

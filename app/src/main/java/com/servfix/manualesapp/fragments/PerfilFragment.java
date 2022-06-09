@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.servfix.manualesapp.PerfilUsuario;
+import com.servfix.manualesapp.activities.AvisoPrivacidad;
 import com.servfix.manualesapp.activities.MiBilletera;
 import com.servfix.manualesapp.activities.MisChats;
 import com.servfix.manualesapp.activities.MisCursosTecnico;
@@ -59,6 +60,7 @@ public class PerfilFragment extends Fragment {
     CardView layCursos;
     CardView layChats;
     CardView layBilletera;
+    CardView layAvisoPrivacidad;
     ProgressBar progressBarMiCuenta;
     View mView;
 
@@ -92,6 +94,7 @@ public class PerfilFragment extends Fragment {
         layCursos = (CardView) view.findViewById(R.id.layCursos);
         layChats = (CardView) view.findViewById(R.id.layChats);
         layBilletera = (CardView) view.findViewById(R.id.layBilletera);
+        layAvisoPrivacidad = (CardView) view.findViewById(R.id.layAvisoPrivacidad);
         progressBarMiCuenta = (ProgressBar) view.findViewById(R.id.progressBarMiCuenta);
 
         preferenceManager = new PreferenceManager(getContext());
@@ -141,6 +144,16 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), MiBilletera.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+
+            }
+        });
+
+        layAvisoPrivacidad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), AvisoPrivacidad.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
 

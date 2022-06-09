@@ -259,6 +259,7 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                             manual.setId_usuario_firebase_sender(jsonObject.getString("id_usuario_firebase_sender"));
                             manual.setCalificacion(Double.parseDouble(jsonObject.getString("calificacion")));
                             manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_portada"));
+                            manual.setPuede_calificar(1);
                             manualesList.add(manual);
                         }
                     } catch (JSONException e) {

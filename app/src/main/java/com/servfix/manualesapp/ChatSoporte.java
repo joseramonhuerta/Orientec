@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.servfix.manualesapp.activities.BaseActivity;
+import com.servfix.manualesapp.activities.CarritoCompras;
 import com.servfix.manualesapp.databinding.ActivityChatSoporteBinding;
 import com.servfix.manualesapp.fragments.CuadroDialogoRankin;
 import com.servfix.manualesapp.interfaces.ApiService;
@@ -42,6 +44,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,7 +59,9 @@ public class ChatSoporte extends BaseActivity {
     private FirebaseFirestore database;
     private String receiverToken ="";
     private Boolean isReceiverAvailable = false;
+    private Boolean isChatAvailable = false;
     private String conversationId = null;
+    private int conversationStatus = -1;
     private PreferenceManager preferenceManager;
 
     @Override
@@ -108,6 +113,7 @@ public class ChatSoporte extends BaseActivity {
             conversion.put(Constants.KEY_ID_USUARIO_FIREBASE_RECIBE, manual.id_usuario_firebase_receiver);
             conversion.put(Constants.KEY_ULTIMO_MENSAJE, binding.txtSendMessage.getText().toString());
             conversion.put(Constants.KEY_FECHA_MENSAJE, new Date());
+            conversion.put(Constants.KEY_CONVERSATIONS_STATUS, "1");
             addConversion(conversion);
         }
         if(!isReceiverAvailable){
@@ -124,7 +130,7 @@ public class ChatSoporte extends BaseActivity {
                 data.put("nombre_manual", manual.nombre_manual);
                 data.put("id_usuario_firebase", manual.id_usuario_firebase_receiver);
                 data.put("id_usuario_firebase_sender", manual.id_usuario_firebase_sender);
-                data.put("tipoNotificacion", "Chat");
+                data.put("tipoNotificacion", "1");
                 /*data.put("imagen", manual.imagen_sender);*/
                 //data.put("fcmToken", gv.fcmToken);
                 data.put("mensaje", binding.txtSendMessage.getText().toString());
@@ -176,8 +182,10 @@ public class ChatSoporte extends BaseActivity {
         binding.txtUsuarioChat.setText(manual.nombre_usuario_receiver);
         binding.ivProfileChat.setImageBitmap(getBitmapFromEncodedString(manual.imagen_receiver));
 
-        if(!(manual.calificacion > 0)){
-            calificar();
+        if(manual.puede_calificar == 1) {
+            if (!(manual.calificacion > 0)) {
+                calificar();
+            }
         }
     }
 
@@ -193,6 +201,29 @@ public class ChatSoporte extends BaseActivity {
 
             }
         });
+
+        binding.btnCerrarChat.setOnClickListener(view->{
+            SweetAlertDialog sDialog = new SweetAlertDialog(ChatSoporte.this, SweetAlertDialog.WARNING_TYPE);
+            sDialog.setTitleText("Desea finalizar la asesoria?");
+            //sDialog.setContentText("No se podra recuperar si es eliminada");
+            sDialog.setConfirmText("SI");
+            sDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sDialog) {
+                    sDialog.dismissWithAnimation();
+
+                    closeConversion();
+                }
+            })
+                    .setCancelButton("NO", new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                        }
+                    });
+            sDialog.show();
+        });
+
     }
 
     private Boolean validarMensaje(){
@@ -207,7 +238,7 @@ public class ChatSoporte extends BaseActivity {
     }
 
     private void listenAvailabilityReceiver(){
-        database.collection("users").document(
+        database.collection(Constants.KEY_USERS).document(
                 manual.id_usuario_firebase_receiver
         ).addSnapshotListener(ChatSoporte.this, (value, error) ->{
            if(error != null){
@@ -222,7 +253,7 @@ public class ChatSoporte extends BaseActivity {
                }
                receiverToken = value.getString(Constants.KEY_FCM_TOKEN);
                if(manual.imagen_receiver == null){
-                   manual.imagen_sender = value.getString("imagen");
+                   manual.imagen_sender = value.getString(Constants.KEY_IMAGEN);
                    chatAdapter.setReceiverProfileImage(getBitmapFromEncodedString(manual.imagen_sender));
                    binding.ivProfileChat.setImageBitmap(getBitmapFromEncodedString(manual.imagen_sender));
                    chatAdapter.notifyItemRangeChanged(0, chatMessages.size());
@@ -236,9 +267,32 @@ public class ChatSoporte extends BaseActivity {
         });
     }
 
+    private void listenAvailabilityChat(){
+        //Constants.KEY_CONVERSATIONS).document(conversationId
+        database.collection(Constants.KEY_CONVERSATIONS).document(
+                conversationId
+        ).addSnapshotListener(ChatSoporte.this, (value, error) ->{
+            if(error != null){
+                return;
+            }
+            if(value != null){
+                if(value.getString(Constants.KEY_CONVERSATIONS_STATUS) != null){
+                    int availability = Integer.parseInt((String) value.getString(Constants.KEY_CONVERSATIONS_STATUS));
+                    isChatAvailable = availability == 1;
+                }
+
+            }
+            if(isChatAvailable){
+                binding.layBotonesChat.setVisibility(View.VISIBLE);
+            }else{
+                binding.layBotonesChat.setVisibility(View.GONE);
+            }
+        });
+    }
+
     private void listenMessages(){
-        database.collection("chats")
-                .whereEqualTo("id_usuario_manual", String.valueOf(manual.id_usuario_manual))
+        database.collection(Constants.KEY_CHATS)
+                .whereEqualTo(Constants.KEY_ID_USUARIO_MANUAL, String.valueOf(manual.id_usuario_manual))
                 .addSnapshotListener(eventListener);
     }
 
@@ -246,8 +300,8 @@ public class ChatSoporte extends BaseActivity {
         binding.progressBarChat.setVisibility(View.GONE);
         if(error != null){
           return;
-      }
-      if(value != null){
+        }
+        if(value != null){
            int count = chatMessages.size();
            for(DocumentChange documentChange : value.getDocumentChanges()){
                if(documentChange.getType() == DocumentChange.Type.ADDED){
@@ -273,6 +327,8 @@ public class ChatSoporte extends BaseActivity {
                checkForConversion();
            }
 
+
+
            if(chatMessages.size() > 0)
                binding.listviewChat.smoothScrollToPosition(chatMessages.size() - 1);
       }
@@ -294,6 +350,14 @@ public class ChatSoporte extends BaseActivity {
         documentReference.update(Constants.KEY_ULTIMO_MENSAJE, message, Constants.KEY_FECHA_MENSAJE, new Date());
     }
 
+    private void closeConversion(){
+        DocumentReference documentReference =
+                database.collection(Constants.KEY_CONVERSATIONS).document(conversationId);
+        documentReference.update(Constants.KEY_CONVERSATIONS_STATUS, "0");
+        conversationStatus = 0;
+        //checkForConversionActive();
+    }
+
     private void checkForConversion(){
         if(chatMessages.size() != 0){
             checkForConversionRemotely(String.valueOf(manual.id_usuario_manual));
@@ -311,6 +375,9 @@ public class ChatSoporte extends BaseActivity {
         if(task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0){
             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
             conversationId = documentSnapshot.getId();
+            conversationStatus = Integer.parseInt((String) documentSnapshot.get(Constants.KEY_CONVERSATIONS_STATUS));
+            //checkForConversionActive();
+            listenAvailabilityChat();
         }
     };
 
@@ -356,6 +423,7 @@ public class ChatSoporte extends BaseActivity {
     protected void onResume() {
         super.onResume();
         listenAvailabilityReceiver();
+        //listenAvailabilityChat();
     }
 
     private void calificar(){
@@ -364,5 +432,13 @@ public class ChatSoporte extends BaseActivity {
         CuadroDialogoRankin editNameDialogFragment = new CuadroDialogoRankin(getApplicationContext(), manual.id_usuario_manual, manual.id_manual);
 
         editNameDialogFragment.show(fm, "fragment_edit_name");
+    }
+
+    private void checkForConversionActive(){
+        if(conversationStatus == 0){
+            binding.layBotonesChat.setVisibility(View.GONE);
+        }else{
+            binding.layBotonesChat.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -2,6 +2,7 @@ package com.servfix.manualesapp;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -37,6 +38,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.servfix.manualesapp.activities.InicioSesion;
 import com.servfix.manualesapp.utilities.GlobalVariables;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +62,7 @@ public class Registrarse extends AppCompatActivity {
     ProgressBar progressBar;
     String encodedImage = "";
     FrameLayout layoutImage;
+    private int IMAGE_PICK_GALLERY_CODE = 100;
 
     RequestQueue rq;
     JsonRequest jrq;
@@ -114,12 +118,55 @@ public class Registrarse extends AppCompatActivity {
         layoutImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                pickImage.launch(intent);
+                pickImage.launch(intent);*/
+                pickImageFromGallery();
             }
         });
 
+
+    }
+
+    private void pickImageFromGallery(){
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, IMAGE_PICK_GALLERY_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK) {
+            if (requestCode == IMAGE_PICK_GALLERY_CODE) {
+                CropImage.activity(data.getData())
+                        .setGuidelines(CropImageView.Guidelines.ON)
+                        .setAspectRatio(1, 1)
+                        .start(Registrarse.this);
+            } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    InputStream inputStream = null;
+                    try {
+
+                        inputStream = getContentResolver().openInputStream(resultUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        ivProfile.setImageBitmap(bitmap);
+                        txtAgregarImagen.setVisibility(View.GONE);
+                        encodedImage = encodeImage(bitmap);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                    Toast.makeText(this, "" + error, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
 
     }
 
