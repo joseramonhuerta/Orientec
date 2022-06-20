@@ -80,6 +80,9 @@ public class CursosVendidosAdapter extends RecyclerView.Adapter<CursosVendidosAd
             binding.txtNombreCursoVendido.setText(manual.getNombre_manual());
             binding.txtCategoriaCursoVendido.setText(manual.getNombre_categoria());
             binding.txtPrecioCursoVendido.setText("$ " + getPrecioFormatoMoneda(manual.getPrecio()));
+            binding.txtFolioVendidos.setText(getFolioFormat(manual.getId_usuario_manual()));
+            binding.txtFechaVendidos.setText(manual.getFecha_compra());
+            binding.txtUsuarioVendidos.setText(manual.getNombre_usuario());
         }
     }
 
@@ -88,6 +91,10 @@ public class CursosVendidosAdapter extends RecyclerView.Adapter<CursosVendidosAd
         DecimalFormat form = new DecimalFormat("0.00");
         precioFormateado = String.valueOf(form.format(precio));
         return precioFormateado;
+    }
+
+    public String getFolioFormat(int folio){
+        return String.format("%010d",folio);
     }
 
 

@@ -1,15 +1,27 @@
 package com.servfix.manualesapp.utilities;
 
+//import com.paypal.android.sdk.payments.PayPalConfiguration;
+import android.os.Environment;
+
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+//import com.paypal.checkout.config.Environment;
+
 import java.util.HashMap;
 
 public class GlobalVariables {
     //produccion
     public static final String URLServicio = "https://erp.servfix.com.mx/ws/manualesapp/";
     //test
+    //public static final boolean debug = true; //0=produccion,1=debug
+
     //public static final String URLServicio = "https://erp.servfix.com.mx/ws/manualesapptest/";
 
-    //PAYPAL
+    //PAYPAL PRODUCCION
+    public static final String PAYPAL_ENVIROMENT = PayPalConfiguration.ENVIRONMENT_PRODUCTION;
     public static final String PAYPAL_CLIENT_ID = "AccHfI2JChSGd786mGBU1HRMl1L4VQg5KljkjVUwWrJWfxgclKM29ZUl7XXnobxzbjdNaqXrw6I8ZGhG"; //Produccion
+    //SANDBOX
+    //public static final Environment PAYPAL_ENVIROMENT = Environment.SANDBOX;
+    //public static final String PAYPAL_ENVIROMENT = PayPalConfiguration.ENVIRONMENT_SANDBOX;
     //public static final String PAYPAL_CLIENT_ID = "AdfLydJA7y9MrwEWOax033Z2MinL6gpEf3-NiqQ5A_ngLdWgUkiuw83R61PfNq741rhLrzxJ2Hqs3qPp"; //SANDBOX
 
     public static  final String STRIPE_CLIENT_ID = "sk_test_IKYCHOAmUhC7IPTdaoVtO58D";

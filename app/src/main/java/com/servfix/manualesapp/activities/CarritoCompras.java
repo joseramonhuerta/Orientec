@@ -28,11 +28,23 @@ import com.android.volley.toolbox.Volley;
 import com.mercadopago.android.px.core.MercadoPagoCheckout;
 import com.mercadopago.android.px.model.Payment;
 import com.mercadopago.android.px.model.exceptions.MercadoPagoError;
+//import com.paypal.android.sdk.payments.PayPalConfiguration;
+//import com.paypal.android.sdk.payments.PayPalPayment;
+//import com.paypal.android.sdk.payments.PayPalService;
+//import com.paypal.android.sdk.payments.PaymentActivity;
+//import com.paypal.android.sdk.payments.PaymentConfirmation;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
+/*
+import com.paypal.checkout.config.CheckoutConfig;
+import com.paypal.checkout.config.SettingsConfig;
+import com.paypal.checkout.createorder.CurrencyCode;
+import com.paypal.checkout.createorder.UserAction;
+import com.paypal.checkout.paymentbutton.PayPalButton;*/
+import com.servfix.manualesapp.BuildConfig;
 import com.servfix.manualesapp.CuadroDialogoPagoOxxo;
 import com.servfix.manualesapp.CuadroDialogoSeleccionarFormaPago;
 import com.servfix.manualesapp.utilities.GlobalVariables;
@@ -77,6 +89,7 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
 
     ImageView btnAtrasCarritoCompras;
     Button btnPagarCarritoCompras;
+    //PayPalButton btnPagoPayPal;
 
     TextView txtImporteTotalCarrito, txtCantidadCarrito, txtIDCarrito;
 
@@ -94,7 +107,11 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
     private static final String TAG = "CarritoCompras";
 
 
-    private static PayPalConfiguration config =  new PayPalConfiguration().environment(PayPalConfiguration.ENVIRONMENT_PRODUCTION).clientId(GlobalVariables.PAYPAL_CLIENT_ID).acceptCreditCards(true);
+    private static PayPalConfiguration config =  new PayPalConfiguration()
+            .environment(GlobalVariables.PAYPAL_ENVIROMENT)
+            .clientId(GlobalVariables.PAYPAL_CLIENT_ID);
+
+    //.acceptCreditCards(true)
 
     String importeTotalCarrito ="";
     int id_carrito_compras = 0;
@@ -143,7 +160,7 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
 
     @Override
     public void onDestroy() {
-        stopService(new Intent(this, PayPalService.class));
+        //stopService(new Intent(this, PayPalService.class));
         super.onDestroy();
     }
     @Override
@@ -161,7 +178,12 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
 
         Intent intent = new Intent(this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
-        mContext.startService(intent);
+        startService(intent);
+
+
+
+
+
         fm = getSupportFragmentManager();
         ft = fm.beginTransaction();
 
@@ -255,14 +277,26 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
 
 
     public void procesarPagoPayPal(View view){
+
         GlobalVariables gv = new GlobalVariables();
         String pagado_por = "pagado por " + gv.nombre_usuario + " " + gv.paterno + " " + gv.materno;
         importeTotalCarrito = txtImporteTotalCarrito.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(importeTotalCarrito)),"MXN", pagado_por,PayPalPayment.PAYMENT_INTENT_SALE);
+        PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(importeTotalCarrito)), "MXN", pagado_por, PayPalPayment.PAYMENT_INTENT_SALE);
         Intent intent = new Intent(CarritoCompras.this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+
+        /*
+        GlobalVariables gv = new GlobalVariables();
+        String pagado_por = "pagado por " + gv.nombre_usuario + " " + gv.paterno + " " + gv.materno;
+        importeTotalCarrito = txtImporteTotalCarrito.getText().toString();
+        //PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(importeTotalCarrito)),"USD", pagado_por,PayPalPayment.PAYMENT_INTENT_SALE);
+        Intent intent = new Intent(CarritoCompras.this, CheckoutPaypal.class);
+        intent.putExtra("pagadopor", pagado_por);
+        intent.putExtra("importe", importeTotalCarrito);
+        startActivityForResult(intent, PAYPAL_REQUEST_CODE);
+        */
     }
 
     public void procesarPagoOxxo(View view){
@@ -333,6 +367,7 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
         if(requestCode == PAYPAL_REQUEST_CODE){
             if(resultCode == RESULT_OK){
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
@@ -376,7 +411,6 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
             }else if(resultCode == RESULT_CANCELED)
                 Toast.makeText(this,"Cancelado",  Toast.LENGTH_SHORT).show();
         }
-
 
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -531,14 +565,10 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
         protected void onPostExecute(Void result)
         {
             adapter = new ListViewAdapterCarrito(carritoList, context, view);
-            //listaCargada = true;
             listviewCarritoCompras.setAdapter(adapter);
             txtImporteTotalCarrito.setText(String.valueOf(totalCarrito));
             txtIDCarrito.setText(String.valueOf(id_carrito_compras));
             txtCantidadCarrito.setText(String.valueOf(cantidad_carrito));
-
-
-
         }
     }
 

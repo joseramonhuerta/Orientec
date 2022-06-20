@@ -33,6 +33,7 @@ public class Manual implements Serializable {
     int status_manual;
     int esnuevo;
     int puede_calificar;
+    String fecha_compra;
 
     public double getPrecio() {
         return precio;
@@ -270,6 +271,14 @@ public class Manual implements Serializable {
 
     public void setPuede_calificar(int puede_calificar) {
         this.puede_calificar = puede_calificar;
+    }
+
+    public String getFecha_compra(){
+        return fecha_compra;
+    }
+
+    public void setFecha_compra(String fecha_compra){
+        this.fecha_compra = fecha_compra;
     }
 
 }

@@ -30,7 +30,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CursosVendidos extends BaseActivity {
+public class  CursosVendidos extends BaseActivity {
     ActivityCursosVendidosBinding binding;
     View mView;
     String FinalJSonObject;
@@ -141,6 +141,9 @@ public class CursosVendidos extends BaseActivity {
                             manual.setPrecio(Double.parseDouble(jsonObject.getString("precio")));
                             manual.setNombre_categoria(jsonObject.getString("nombre_categoria"));
                             manual.setUrl_portada(GlobalVariables.URLServicio + "manuales/" + jsonObject.getString("id_manual") + "/"+ jsonObject.getString("url_portada"));
+                            manual.setId_usuario_manual(Integer.parseInt(jsonObject.getString("id_usuario_manual")));
+                            manual.setFecha_compra(jsonObject.getString("fecha"));
+                            manual.setNombre_usuario(jsonObject.getString("nombre_usuario"));
                             manualList.add(manual);
                         }
                     } catch (JSONException e) {
@@ -161,6 +164,12 @@ public class CursosVendidos extends BaseActivity {
         protected void onPostExecute(Void result)
         {
             binding.progressBarCursosVendidos.setVisibility(View.GONE);
+
+            if(manualList.size() > 0){
+                binding.txtSinCursosVendidos.setVisibility(View.GONE);
+            }else{
+                binding.txtSinCursosVendidos.setVisibility(View.VISIBLE);
+            }
 
             binding.listviewCursosVendidos.setAdapter(new CursosVendidosAdapter(manualList, getApplicationContext()));
 
