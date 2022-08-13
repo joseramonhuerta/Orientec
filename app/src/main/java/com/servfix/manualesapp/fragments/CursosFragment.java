@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.servfix.manualesapp.adapters.BannersAdapter;
+import com.servfix.manualesapp.adapters.CursosVendidosAdapter;
+import com.servfix.manualesapp.adapters.ListViewAdapterBanners;
+import com.servfix.manualesapp.adapters.ListViewAdapterManuales;
+import com.servfix.manualesapp.classes.Banner;
 import com.servfix.manualesapp.classes.Categoria;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.servfix.manualesapp.adapters.GridViewAdapterCursos;
@@ -58,16 +64,18 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnRefreshListener*/{
 
-    ListView listView;
+    RecyclerView listBanner;
     static View mView;
     androidx.appcompat.widget.Toolbar myToolbar;
     ImageView btnSalir;
     String FinalJSonObject;
     String FinalJSonObjectCategorias;
     String FinalJSonObjectCarrucel;
+    String FinalJSonObjectBanner;
     SwipeRefreshLayout swipeContainer;
     String HTTP_URL;
     List<Manual> listManuales;
+    ScrollView scrollView;
 
     EditText txtBusquedaCursos;
     TextView txtFiltros;
@@ -76,7 +84,7 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
     ImageView btnFiltrosBusquedaCursos;
     Button btnComprarCurso;
     SliderView sliderView;
-    ImageView ivBanner;
+    ////ImageView ivBanner;
     TextView txtSinCursos;
 
     GridViewScrollable gridView;
@@ -103,8 +111,8 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
         //swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.srlContainerCursos);
         gridView = (GridViewScrollable) view.findViewById(R.id.gvCursos);
-        gridView.setNumColumns(1);
-        gridView.setExpanded(true);
+        //gridView.setNumColumns(1);
+        //gridView.setExpanded(true);
         txtBusquedaCursos = (EditText) view.findViewById(R.id.txtBusquedaCursos);
         txtFiltros = (TextView) view.findViewById(R.id.txtFiltros);
         btnLimpiarBusquedaCursos = (ImageView) view.findViewById(R.id.btnLimpiarBusqueda);
@@ -114,9 +122,11 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
         listViewCategorias = (RecyclerView) view.findViewById(R.id.listViewCategorias);
         txtSinCursos = (TextView) view.findViewById(R.id.txtSinCursosCursos);
         sliderView = view.findViewById(R.id.imageSlider);
-        ivBanner = (ImageView) view.findViewById(R.id.ivBanner);
+        //ivBanner = (ImageView) view.findViewById(R.id.ivBanner);
+        //scrollView = (ScrollView) view.findViewById(R.id.SvPadre);
+        listBanner = (RecyclerView) view.findViewById(R.id.ivBanner);
 
-       // swipeContainer.setOnRefreshListener(this);
+        // swipeContainer.setOnRefreshListener(this);
         btnFiltrosBusquedaCursos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,17 +159,28 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
     }
 
     public void loadBanner(View view){
+        final View vista = view;
         GlobalVariables vg = new GlobalVariables();
-        try {
-            Glide.with(getContext())
-                    .load(vg.URLServicio +  "images/banner.jpg")
-                    .fitCenter()
-                    .into(ivBanner);
-        }catch (Exception e){
-
-        }
-
-
+        String HTTP_URL_BANNER = vg.URLServicio + "obtenerbanners.php";
+        StringRequest stringRequest = new StringRequest(HTTP_URL_BANNER,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // After done Loading store JSON response in FinalJSonObject string variable.
+                        FinalJSonObjectBanner = response ;
+                        // Calling method to parse JSON object.
+                        new ParseJSonDataClassBanners(vista).execute();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Showing error message if something goes wrong.
+                        Toast.makeText(mView.getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
+        requestQueue.add(stringRequest);
     }
 
     public void loadCursos(View mView){
@@ -208,34 +229,26 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
     public void loadCategorias(View view){
         final View vista = view;
-
         GlobalVariables variablesGlobales = new GlobalVariables();
-
         HTTP_URL = variablesGlobales.URLServicio + "obtenercategorias.php";
         // Creating StringRequest and set the JSON server URL in here.
         StringRequest stringRequest = new StringRequest(HTTP_URL,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         // After done Loading store JSON response in FinalJSonObject string variable.
                         FinalJSonObjectCategorias = response ;
-
                         // Calling method to parse JSON object.
                         new ParseJSonDataClassCategorias(vista).execute();
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         // Showing error message if something goes wrong.
                         Toast.makeText(mView.getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
-
                     }
                 });
-
         RequestQueue requestQueue = Volley.newRequestQueue(view.getContext());
         requestQueue.add(stringRequest);
     }
@@ -411,12 +424,12 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
             }
 
             gridView.setAdapter(adapter);
+            gridView.setExpanded(true);
             pDialogo.dismiss();
         }
     }
 
     private class ParseJSonDataClassCategorias extends AsyncTask<Void, Void, Void> {
-
         public Context context;
         public View view;
         public Fragment fragment;
@@ -426,16 +439,13 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
             this.view = view;
             this.context = view.getContext();
         }
-
         //@Override
         protected void onPreExecute() {
 
             super.onPreExecute();
         }
-
         //@Override
         protected Void doInBackground(Void... arg0) {
-
             try {
 
                 // Checking whether FinalJSonObject is not equals to null.
@@ -587,6 +597,73 @@ public class CursosFragment extends Fragment /*implements SwipeRefreshLayout.OnR
 
                 adapterCarrucel.updateItems(carrucelList);
 
+        }
+    }
+
+    private class ParseJSonDataClassBanners extends AsyncTask<Void, Void, Void> {
+        public Context context;
+        public View view;
+        public Fragment fragment;
+        List<Banner> bannersList;
+
+        public ParseJSonDataClassBanners(View view) {
+            this.view = view;
+            this.context = view.getContext();
+        }
+        //@Override
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+        }
+        //@Override
+        protected Void doInBackground(Void... arg0) {
+            try {
+
+                // Checking whether FinalJSonObject is not equals to null.
+                if (FinalJSonObjectBanner != null) {
+
+                    JSONArray jsonArray = null;
+                    try {
+
+                        jsonArray = new JSONArray(FinalJSonObjectBanner);
+
+                        JSONObject jsonObject;
+
+                        Banner banner;
+
+                        bannersList = new ArrayList<Banner>();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+
+                            banner = new Banner();
+
+                            jsonObject = jsonArray.getJSONObject(i);
+
+                            banner.setImagen_banner(GlobalVariables.URLServicio + "images/banner/" + jsonObject.getString("imagen_banner"));
+
+                            bannersList.add(banner);
+                        }
+                    } catch (JSONException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result)
+        {
+            //final ListViewAdapterBanners adapter = new ListViewAdapterBanners(bannersList, context);
+            //listBanner.setAdapter(adapter);
+
+            listBanner.setAdapter(new BannersAdapter(bannersList, context));
+
+            listBanner.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         }
     }
 

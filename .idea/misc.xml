@@ -13,16 +13,25 @@
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_checkout_paypal.xml" value="0.29713552800342025" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_cursos_vendidos.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_detalle_manual_p_d_f.xml" value="0.3009833262077811" />
-        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_inicio_sesion.xml" value="0.18" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_inicio_sesion.xml" value="0.279319606087735" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_main.xml" value="0.10944848225737494" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_menu_principal.xml" value="0.3009833262077811" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_menu_tecnicos.xml" value="0.30012825994014536" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_mi_billetera.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_perfil_usuario.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_principal.xml" value="0.29713552800342025" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_registrarse.xml" value="0.2761816496756256" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/activity_reset_password.xml" value="0.29713552800342025" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/cuadro_dialogo_seleccionar_formapago.xml" value="0.2965708989805375" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/fragment_cursos.xml" value="0.1838392475416845" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/fragment_manuales.xml" value="0.21205643437366395" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/fragment_mis_cursos.xml" value="0.30012825994014536" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/fragment_perfil.xml" value="0.25" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/image_slider_layout_item.xml" value="0.155622060709705" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/listview_item_banner.xml" value="0.30012825994014536" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/listview_item_carrito.xml" value="0.30012825994014536" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/listview_item_cursovendido.xml" value="0.6205357142857143" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/layout/listview_items_manuales.xml" value="0.30012825994014536" />
         <entry key="..\:/Users/user/AndroidStudioProjects/Orientec/app/src/main/res/menu/main_menu.xml" value="0.3009833262077811" />
       </map>
     </option>

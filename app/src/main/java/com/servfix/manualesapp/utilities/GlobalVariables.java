@@ -10,10 +10,9 @@ import java.util.HashMap;
 
 public class GlobalVariables {
     //produccion
-    public static final String URLServicio = "https://erp.servfix.com.mx/ws/manualesapp/";
+    public static final String URLServicio = "https://panel.servfix.com.mx/ws/manualesapp/";
     //test
-    //public static final boolean debug = true; //0=produccion,1=debug
-
+    //public static final boolean debug = true; //modo debug para pago en carrito de compras y no se genere un pago real (paypal,paynet, etc)
     //public static final String URLServicio = "https://erp.servfix.com.mx/ws/manualesapptest/";
 
     //PAYPAL PRODUCCION

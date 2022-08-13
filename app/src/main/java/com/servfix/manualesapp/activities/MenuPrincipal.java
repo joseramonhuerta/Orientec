@@ -9,6 +9,14 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +35,12 @@ import com.servfix.manualesapp.fragments.PerfilFragment;
 import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.servfix.manualesapp.utilities.PreferenceManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Hashtable;
+import java.util.Map;
 
 public class MenuPrincipal extends BaseActivity {
     BottomNavigationView mMenu;
@@ -114,10 +128,66 @@ public class MenuPrincipal extends BaseActivity {
         );
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
                 .addOnFailureListener(e -> showToast("No se pudo obtener el token"));
+
+        //Actualizar token en la base de datos
+
+        GlobalVariables gv = new GlobalVariables();
+        int id_user = gv.id_usuario;
+
+        actualizarTokenUsuario(id_user, token);
+/*
+        String url = gv.URLServicio + "sesion.php?usuario="+txtUsuario.getEditText().getText().toString()+
+                "&clave="+txtPassword.getEditText().getText().toString();
+        jrq = new JsonObjectRequest(Request.Method.GET, url, null, this, this);
+        rq.add(jrq);
+    */
+
+
+
     }
 
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    public void actualizarTokenUsuario(int id_usuario, String token){
+        GlobalVariables gv = new GlobalVariables();
+        String HTTP_URL =gv.URLServicio + "actualizar_token_usuario.php?";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, HTTP_URL,
+                new Response.Listener<String>() {
+
+                    @Override
+                    public void onResponse(String response) {
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                        } catch (JSONException e) {
+                            //e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // En caso de tener algun error en la obtencion de los datos
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+
+                Map<String, String> parametros = new Hashtable<String, String>();
+                parametros.put("id_usuario", String.valueOf(id_usuario));
+                parametros.put("token", token.toString());
+
+                return parametros;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+
+
+
     }
 
 

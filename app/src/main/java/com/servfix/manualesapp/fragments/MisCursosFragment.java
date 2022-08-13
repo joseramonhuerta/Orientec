@@ -145,13 +145,11 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
 
     public void loadMisCursos(View mView){
         final View vista = mView;
-
         pDialogo = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
         pDialogo.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
         pDialogo.setTitleText("Cargando...");
         pDialogo.setCancelable(false);
         pDialogo.show();
-
         GlobalVariables variablesGlobales = new GlobalVariables();
         int id_user = variablesGlobales.id_usuario;
 
@@ -161,31 +159,23 @@ public class MisCursosFragment extends Fragment implements SwipeRefreshLayout.On
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         // After done Loading store JSON response in FinalJSonObject string variable.
                         FinalJSonObject = response ;
-
                         // Calling method to parse JSON object.
                         new MisCursosFragment.ParseJSonDataClass(vista).execute();
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         // Showing error message if something goes wrong.
                         Toast.makeText(vista.getContext(),error.getMessage(),Toast.LENGTH_LONG).show();
-
                     }
                 });
-
         // Creating String Request Object.
         RequestQueue requestQueue = Volley.newRequestQueue(vista.getContext());
-
         // Passing String request into RequestQueue.
         requestQueue.add(stringRequest);
-
         //this.limite += 5;
     }
 

@@ -7,13 +7,15 @@
     tools:context=".activities.InicioSesion"
     android:padding="20sp"
     android:background="#fff">
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:clipToPadding="false"
+        android:orientation="vertical"
         android:overScrollMode="never"
         android:scrollbars="none">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -31,12 +33,12 @@
                 android:id="@+id/txtLogoName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:transitionName="logo_text"
                 android:layout_gravity="center_horizontal"
                 android:fontFamily="@font/bungee"
                 android:text="Bienvenido"
                 android:textColor="@color/greyblack"
-                android:textSize="40sp" />
+                android:textSize="40sp"
+                android:transitionName="logo_text" />
 
             <TextView
                 android:id="@+id/txtSesion"
@@ -56,63 +58,70 @@
                 android:orientation="vertical">
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtUsuario"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtUsuario"
-                    android:hint="Email"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    >
+                    android:hint="Email">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableLeft="@drawable/icono_usuario_small"
-                        android:inputType="text"/>
+                        android:inputType="text" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/txtPassword"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txtPassword"
-                    app:passwordToggleEnabled="true"
                     android:layout_marginTop="20dp"
                     android:hint="Contraseña"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    >
+                    app:passwordToggleEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:drawableStart="@drawable/icono_candado_small"
-                        android:inputType="textPassword"
-                         />
+                        android:inputType="textPassword" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <Button
+                    android:id="@+id/btnIniciarSesion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Iniciar Sesión"
-                    android:background="@color/colorPrimaryDark"
-                    android:textColor="#fff"
                     android:layout_marginTop="50dp"
                     android:layout_marginBottom="10dp"
-                    android:id="@+id/btnIniciarSesion"
-                    />
+                    android:background="@color/colorPrimaryDark"
+                    android:text="Iniciar Sesión"
+                    android:textColor="#fff" />
 
 
                 <Button
+                    android:id="@+id/btnRegistrarse"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Registrarse"
+                    android:layout_margin="5dp"
                     android:background="#fff"
                     android:elevation="0dp"
+                    android:text="Registrarse"
                     android:textColor="@color/secondary_text"
-                    android:layout_margin="5dp"
-                    android:id="@+id/btnRegistrarse"
 
                     />
+
+                <TextView
+                    android:id="@+id/txtResetPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:clickable="true"
+                    android:text="Olvidé mi contraseña"
+                    android:textAlignment="center"
+                    android:textStyle="bold" />
+
 
             </LinearLayout>
         </LinearLayout>

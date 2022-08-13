@@ -1,168 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/viewCursos"
-    tools:context=".fragments.CursosFragment">
+    tools:context=".fragments.CursosFragment"
+    android:orientation="vertical"
+    android:background="#dbdcdb"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#dbdcdb"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:background="#F6A650"
+        android:backgroundTint="#F6A650"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/txtBusquedaCursos"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:background="#fff"
+                android:hint="Busqueda..." />
+
+            <ImageView
+                android:id="@+id/btnBuscarCurso"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/lupa3" />
+
+            <ImageView
+                android:id="@+id/btnLimpiarBusqueda"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/borrar" />
+
+            <ImageView
+                android:id="@+id/btnFiltrosBusqueda"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/filter" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtFiltros"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="3dp"
+            android:backgroundTint="#cccc"
+            android:text="Filtro: TODOS"
+            android:textColor="#464646"
+            android:textSize="14sp"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/SvPadre"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
         >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#F6A650"
-            android:backgroundTint="#F6A650"
             android:orientation="vertical">
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listViewCategorias"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
+                android:scrollbars="none">
 
-                <EditText
-                    android:id="@+id/txtBusquedaCursos"
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.cardview.widget.CardView
+                app:cardCornerRadius="6dp"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.smarteist.autoimageslider.SliderView
+                    android:id="@+id/imageSlider"
                     android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_weight="1"
-                    android:background="#fff"
-                    android:hint="Busqueda..." />
+                    android:layout_height="180dp"
+                    app:sliderAnimationDuration="600"
+                    app:sliderAutoCycleDirection="back_and_forth"
+                    app:sliderAutoCycleEnabled="true"
+                    app:sliderIndicatorAnimationDuration="600"
+                    app:sliderIndicatorGravity="center_horizontal|bottom"
+                    app:sliderIndicatorMargin="15dp"
+                    app:sliderIndicatorOrientation="horizontal"
+                    app:sliderIndicatorPadding="3dp"
+                    app:sliderIndicatorRadius="2dp"
+                    app:sliderIndicatorSelectedColor="#5A5A5A"
+                    app:sliderIndicatorUnselectedColor="#FFF"
+                    app:sliderScrollTimeInSec="1"
+                    app:sliderStartAutoCycle="true" />
 
-                <ImageView
-                    android:id="@+id/btnBuscarCurso"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/lupa3" />
+            </androidx.cardview.widget.CardView>
 
-                <ImageView
-                    android:id="@+id/btnLimpiarBusqueda"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/borrar" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-                <ImageView
-                    android:id="@+id/btnFiltrosBusqueda"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="5dp"
-                    android:src="@drawable/filter" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/ivBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
 
-            </LinearLayout>
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.servfix.manualesapp.GridViewScrollable
+                    android:id="@+id/gvCursos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#dbdcdb"
+                    android:numColumns="1"
+                    android:nestedScrollingEnabled="true"
+                    android:layout_alignParentBottom="true"
+                    android:stretchMode="columnWidth" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/txtFiltros"
-                android:layout_width="match_parent"
+                android:id="@+id/txtSinCursosCursos"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="3dp"
-                android:backgroundTint="#cccc"
-                android:text="Filtro: TODOS"
-                android:textColor="#464646"
-                android:textSize="14sp"
-                android:textStyle="bold|italic" />
+                android:text="Por el momento ho hay cursos disponibles"
+                android:textStyle="bold"
+                android:textSize="34dp"
+                android:textAlignment="center"
+                android:textColor="@color/secondary_text"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="gone"
+                />
 
         </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:isScrollContainer="true">
+    </ScrollView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+</LinearLayout>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listViewCategorias"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scrollbars="none">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <androidx.cardview.widget.CardView
-                    app:cardCornerRadius="6dp"
-                    android:layout_margin="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.smarteist.autoimageslider.SliderView
-                        android:id="@+id/imageSlider"
-                        android:layout_width="match_parent"
-                        android:layout_height="180dp"
-                        app:sliderAnimationDuration="600"
-                        app:sliderAutoCycleDirection="back_and_forth"
-                        app:sliderAutoCycleEnabled="true"
-                        app:sliderIndicatorAnimationDuration="600"
-                        app:sliderIndicatorGravity="center_horizontal|bottom"
-                        app:sliderIndicatorMargin="15dp"
-                        app:sliderIndicatorOrientation="horizontal"
-                        app:sliderIndicatorPadding="3dp"
-                        app:sliderIndicatorRadius="2dp"
-                        app:sliderIndicatorSelectedColor="#5A5A5A"
-                        app:sliderIndicatorUnselectedColor="#FFF"
-                        app:sliderScrollTimeInSec="1"
-                        app:sliderStartAutoCycle="true" />
-
-                </androidx.cardview.widget.CardView>
-
-                <ImageView
-                    android:id="@+id/ivBanner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginLeft="10dp"
-                     />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.servfix.manualesapp.GridViewScrollable
-                        android:id="@+id/gvCursos"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:nestedScrollingEnabled="true"
-                        android:background="#dbdcdb"
-                        android:gravity="center"
-                        android:horizontalSpacing="10dp"
-                        android:numColumns="1"
-                        android:layout_margin="5dp"
-                        android:scrollbars="none"
-                        android:stretchMode="columnWidth"
-                        />
-
-
-                </LinearLayout>
-                <TextView
-                    android:id="@+id/txtSinCursosCursos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Por el momento ho hay cursos disponibles"
-                    android:textStyle="bold"
-                    android:textSize="34dp"
-                    android:textAlignment="center"
-                    android:textColor="@color/secondary_text"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:visibility="gone"
-                    />
-            </LinearLayout>
-
-        </ScrollView>
-
-    </LinearLayout>
-
-</RelativeLayout>

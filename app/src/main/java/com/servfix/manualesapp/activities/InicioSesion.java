@@ -45,7 +45,7 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
 
     Button btnIniciarSesion, btnRegistrarse;
     ImageView logo;
-    TextView txtLogoName, txtSesion;
+    TextView txtLogoName, txtSesion, txtResetPassword;
     TextInputLayout txtUsuario, txtPassword;
 
     RequestQueue rq;
@@ -73,6 +73,8 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
         txtUsuario = (TextInputLayout) findViewById(R.id.txtUsuario);
         txtPassword = (TextInputLayout) findViewById(R.id.txtPassword);
         progressBar = (ProgressBar) findViewById(R.id.ProgressBar);
+        txtResetPassword = (TextView) findViewById(R.id.txtResetPassword);
+
 
         //prefs = getApplicationContext().getSharedPreferences("MisPreferenciasOrientec", Context.MODE_PRIVATE);
 
@@ -139,6 +141,15 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
             }
         });
 
+        txtResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(InicioSesion.this, ResetPassword.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                startActivity(intent);
+            }
+        });
+
         notifications();
     }
 
@@ -187,13 +198,6 @@ public class InicioSesion extends AppCompatActivity implements Response.Listener
 
     private void iniciarSesion(){
         progressBar.setVisibility(View.VISIBLE);
-
-        //SharedPreferences.Editor editor = prefs.edit();
-
-        //preferenceManager.putString("user", txtUsuario.getEditText().getText().toString());
-        //preferenceManager.putString("pass", txtPassword.getEditText().getText().toString());
-
-        //editor.commit();
 
         GlobalVariables variablesGlobales = new GlobalVariables();
         String url = variablesGlobales.URLServicio + "sesion.php?usuario="+txtUsuario.getEditText().getText().toString()+

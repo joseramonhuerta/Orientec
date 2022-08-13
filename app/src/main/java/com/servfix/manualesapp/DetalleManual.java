@@ -31,6 +31,9 @@ import com.android.volley.toolbox.Volley;
 import com.servfix.manualesapp.activities.CarritoCompras;
 import com.servfix.manualesapp.activities.InformacionUsuario;
 import com.servfix.manualesapp.classes.Manual;
+import com.servfix.manualesapp.interfaces.ApiService;
+import com.servfix.manualesapp.network.ApiClient;
+import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.squareup.picasso.Picasso;
 
@@ -44,6 +47,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class DetalleManual extends AppCompatActivity {
     int id_curso = 0;
@@ -448,6 +453,8 @@ public class DetalleManual extends AppCompatActivity {
         public Context context;
         public View view;
         public String msg;
+        public boolean success;
+        public JSONArray jsonArray = null;
         // Creating List of Subject class.
 
 
@@ -471,12 +478,12 @@ public class DetalleManual extends AppCompatActivity {
                 if (FinalJSonObject != null) {
 
                     // Creating and setting up JSON array as null.
-                    JSONArray jsonArray = null,jsonArrayDatos = null;
-                    JSONObject jsonObject,jsonObjectDatos;
+
+                    JSONObject jsonObject;
                     try {
 
                         jsonObject = new JSONObject(FinalJSonObject);
-                        boolean success = jsonObject.getBoolean("success");
+                        this.success = jsonObject.getBoolean("success");
                         this.msg = jsonObject.getString("msg");
                         jsonArray = jsonObject.getJSONArray("datos");
 
@@ -503,6 +510,26 @@ public class DetalleManual extends AppCompatActivity {
         protected void onPostExecute(Void result)
 
         {
+            JSONObject jsonObjectDetalle;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    //um.id_manual,m.id_usuario_creador, um.comision,m.nombre_manual,m.url_portada,u.token
+                    jsonObjectDetalle = jsonArray.getJSONObject(i);
+                    int id_manual = Integer.parseInt(jsonObjectDetalle.getString("id_manual"));
+                    String nombre_manual = jsonObjectDetalle.getString("nombre_manual");
+                    String nombre_imagen = jsonObjectDetalle.getString("url_portada");
+                    String url = GlobalVariables.URLServicio + "manuales/" + String.valueOf(id_manual) + "/" + nombre_imagen;
+                    String token = jsonObjectDetalle.getString("token");
+
+                    cursoVendidoNotificacion("Ha vendido un curso", nombre_manual, url, token);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    //e.printStackTrace();
+                }
+
+            }
+
             //loadCarrito(view);
             pDialogo.dismiss();
             Toast.makeText(context, this.msg, Toast.LENGTH_LONG).show();
@@ -510,6 +537,63 @@ public class DetalleManual extends AppCompatActivity {
 
         }
     }
+
+    public void cursoVendidoNotificacion(String titulo, String detalle, String foto, String token){
+        try{
+            JSONObject data = new JSONObject();
+            data.put("titulo", titulo);
+            data.put("detalle", detalle);
+            data.put("foto", foto);
+            data.put("tipoNotificacion", "2");
+
+            JSONObject body = new JSONObject();
+            body.put("to",token);
+            body.put(Constants.REMOTE_MSG_DATA, data);
+
+            sendNotification(body.toString());
+        }catch (Exception e){
+            showToast(e.getMessage());
+        }
+    }
+
+    private void sendNotification(String messageBody){
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody
+        ).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                if(response.isSuccessful()){
+                    try {
+                        if(response.body() != null){
+                            JSONObject responseJson = new JSONObject(response.body());
+                            JSONArray results = responseJson.getJSONArray("results");
+                            if(responseJson.getInt("failure") == 1){
+                                JSONObject error = (JSONObject) results.get(0);
+                                showToast(error.getString("error"));
+                                return;
+                            }
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }else{
+                    showToast("Error Notificacion: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                showToast(t.getMessage());
+            }
+        });
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
 
     public String getPrecioFormatoMoneda(double precio){
         String precioFormateado = "";

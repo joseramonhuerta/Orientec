@@ -16,6 +16,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ResetPassword"
+            android:exported="false" />
+        <activity
             android:name=".CheckoutPaypal"
             android:exported="false" />
         <activity
@@ -32,6 +35,7 @@
         <activity android:name=".activities.NuevaCategoria" />
         <activity android:name=".activities.NuevoCurso" />
         <activity android:name=".activities.MenuTecnicos" />
+        <activity android:name=".activities.ResetPassword" />
         <activity android:name=".ChatSoporte" />
         <activity android:name=".DetalleManualWeb" />
         <activity android:name=".Registrarse" />

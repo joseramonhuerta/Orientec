@@ -47,6 +47,9 @@ import com.paypal.checkout.paymentbutton.PayPalButton;*/
 import com.servfix.manualesapp.BuildConfig;
 import com.servfix.manualesapp.CuadroDialogoPagoOxxo;
 import com.servfix.manualesapp.CuadroDialogoSeleccionarFormaPago;
+import com.servfix.manualesapp.interfaces.ApiService;
+import com.servfix.manualesapp.network.ApiClient;
+import com.servfix.manualesapp.utilities.Constants;
 import com.servfix.manualesapp.utilities.GlobalVariables;
 import com.servfix.manualesapp.R;
 import com.servfix.manualesapp.adapters.ListViewAdapterCarrito;
@@ -63,6 +66,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 //import com.mercadopago.android.px.core.MercadoPagoCheckout;
 //import com.mercadopago.android.px.model.Item;
@@ -98,14 +103,11 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
     CuadroDialogoSeleccionarFormaPago dialogoFragment;
     CuadroDialogoSeleccionarFormaPago tPrev;
 
-
-
     private static final int PAYPAL_REQUEST_CODE = 7171;
     private static final int MERCADOPAGO_REQUEST_CODE = 7272;
     private static final int STRIPE_REQUEST_CODE = 7373;
 
     private static final String TAG = "CarritoCompras";
-
 
     private static PayPalConfiguration config =  new PayPalConfiguration()
             .environment(GlobalVariables.PAYPAL_ENVIROMENT)
@@ -274,11 +276,10 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
                 .startPayment(CarritoCompras.this, MERCADOPAGO_REQUEST_CODE);
     }
 
-
-
     public void procesarPagoPayPal(View view){
-
         GlobalVariables gv = new GlobalVariables();
+
+
         String pagado_por = "pagado por " + gv.nombre_usuario + " " + gv.paterno + " " + gv.materno;
         importeTotalCarrito = txtImporteTotalCarrito.getText().toString();
         PayPalPayment payPalPayment = new PayPalPayment(new BigDecimal(String.valueOf(importeTotalCarrito)), "MXN", pagado_por, PayPalPayment.PAYMENT_INTENT_SALE);
@@ -642,6 +643,9 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
         public Context context;
         public View view;
         public String msg;
+        public boolean success;
+        public JSONArray jsonArray = null;
+
         // Creating List of Subject class.
 
 
@@ -665,21 +669,13 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
                 if (FinalJSonObject != null) {
 
                     // Creating and setting up JSON array as null.
-                    JSONArray jsonArray = null,jsonArrayDatos = null;
-                    JSONObject jsonObject,jsonObjectDatos;
+                    JSONObject jsonObject;
                     try {
 
                         jsonObject = new JSONObject(FinalJSonObject);
-                        boolean success = jsonObject.getBoolean("success");
+                        this.success = jsonObject.getBoolean("success");
                         this.msg = jsonObject.getString("msg");
                         jsonArray = jsonObject.getJSONArray("datos");
-
-                        /*runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(NuevaOrdenServicio.this,msg,Toast.LENGTH_SHORT).show();
-                            }
-                        });*/
-
 
                     } catch (JSONException e) {
                         // TODO Auto-generated catch block
@@ -697,6 +693,26 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
         protected void onPostExecute(Void result)
 
         {
+            JSONObject jsonObjectDetalle;
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    //um.id_manual,m.id_usuario_creador, um.comision,m.nombre_manual,m.url_portada,u.token
+                    jsonObjectDetalle = jsonArray.getJSONObject(i);
+                    int id_manual = Integer.parseInt(jsonObjectDetalle.getString("id_manual"));
+                    String nombre_manual = jsonObjectDetalle.getString("nombre_manual");
+                    String nombre_imagen = jsonObjectDetalle.getString("url_portada");
+                    String url = GlobalVariables.URLServicio + "manuales/" + String.valueOf(id_manual) + "/" + nombre_imagen;
+                    String token = jsonObjectDetalle.getString("token");
+
+                    cursoVendidoNotificacion("Ha vendido un curso", nombre_manual, url, token);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    //e.printStackTrace();
+                }
+
+            }
+
             loadCarrito(view);
             pDialogo.dismiss();
             //activarDesactivarBotones(btnLimpiar, 1);
@@ -705,6 +721,62 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
             sDialogo.show();
 
         }
+    }
+
+    public void cursoVendidoNotificacion(String titulo, String detalle, String foto, String token){
+        try{
+            JSONObject data = new JSONObject();
+            data.put("titulo", titulo);
+            data.put("detalle", detalle);
+            data.put("foto", foto);
+            data.put("tipoNotificacion", "2");
+
+            JSONObject body = new JSONObject();
+            body.put("to",token);
+            body.put(Constants.REMOTE_MSG_DATA, data);
+
+            sendNotification(body.toString());
+        }catch (Exception e){
+            showToast(e.getMessage());
+        }
+    }
+
+    private void sendNotification(String messageBody){
+        ApiClient.getClient().create(ApiService.class).sendMessage(
+                Constants.getRemoteMsgHeaders(),
+                messageBody
+        ).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                if(response.isSuccessful()){
+                    try {
+                        if(response.body() != null){
+                            JSONObject responseJson = new JSONObject(response.body());
+                            JSONArray results = responseJson.getJSONArray("results");
+                            if(responseJson.getInt("failure") == 1){
+                                JSONObject error = (JSONObject) results.get(0);
+                                showToast(error.getString("error"));
+                                return;
+                            }
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
+
+                }else{
+                    showToast("Error Notificacion: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                showToast(t.getMessage());
+            }
+        });
+    }
+
+    private void showToast(String message){
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
     private class ParseJSonDataClassGenerarPagoPaynet extends AsyncTask<Void, Void, Void> {
@@ -815,6 +887,5 @@ public class CarritoCompras extends BaseActivity implements ListViewAdapterCarri
             loadCarrito(view);
         }
     }
-
 
 }

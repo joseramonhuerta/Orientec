@@ -367,7 +367,9 @@ public class NuevoCurso extends BaseActivity implements CuadroDialogoCategorias.
                                 String nombre_manual = jsonObjectDatos.getString("nombre_manual");
                                 String nombre_imagen = jsonObjectDatos.getString("url_portada");
                                 String url = GlobalVariables.URLServicio + "manuales/" + String.valueOf(id_manual) + "/" + nombre_imagen;
+
                                 nuevoCursoNotificacion("Nuevo curso disponible", nombre_manual, url);
+
                             }
 
                             binding.txtTituloCursoTecnicoNuevo.setText("Editar curso");

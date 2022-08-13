@@ -99,7 +99,7 @@ public class Registrarse extends AppCompatActivity {
         btnRegistro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!validarUsuario() | !validaNombre() | !validaPassword() | !validaPaterno() | !validaMaterno() | !validaCelular() | !validaImagen())
+                if(!validarUsuario() | !validaNombre() | !validaPassword() | !validaPaterno() | !validaCelular())
                     return;
 
                 registrar(mView);
@@ -300,7 +300,7 @@ public class Registrarse extends AppCompatActivity {
 
         String val = txtUsuario.getEditText().getText().toString();
 
-        String expression = "[a-z0-9._-]+@[a-z]+\\.+[a-z]+";
+        String expression = "[a-z0-9._-]+@[a-z0-9]+\\.+[a-z.]+";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(val);
 
